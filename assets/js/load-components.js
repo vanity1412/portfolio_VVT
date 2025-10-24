@@ -1,17 +1,32 @@
-// Function to load header and footer components
+// Function to load header, footer, and sidebar components
 function loadComponents() {
     // Determine the correct path based on current location
     let headerPath = 'header.html';
     let footerPath = 'footer.html';
+    let sidebarPath = 'sidebar.html';
     
     // Check if we're in a subdirectory
     if (window.location.pathname.includes('/components/')) {
         headerPath = '../header.html';
         footerPath = '../footer.html';
+        sidebarPath = '../sidebar.html';
     } else if (window.location.pathname.includes('/posts/')) {
         headerPath = '../../header.html';
         footerPath = '../../footer.html';
+        sidebarPath = '../../sidebar.html';
     }
+    
+    // Load sidebar
+    fetch(sidebarPath)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-placeholder').innerHTML = data;
+            // Fix image path based on current location
+            fixSidebarImagePath();
+            // Initialize sidebar functionality
+            initializeSidebar();
+        })
+        .catch(error => console.error('Error loading sidebar:', error));
     
     // Load header
     fetch(headerPath)
@@ -99,6 +114,101 @@ function setActiveNavLink() {
             if (link.getAttribute('href') === 'components/contact.html' || link.getAttribute('href') === 'contact.html' || link.getAttribute('href') === '../components/contact.html' || link.getAttribute('href') === '../../components/contact.html') {
                 link.classList.add('active');
             }
+        }
+    });
+}
+
+// Function to fix sidebar image path based on current location
+function fixSidebarImagePath() {
+    const sidebarImg = document.querySelector('.sidebar-profile-img');
+    if (sidebarImg) {
+        // Check current location and adjust image path
+        if (window.location.pathname.includes('/components/')) {
+            sidebarImg.src = '../assets/img/myface.jpg';
+        } else if (window.location.pathname.includes('/posts/')) {
+            sidebarImg.src = '../../assets/img/myface.jpg';
+        } else {
+            sidebarImg.src = 'assets/img/myface.jpg';
+        }
+    }
+    
+    // Also fix audio path if audio player exists
+    const audio = document.getElementById('background-music');
+    if (audio) {
+        const sources = audio.querySelectorAll('source');
+        sources.forEach(source => {
+            if (source.src.includes('assets/music/sontung.mp3')) {
+                if (window.location.pathname.includes('/components/')) {
+                    source.src = '../assets/music/sontung.mp3';
+                } else if (window.location.pathname.includes('/posts/')) {
+                    source.src = '../../assets/music/sontung.mp3';
+                } else {
+                    source.src = 'assets/music/sontung.mp3';
+                }
+            }
+        });
+    }
+}
+
+// Function to initialize sidebar functionality
+function initializeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const body = document.body;
+    
+    // Sidebar hiển thị mặc định trên desktop, ẩn trên mobile
+    if (window.innerWidth > 768) {
+        // Desktop: sidebar hiển thị mặc định
+        if (sidebar) {
+            sidebar.classList.remove('hidden');
+        }
+        if (body) {
+            body.classList.remove('sidebar-hidden');
+        }
+    } else {
+        // Mobile: sidebar ẩn mặc định
+        if (sidebar) {
+            sidebar.classList.add('hidden');
+        }
+        if (body) {
+            body.classList.add('sidebar-hidden');
+        }
+    }
+    
+    // Sidebar toggle functionality
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            if (window.innerWidth > 768) {
+                // Desktop: toggle ẩn/hiện sidebar
+                sidebar.classList.toggle('hidden');
+                body.classList.toggle('sidebar-hidden');
+            } else {
+                // Mobile: toggle mở/đóng sidebar
+                sidebar.classList.toggle('open');
+            }
+        });
+    }
+    
+    // Close sidebar when clicking outside (chỉ trên mobile)
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            // Desktop: sidebar hiển thị mặc định
+            sidebar.classList.remove('hidden', 'open');
+            body.classList.remove('sidebar-hidden');
+        } else {
+            // Mobile: sidebar ẩn mặc định
+            sidebar.classList.add('hidden');
+            sidebar.classList.remove('open');
+            body.classList.add('sidebar-hidden');
         }
     });
 }

@@ -9,7 +9,6 @@
 **Sinh viên năm 3 - Chuyên ngành An toàn thông tin**  
 **Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Portfolio-brightgreen?style=for-the-badge&logo=globe&logoColor=white)](https://your-portfolio-url.com)
 [![GitHub](https://img.shields.io/badge/GitHub-vanity1412-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/vanity1412)
 
 </div>
@@ -70,7 +69,7 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 
 ### 🎓 Học vấn
 - **Cử nhân An toàn thông tin** - Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh (2022-2026)
-- **GPA hiện tại:** 8.5+
+- **GPA hiện tại:** 3.0+
 - **Chuyên ngành:** An toàn thông tin và Bảo mật mạng
 
 ### 🏆 Chứng chỉ & Thành tích
@@ -80,6 +79,8 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 | 🏅 **MOS** | Microsoft | 2023 | Microsoft Office Specialist (Word, Excel, PowerPoint) |
 | 🛡️ **CAPT** | EC-Council | 2024 | Certified Advanced Penetration Tester |
 | 🏆 **Olympic Toán** | Bộ GD&ĐT | 2023 | Olympic Toán học Sinh viên toàn quốc |
+| 🥈 **Giải Nhì CTF** | HCMUTE | 2024 | Cuộc thi CTF cấp trường - An toàn thông tin |
+| 🥉 **Giải Khuyến khích CTF** | HCMUTE | 2025 | Cuộc thi CTF cấp trường - An toàn thông tin |
 
 ---
 
@@ -93,16 +94,16 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 - **Digital Forensics** - 65%
 
 ### 🛠️ Tools & Technologies
-- **Wireshark** - Phân tích mạng
-- **Metasploit** - Penetration testing
-- **Nmap** - Network scanning
-- **Burp Suite** - Web application testing
+- **Wireshark** - 85% - Phân tích mạng
+- **Metasploit** - 80% - Penetration testing
+- **Nmap** - 85% - Network scanning
+- **Burp Suite** - 75% - Web application testing
 
 ### 💻 Programming & Others
 - **Python** - 80%
-- **Linux** - 75%
+- **Linux** - 85%
 - **C/C++** - 70%
-- **SQL** - 65%
+- **SQL** - 75%
 
 ---
 
@@ -110,18 +111,33 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 
 ### 🔍 Network Security Assessment
 - **Mô tả:** Đánh giá bảo mật mạng doanh nghiệp và phát hiện lỗ hổng
-- **Công nghệ:** Wireshark, Nmap, Nessus
+- **Công nghệ:** Nmap, Nessus, Wireshark, OWASP
 - **Kết quả:** Phát hiện 15+ lỗ hổng bảo mật
 
 ### 🌐 Web Application Penetration Testing
 - **Mô tả:** Kiểm thử xâm nhập ứng dụng web và báo cáo lỗ hổng
-- **Công nghệ:** Burp Suite, OWASP ZAP
+- **Công nghệ:** Burp Suite, SQLMap, OWASP ZAP, Nmap
 - **Kết quả:** Báo cáo chi tiết 20+ lỗ hổng
 
 ### 🔐 Malware Analysis Lab
 - **Mô tả:** Phân tích và nghiên cứu malware mẫu
-- **Công nghệ:** IDA Pro, Wireshark, Cuckoo Sandbox
+- **Công nghệ:** IDA Pro, Wireshark, VMware, YARA
 - **Kết quả:** Phân tích 50+ mẫu malware
+
+### 🔍 Digital Forensics Investigation
+- **Mô tả:** Điều tra pháp lý số, thu thập và phân tích bằng chứng
+- **Công nghệ:** Autopsy, FTK Imager, Volatility, Wireshark
+- **Kết quả:** Báo cáo pháp lý chi tiết
+
+### 🎯 Social Engineering Awareness
+- **Mô tả:** Nghiên cứu và phát triển chương trình nâng cao nhận thức
+- **Công nghệ:** Phishing Simulation, Training Materials, Assessment Tools
+- **Kết quả:** Chương trình đào tạo hoàn chỉnh
+
+### 🔐 Cryptography Implementation
+- **Mô tả:** Triển khai các thuật toán mã hóa và giải mã dữ liệu
+- **Công nghệ:** AES Encryption, RSA Algorithm, Hash Functions, Digital Signatures
+- **Kết quả:** Hệ thống bảo mật end-to-end
 
 ---
 
@@ -132,9 +148,9 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 | Chỉ số | Giá trị |
 |--------|---------|
 | 📚 **Năm học** | 3 |
-| 📈 **GPA hiện tại** | 8.5+ |
-| 🛠️ **Dự án bảo mật** | 15+ |
-| 🏆 **Chứng chỉ** | 3 |
+| 📈 **GPA hiện tại** | 3.0+ |
+| 🛠️ **Dự án bảo mật** | 25+ |
+| 🏆 **Chứng chỉ** | 5 |
 | 🎯 **Mục tiêu hoàn thành** | 80% |
 
 </div>
@@ -151,6 +167,7 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 |-----------|----------|
 | 📧 **Email** | vvthong.insec@gmail.com |
 | 📞 **Phone** | 0968046024 |
+| 📍 **Địa chỉ** | Số 1, Võ Văn Ngân, Thủ Đức, TP.HCM |
 | 🏫 **Trường** | Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh |
 | 🎓 **Chuyên ngành** | An toàn thông tin |
 
@@ -171,21 +188,37 @@ Xin chào! Tôi là **Vũ Văn Thông**, sinh viên năm 3 chuyên ngành **An t
 Porfolio_VVTR/
 ├── 📁 assets/
 │   ├── 📁 css/
-│   │   └── style.css          # Main stylesheet
+│   │   ├── style.css          # Main stylesheet
+│   │   └── blog.css           # Blog stylesheet
 │   ├── 📁 js/
-│   │   └── script.js          # JavaScript functionality
+│   │   ├── script.js          # Main JavaScript functionality
+│   │   ├── blog.js            # Blog JavaScript
+│   │   └── load-components.js # Component loader
 │   └── 📁 img/
 │       ├── myface.jpg         # Profile image
 │       ├── Cert_MOS.png       # MOS Certificate
 │       ├── Cert_CAPT.png      # CAPT Certificate
-│       └── Olympic_toán_SV.png # Olympic Certificate
+│       ├── Olympic_Toán_SV.png # Olympic Certificate
+│       ├── Olympic_Toán_SV1.png # Olympic Certificate 2
+│       ├── GiaiNhiCTF2024.png  # CTF 2024 Certificate
+│       └── GiaiKKCTF2025.png  # CTF 2025 Certificate
 ├── 📁 components/
 │   ├── about.html             # About page
 │   ├── skills.html           # Skills page
 │   ├── projects.html         # Projects page
 │   └── contact.html          # Contact page
-├── index.html                 # Main homepage
-└── README.md                  # This file
+├── 📁 posts/
+│   ├── 📁 blue/
+│   │   ├── incident-response.html
+│   │   └── red-blue-purple-teams.html
+│   ├── 📁 cloud/
+│   │   └── aws-misconfigurations.html
+│   └── 📁 writeup/
+├── 📄 header.html             # Header component
+├── 📄 footer.html             # Footer component
+├── 📄 blog.html               # Blog page
+├── 📄 index.html              # Main homepage
+└── 📄 README.md               # This file
 ```
 
 ---
@@ -199,6 +232,11 @@ Porfolio_VVTR/
 - ✅ **Interactive Elements** - Các thành phần tương tác
 - ✅ **Certificate Display** - Hiển thị chứng chỉ với ảnh
 - ✅ **Social Media Integration** - Tích hợp mạng xã hội
+- ✅ **Blog System** - Hệ thống blog với phân loại
+- ✅ **Component-based Architecture** - Kiến trúc component
+- ✅ **Contact Form** - Form liên hệ tương tác
+- ✅ **Project Filtering** - Lọc dự án theo danh mục
+- ✅ **Skills Visualization** - Hiển thị kỹ năng với thanh tiến độ
 
 ---
 

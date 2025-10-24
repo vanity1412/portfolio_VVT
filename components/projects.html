@@ -19,6 +19,14 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
     <!-- Header Placeholder -->
     <div id="header-placeholder"></div>
 
@@ -239,9 +247,32 @@
     <!-- Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">Beethoven 2 Virus</span>
+                <span class="song-artist">Classical</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../assets/Music/Beethoven2_Virus.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
     <!-- Load Components Script -->
     <script src="../assets/js/load-components.js"></script>
     <!-- Custom JavaScript -->
     <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/global-audio.js"></script>
+    <script src="../assets/js/audio-player.js"></script>
 </body>
 </html>
