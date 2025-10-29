@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Index - Lập trình Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 1.2rem;
+        }
+
+        .stats {
+            text-align: center;
+            margin-top: 15px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .assignments-container {
+            padding: 30px;
+        }
+
+        .assignments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .assignment-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .assignment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: #4facfe;
+        }
+
+        .assignment-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .assignment-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .assignment-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .assignment-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .assignments-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Assignment Index</h1>
+            <p>Danh sách đường dẫn bài tập môn Lập trình Web</p>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Tìm theo Assignment hoặc Link...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="stats">
+                <span id="resultCount">Đã tải 14 mục ở phần project</span>
+            </div>
+        </div>
+
+        <div class="assignments-container">
+            <div id="assignmentsGrid" class="assignments-grid">
+                <!-- Assignment cards will be populated by JavaScript -->
+            </div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <i>🔍</i>
+                <p>Không tìm thấy kết quả nào phù hợp</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Assignment data
+        const assignments = [
+            { title: "Week4", link: "https://buoi4.onrender.com/" },
+            { title: "Week2", link: "https://web1-1-x3z6.onrender.com/" },
+            { title: "Week3", link: "https://web-survery-week2.onrender.com/" },
+            { title: "Ex6.1", link: "https://btap1-ch06.onrender.com/" },
+            { title: "Ex6.2", link: "https://btap2-ch06.onrender.com/" },
+            { title: "Ex7.1", link: "https://ch07-cart-yvep.onrender.com/" },
+            { title: "Ex7.2", link: "https://web-assignment-ch07-2.onrender.com/" },
+            { title: "Ex8", link: "https://bai8-6jz2.onrender.com/" },
+            { title: "Ex9.1", link: "https://web1-5.onrender.com/" },
+            { title: "Ex9.2", link: "https://web1-4-swkn.onrender.com/" },
+            { title: "Ex12_1", link: "https://bai12-1.onrender.com/" },
+            { title: "Ex12_2", link: "https://bai12-2.onrender.com/" },
+            { title: "Ex13_1", link: "https://ch13-01.onrender.com/" },
+            { title: "Ex13_2", link: "https://ch13-02.onrender.com/" }
+        ];
+
+        let filteredAssignments = [...assignments];
+
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const assignmentsGrid = document.getElementById('assignmentsGrid');
+        const noResults = document.getElementById('noResults');
+        const resultCount = document.getElementById('resultCount');
+
+        // Render assignments
+        function renderAssignments(assignmentsToRender) {
+            if (assignmentsToRender.length === 0) {
+                assignmentsGrid.style.display = 'none';
+                noResults.style.display = 'block';
+                resultCount.textContent = 'Không tìm thấy kết quả nào';
+                return;
+            }
+
+            assignmentsGrid.style.display = 'grid';
+            noResults.style.display = 'none';
+            resultCount.textContent = `Hiển thị ${assignmentsToRender.length} trong ${assignments.length} mục`;
+
+            assignmentsGrid.innerHTML = assignmentsToRender.map(assignment => `
+                <div class="assignment-card">
+                    <div class="assignment-title">
+                        <span class="assignment-badge">${assignment.title}</span>
+                        Assignment
+                    </div>
+                    <p style="color: #6c757d; margin-bottom: 15px; word-break: break-all;">
+                        ${assignment.link}
+                    </p>
+                    <a href="${assignment.link}" target="_blank" class="assignment-link">
+                        Truy cập →
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        function searchAssignments(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                filteredAssignments = [...assignments];
+            } else {
+                filteredAssignments = assignments.filter(assignment => 
+                    assignment.title.toLowerCase().includes(searchTerm) ||
+                    assignment.link.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderAssignments(filteredAssignments);
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            searchAssignments(e.target.value);
+        });
+
+        // Initial render
+        renderAssignments(assignments);
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add loading animation
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

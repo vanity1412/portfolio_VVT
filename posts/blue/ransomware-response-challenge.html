@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ransomware Response Challenge: Nhật ký SOC của sinh viên năm 3 - Vũ Văn Thông</title>
+    <meta name="description" content="Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý ransomware trong lab SOC mini. Hướng dẫn chi tiết quy trình IR từ góc nhìn sinh viên">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Blue Team</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        1 Tháng 11, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        20 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🔒 Ransomware Response Challenge: Nhật ký SOC của sinh viên năm 3</h1>
+                <p class="post-subtitle">Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý ransomware trong lab SOC mini</p>
+                
+                <div class="post-tags">
+                    <span class="tag">SOC</span>
+                    <span class="tag">Incident Response</span>
+                    <span class="tag">Ransomware</span>
+                    <span class="tag">Threat Hunting</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn một thử thách rất căng thẳng - mình đã "chiến đấu" với một đợt ransomware bùng phát trong lab SOC mini mà mình tự dựng. Đây là bài viết mô phỏng 100% phục vụ học tập, mọi dữ kiện/IP/domain đều được ẩn/giả định.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h4>⚠️ Lưu ý quan trọng</h4>
+                    <p>Bài viết này là <strong>mô phỏng 100%</strong> phục vụ học tập. Mọi dữ kiện, IP, domain đều được <strong>ẩn/giả định</strong> theo chuẩn RFC 5737. Mục đích là chia sẻ kiến thức và kinh nghiệm học tập.</p>
+                </div>
+
+                <h2>Bối cảnh & mục tiêu học tập</h2>
+                
+                <p>Khi mình học về Incident Response và Ransomware Defense, mình luôn thắc mắc: "Làm sao để phát hiện và ngăn chặn ransomware khi nó lan truyền rất nhanh?". Để trả lời câu hỏi này, mình đã dựng một lab SOC mini và thực hiện một bài tập mô phỏng ransomware outbreak.</p>
+
+                <div class="lab-setup">
+                    <h3>Môi trường lab của mình:</h3>
+                    <ul>
+                        <li><strong>Attacker</strong>: VPS <code>ATTACKER-01</code></li>
+                        <li><strong>Patient Zero (client người dùng)</strong>: <code>THONG-LAB-WIN03</code> (Windows 10) – IP nội bộ <code>10.10.40.31</code></li>
+                        <li><strong>File server</strong>: <code>LAB-FS01</code> (SMB share <code>\\LAB-FS01\Projects</code>)</li>
+                        <li><strong>EDR + SIEM</strong>: thu thập Windows Security, Sysmon, EDR (process/file/net), Zeek/NetFlow, Proxy</li>
+                    </ul>
+                </div>
+
+                <div class="roles-setup">
+                    <h3>Vai trò trong lab:</h3>
+                    <ul>
+                        <li><strong>Mình (Thông)</strong>: SOC L1 + SOC L2</li>
+                        <li><strong>Mentor</strong>: SOC L3 (quyết định)</li>
+                    </ul>
+                </div>
+
+                <div class="learning-goals">
+                    <h3>Mục tiêu học tập:</h3>
+                    <ol>
+                        <li>Phát hiện early indicators: xóa shadow copy, disable recovery, khối lượng rename/ghi file bất thường</li>
+                        <li>Correlate: process → filemod → network → share access</li>
+                        <li>Thực hành IR: cô lập, chặn lan truyền, phục hồi từ backup, RCA & phòng thủ dài hạn</li>
+                    </ol>
+                </div>
+
+                <h2>07:15 – Chuông báo: "Suspected Mass Encryption"</h2>
+                
+                <p><strong>Ngày 24/10/2025, 07:15 (UTC+7)</strong>, dashboard SIEM bật cảnh báo:</p>
+
+                <div class="alert-details">
+                    <h3>🚨 Suspected Mass Encryption Detected</h3>
+                    <div class="alert-info">
+                        <div class="info-item">
+                            <strong>EDR Alert</strong>
+                            <ul>
+                                <li>High File Rename Rate on <code>THONG-LAB-WIN03</code></li>
+                                <li>File Server: tăng lỗi "Access Denied/Unknown file extension" trên <code>\\LAB-FS01\Projects</code></li>
+                            </ul>
+                        </div>
+                        <div class="info-item">
+                            <strong>Dấu hiệu (sample)</strong>
+                            <ul>
+                                <li>Burst rename: >1.500 sự kiện/5 phút, nhiều file đổi sang <code>.locked</code></li>
+                                <li>Process: <code>C:\Users\client\AppData\Roaming\mshelper\mshelper.exe</code></li>
+                                <li>Command lines đáng ngờ (4688/Sysmon 1):</li>
+                                <li><code>vssadmin delete shadows /all /quiet</code></li>
+                                <li><code>wbadmin delete catalog -quiet</code></li>
+                                <li><code>bcdedit /set {default} recoveryenabled No</code></li>
+                                <li>Note xuất hiện: <code>_HOW_TO_DECRYPT.txt</code> (trên desktop & share)</li>
+                                <li>Network: SMB write burst tới <code>\\LAB-FS01\Projects</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Mình nghĩ: "Combo xóa shadow + bùng rename + ransom note = ransomware."</p>
+
+                <h2>Triage nhanh (SOC L1)</h2>
+                
+                <div class="triage-section">
+                    <h3>Checklist mình sử dụng:</h3>
+                    <div class="triage-checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="shadow-deletion" checked>
+                            <label for="shadow-deletion">Shadow copy deletion (vssadmin/wbadmin)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="disable-recovery" checked>
+                            <label for="disable-recovery">Disable recovery (bcdedit)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="mass-rename" checked>
+                            <label for="mass-rename">Mass file rename/write (đổi đuôi đồng loạt)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ransom-note" checked>
+                            <label for="ransom-note">Ransom note xuất hiện nhiều thư mục</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="smb-burst" checked>
+                            <label for="smb-burst">SMB share bị viết ồ ạt từ 1 client</label>
+                        </div>
+                    </div>
+
+                    <div class="triage-conclusion">
+                        <p>→ <strong>Kết luận L1</strong>: True Positive – Ransomware outbreak (suspected) ⇒ Escalate L2.</p>
+                    </div>
+                </div>
+
+                <h2>Điều tra sâu (SOC L2)</h2>
+                
+                <div class="investigation-section">
+                    <h3>1) Truy vấn tiến trình "phá hệ" (Windows/Sysmon/EDR)</h3>
+                    
+                    <div class="query-section">
+                        <h4>KQL – lệnh phá backup/phục hồi</h4>
+                        <pre><code class="language-kql">event.code: 4688 AND host.name: "THONG-LAB-WIN03" AND (
+  process.command_line: "*vssadmin*delete*shadows* /all* /quiet*" OR
+  process.command_line: "*wbadmin*delete*catalog*" OR
+  process.command_line: "*bcdedit*recoveryenabled*No*"
+)</code></pre>
+                    </div>
+
+                    <div class="query-section">
+                        <h4>Sysmon – process create + parent chain</h4>
+                        <pre><code class="language-kql">event.dataset: "sysmon" AND event.code: 1 AND host.name: "THONG-LAB-WIN03"
+| where process.executable : "C:\\Users\\client\\AppData\\Roaming\\mshelper\\mshelper.exe"</code></pre>
+                    </div>
+
+                    <p><strong>Quan sát</strong>: <code>mshelper.exe</code> chạy ngay trước thời điểm rename bùng nổ; parent là <code>explorer.exe</code> (user click).</p>
+
+                    <h3>2) Burst file rename/ghi đè (EDR/Sysmon)</h3>
+                    <div class="query-section">
+                        <pre><code class="language-kql">event.dataset: "sysmon" AND event.code: 11 AND host.name: "THONG-LAB-WIN03"
+AND file.extension: "locked"
+| stats count() by file.directory, date_histogram(field: "@timestamp", fixed_interval: "1m")</code></pre>
+                    </div>
+
+                    <div class="query-section">
+                        <h4>EDR filemod (pseudo)</h4>
+                        <pre><code class="language-splunk">index=edr sourcetype=filemod host=THONG-LAB-WIN03
+| where file_extension="locked" OR file_name="_HOW_TO_DECRYPT.txt"
+| bin _time span=1m
+| stats count by _time, file_directory</code></pre>
+                    </div>
+
+                    <h3>3) Lateral to SMB (File server logs/Zeek SMB)</h3>
+                    <div class="query-section">
+                        <pre><code class="language-kql">event.dataset: "zeek.smb" AND source.ip: "10.10.40.31" AND destination.host: "LAB-FS01"
+AND (smb.command: "write" OR smb.command: "create")
+| stats count() by date_histogram(field: "@timestamp", fixed_interval: "1m"), smb.path</code></pre>
+                    </div>
+                    <p><strong>Kết quả</strong>: từ 07:12–07:18, hàng nghìn ghi/đổi tên vào <code>\\LAB-FS01\Projects\*</code>.</p>
+
+                    <h3>4) Tìm ransom note & IOC khác</h3>
+                    <div class="query-section">
+                        <pre><code class="language-kql">file.name: "_HOW_TO_DECRYPT.txt" AND (host.name: "THONG-LAB-WIN03" OR host.name: "LAB-FS01")</code></pre>
+                    </div>
+
+                    <div class="conclusion-l2">
+                        <h3>Kết luận L2:</h3>
+                        <p>Đã xác thực ransomware đang chạy trên Patient Zero và lan sang SMB share.</p>
+                    </div>
+                </div>
+
+                <h2>Kích hoạt IR – Bảng điều phối theo thời gian</h2>
+                
+                <div class="ir-timeline">
+                    <div class="timeline-phase">
+                        <div class="phase-header">
+                            <h3>0–15 phút: Cô lập & dập lửa</h3>
+                            <span class="phase-time">Critical Response</span>
+                        </div>
+                        <div class="phase-actions">
+                            <div class="action-item">
+                                <span class="action-icon">🔒</span>
+                                <span>Quarantine <code>THONG-LAB-WIN03</code> khỏi mạng (EDR/NGFW). ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">🚫</span>
+                                <span>Chặn truy cập SMB từ IP này tại switch/firewall. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">⚡</span>
+                                <span>Kill process <code>mshelper.exe</code> và block hash/đường dẫn trên EDR. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">📁</span>
+                                <span>Tạm dừng share <code>\\LAB-FS01\Projects</code> (read-only) để ngăn mã hóa tiếp. ✅</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <div class="phase-header">
+                            <h3>15–60 phút: Ổn định & đánh giá thiệt hại</h3>
+                            <span class="phase-time">Assessment Phase</span>
+                        </div>
+                        <div class="phase-actions">
+                            <div class="action-item">
+                                <span class="action-icon">📸</span>
+                                <span>Snapshot/backup khẩn các thư mục chưa mã hóa. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">📊</span>
+                                <span>Inventory: thống kê file bị mã hóa (định danh theo extension), phát hiện thư mục còn sạch. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">🔍</span>
+                                <span>Tìm lateral: kiểm tra endpoints khác có cùng IOC (hash, mutex, note). ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">🌐</span>
+                                <span>Tách VLAN tạm thời cho dải có Patient Zero (nếu cần). ✅</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <div class="phase-header">
+                            <h3>1–4 giờ: Phục hồi có kiểm soát</h3>
+                            <span class="phase-time">Recovery Phase</span>
+                        </div>
+                        <div class="phase-actions">
+                            <div class="action-item">
+                                <span class="action-icon">🔄</span>
+                                <span>Khôi phục share từ offline backup trước thời điểm 07:05. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">💻</span>
+                                <span>Reimage hoặc bare-metal restore cho <code>THONG-LAB-WIN03</code>. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">🔑</span>
+                                <span>Reset mật khẩu người dùng liên quan, rotate secrets (nếu có). ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">🛡️</span>
+                                <span>Rà soát GPO/EDR: bật Controlled Folder Access, ASR rules. ✅</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <div class="phase-header">
+                            <h3>4–24 giờ: RCA & phòng thủ lâu dài</h3>
+                            <span class="phase-time">Post-Incident</span>
+                        </div>
+                        <div class="phase-actions">
+                            <div class="action-item">
+                                <span class="action-icon">🔍</span>
+                                <span>RCA: kênh xâm nhập (email, macro, tải xuống, RDP?). ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">📢</span>
+                                <span>Comms: thông báo nội bộ, bài học, diễn tập lại kịch bản. ✅</span>
+                            </div>
+                            <div class="action-item">
+                                <span class="action-icon">🔒</span>
+                                <span>Hardening: egress allowlist, SMB signing, patch, LAPS, MFA, backup 3-2-1. ✅</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Email "Executive Summary" (giả lập)</h2>
+                
+                <div class="email-template">
+                    <div class="email-header">
+                        <strong>Subject</strong>: [Executive Summary] Ransomware Containment on Client & File Share — <strong>High/Critical</strong>
+                    </div>
+                    
+                    <div class="email-body">
+                        <p>Kính gửi thầy/cô & mentor,</p>
+                        
+                        <p>Sáng <strong>24/10/2025 (UTC+7)</strong>, phát hiện hành vi ransomware tại <code>THONG-LAB-WIN03</code> lan tới <code>\LAB-FS01\Projects</code>. Dấu hiệu: xóa shadow copy, vô hiệu recovery, bùng nổ rename sang <code>.locked</code>, xuất hiện <code>/_HOW_TO_DECRYPT.txt</code>.</p>
+                        
+                        <h4>Đã xử lý:</h4>
+                        <p>Cô lập máy nguồn, chặn SMB, dừng share, snapshot phần sạch, kill & block tiến trình, phục hồi từ offline backup, reimage endpoint.</p>
+                        
+                        <h4>Mức độ:</h4>
+                        <p><strong>Critical</strong> (ảnh hưởng file server).</p>
+                        
+                        <h4>Nguyên nhân sơ bộ:</h4>
+                        <p>Người dùng mở file đính kèm độc hại, thực thi <code>mshelper.exe</code>.</p>
+                        
+                        <p>Đề xuất họp <strong>Post-Incident Review lúc 15:00 24/10/2025</strong> để chốt khắc phục dài hạn.</p>
+                        
+                        <p>Trân trọng,<br>
+                        <strong>Thông</strong> – SOC Lab (Sinh viên năm 3)</p>
+                    </div>
+                </div>
+
+                <h2>Truy vấn phát hiện (tham khảo)</h2>
+                
+                <div class="useful-queries">
+                    <h3>1) Windows 4688 – lệnh "tiệt backup/phục hồi"</h3>
+                    <pre><code class="language-kql">event.code: 4688 AND (
+  process.command_line: "*vssadmin*delete*shadows*" OR
+  process.command_line: "*wbadmin*delete*catalog*" OR
+  process.command_line: "*bcdedit*recoveryenabled*No*"
+)</code></pre>
+                    
+                    <h3>2) Sysmon – burst file create/rename theo phút</h3>
+                    <pre><code class="language-kql">event.dataset: "sysmon" AND event.code: 11
+| where file.extension IN ("locked","crypted","enc") OR file.name: "_HOW_TO_DECRYPT.txt"
+| stats count() by host.name, date_histogram(field: "@timestamp", fixed_interval: "1m")
+| where count() > 300</code></pre>
+                    
+                    <h3>3) Splunk SPL – bùng nổ rename trên SMB share</h3>
+                    <pre><code class="language-splunk">index=fileserver sourcetype=smb:access share="\\LAB-FS01\\Projects"
+| bin _time span=1m
+| stats count as writes by _time, host, user
+| where writes>500</code></pre>
+                    
+                    <h3>4) Sigma (ý tưởng, rút gọn) – vssadmin/wbadmin/bcdedit</h3>
+                    <pre><code class="language-yaml">title: Ransomware Backup Destruction Commands
+logsource: product: windows
+detection:
+  sel:
+    EventID: 4688
+    CommandLine|contains:
+      - "vssadmin delete shadows"
+      - "wbadmin delete catalog"
+      - "bcdedit /set {default} recoveryenabled No"
+  condition: sel
+level: high</code></pre>
+                </div>
+
+                <h2>Phòng thủ & phục hồi – khuyến nghị "áp dụng ngay"</h2>
+                
+                <div class="hardening-recommendations">
+                    <div class="recommendation-category">
+                        <h3>💾 Backup Strategy</h3>
+                        <ul>
+                            <li>Backup 3-2-1 + offline/immutable; kiểm tra RTO/RPO định kỳ</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🛡️ EDR/ASR</h3>
+                        <ul>
+                            <li>chặn process từ %AppData%, block Office macro/LOLbins rủi ro</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🔒 Windows Defender</h3>
+                        <ul>
+                            <li>Controlled Folder Access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>📋 GPO</h3>
+                        <ul>
+                            <li>chặn vssadmin, wbadmin, bcdedit cho user thường; script giám sát</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🌐 Network Security</h3>
+                        <ul>
+                            <li>Egress allowlist & proxy bắt buộc; DNS sinkhole cho TLD rủi ro</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>📁 SMB Security</h3>
+                        <ul>
+                            <li>quyền tối thiểu, tách share, bật auditing 5140/5145, rate-limit</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🔐 Access Control</h3>
+                        <ul>
+                            <li>MFA cho VPN/RDP; LAPS cho local admin; đổi tên/disable built-in admin</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>👥 User Training</h3>
+                        <ul>
+                            <li>cảnh báo double extension (.pdf.exe), file nén kèm script</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>RCA (giả lập) – chuỗi tấn công rút gọn</h2>
+                
+                <div class="attack-chain">
+                    <div class="chain-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Phishing</h4>
+                            <p>người dùng client mở file "Project_Bonus_2025.pdf.exe"</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chain-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Payload</h4>
+                            <p>ghi <code>mshelper.exe</code> vào %AppData%, đặt Scheduled Task khởi động</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chain-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Pre-crypto</h4>
+                            <p>xóa shadow copy, disable recovery</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chain-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Crypto</h4>
+                            <p>rename/ghi đè nội bộ + ghi qua SMB tới <code>\\LAB-FS01\Projects</code></p>
+                        </div>
+                    </div>
+                    
+                    <div class="chain-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Note</h4>
+                            <p>thả <code>_HOW_TO_DECRYPT.txt</code></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mitre-attack">
+                    <h3>MITRE ATT&CK (tham chiếu):</h3>
+                    <ul>
+                        <li><strong>T1059</strong> Command Exec</li>
+                        <li><strong>T1486</strong> Data Encrypted for Impact</li>
+                        <li><strong>T1490</strong> Inhibit System Recovery</li>
+                        <li><strong>T1070.004</strong> Clear/Disable Logs – nếu có</li>
+                    </ul>
+                </div>
+
+                <h2>Bảng "điểm dừng" để không lây lan (thực chiến trong lab)</h2>
+                
+                <div class="containment-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Điểm chặn</th>
+                                <th>Kỹ thuật</th>
+                                <th>Mục tiêu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>EDR Quarantine</td>
+                                <td>cô lập máy nguồn</td>
+                                <td>cắt đường SMB/C2</td>
+                            </tr>
+                            <tr>
+                                <td>Disable Share / RO</td>
+                                <td>chuyển share sang read-only</td>
+                                <td>ngừng mã hóa server</td>
+                            </tr>
+                            <tr>
+                                <td>Block Hash/Path</td>
+                                <td>block mshelper.exe</td>
+                                <td>ngăn tái thực thi</td>
+                            </tr>
+                            <tr>
+                                <td>VLAN Quarantine</td>
+                                <td>cách ly subnet</td>
+                                <td>chống lateral</td>
+                            </tr>
+                            <tr>
+                                <td>Offline Backup</td>
+                                <td>restore an toàn</td>
+                                <td>phục hồi dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Bài học mình rút ra</h2>
+                
+                <div class="lesson-learned">
+                    <blockquote>
+                        <p>"Ransomware thắng nhờ tốc độ, còn SOC thắng nhờ chuẩn bị: log tốt, playbook cụ thể, quyết đoán trong phút đầu. Không có backup tốt thì mọi máy "sạch" đều vô nghĩa."</p>
+                    </blockquote>
+                </div>
+
+                <h2>Kết luận</h2>
+                
+                <p>Qua bài tập này, mình đã học được rất nhiều điều về việc phát hiện và xử lý ransomware. Điều quan trọng nhất mình nhận ra là: <strong>Ransomware response không chỉ là kỹ thuật, mà còn là tốc độ và sự chuẩn bị</strong>.</p>
+                
+                <p>Việc có playbook cụ thể, backup tốt, và khả năng quyết đoán trong những phút đầu tiên là chìa khóa để ngăn chặn ransomware lan truyền. Mình cũng hiểu rõ hơn về tầm quan trọng của việc correlation đa nguồn log để phát hiện sớm các dấu hiệu ransomware.</p>
+                
+                <p>Mình hy vọng bài viết này sẽ giúp các bạn có cái nhìn thực tế về công việc Ransomware Response và Incident Response. Nếu các bạn có câu hỏi hoặc muốn chia sẻ kinh nghiệm, hãy liên hệ với mình nhé!</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300&h=200&fit=crop" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=200&fit=crop" alt="SOC Introduction">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="soc-introduction.html">🛡️ SOC là gì? Giới thiệu đơn giản về Security Operations Center</a></h4>
+                        <p>Hướng dẫn cơ bản về trung tâm trực an ninh mạng cho người mới bắt đầu...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

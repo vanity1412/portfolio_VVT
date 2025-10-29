@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Team: Làm gì khi bị tấn công? - Vũ Văn Thông</title>
+    <meta name="description" content="Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng. Hướng dẫn từng bước: Preparation → Detection → Containment → Eradication → Recovery → Lessons Learned">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Blue Team</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        15 Tháng 1, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        15 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🔹 Blue Team: Làm gì khi bị tấn công?</h1>
+                <p class="post-subtitle">Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng</p>
+                
+                <div class="post-tags">
+                    <span class="tag">Incident Response</span>
+                    <span class="tag">Blue Team</span>
+                    <span class="tag">Security</span>
+                    <span class="tag">IR</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn về một chủ đề mà mình rất quan tâm - Incident Response (IR). Khi mới học về bảo mật, mình luôn tự hỏi: "Khi hệ thống bị tấn công thì phải làm gì?". Sau khi tìm hiểu và học hỏi từ các anh chị đi trước, mình đã tổng hợp được quy trình IR 6 bước cơ bản. Hy vọng sẽ hữu ích cho các bạn!</p>
+                </div>
+
+                <h2>Quy trình IR 6 bước mà mình học được</h2>
+                
+                <p>Khi mình mới tìm hiểu về IR, mình cũng bối rối không biết bắt đầu từ đâu. Sau khi đọc nhiều tài liệu và xem các video trên YouTube, mình đã tổng hợp được quy trình IR 6 bước cơ bản. Mình sẽ chia sẻ với các bạn:</p>
+                
+                <div class="mermaid-diagram">
+                    <pre><code class="language-mermaid">flowchart TD
+  P[Preparation] --> D[Detection & Analysis]
+  D -->|Not an incident| C0[Monitor & Close]
+  D --> C[Containment]
+  C --> E[Eradication]
+  E --> R[Recovery]
+  R --> L[Lessons Learned]
+  L --> U[Update playbooks, controls, training]
+  U --> P
+  C -.-> EV[Evidence & Chain of Custody]</code></pre>
+                </div>
+                
+                <p>Như các bạn thấy, quy trình IR là một vòng lặp liên tục, bắt đầu từ việc chuẩn bị và kết thúc bằng việc rút kinh nghiệm để cải thiện quy trình cho lần sau.</p>
+
+                <h2>Incident Response là gì và tại sao nó quan trọng?</h2>
+                
+                <p>Khi mình mới học về IR, mình cũng thắc mắc không biết nó là gì và tại sao lại quan trọng. Sau khi tìm hiểu, mình hiểu được rằng IR không chỉ đơn thuần là "xử lý sự cố" mà là một quy trình có hệ thống để:</p>
+                
+                <ul>
+                    <li><strong>Giảm thiểu thiệt hại</strong>: Khi sự cố xảy ra, mỗi phút trôi qua đều có thể làm tăng thiệt hại. IR giúp chúng ta phản ứng nhanh chóng và hiệu quả.</li>
+                    <li><strong>Bảo vệ danh tiếng</strong>: Cách xử lý sự cố sẽ ảnh hưởng trực tiếp đến uy tín của tổ chức.</li>
+                    <li><strong>Tuân thủ pháp lý</strong>: Nhiều ngành nghề yêu cầu phải có quy trình IR rõ ràng và có thể báo cáo.</li>
+                    <li><strong>Học hỏi và cải thiện</strong>: Mỗi sự cố là một cơ hội để nâng cao khả năng phòng thủ.</li>
+                </ul>
+                
+                <p>Các chỉ số quan trọng mà chúng ta cần theo dõi bao gồm <strong>MTTD</strong> (Mean Time To Detect) và <strong>MTTR</strong> (Mean Time To Respond/Recover). Mục tiêu là rút ngắn những thời gian này càng nhiều càng tốt.</p>
+
+                <h2>Bước 1: Preparation – Chuẩn bị sẵn sàng</h2>
+                
+                <p>Có một câu nói mà mình rất tâm đắc: <em>"By failing to prepare, you are preparing to fail"</em>. Khi mình học về IR, mình nhận ra rằng việc chuẩn bị trước là cực kỳ quan trọng. Khi sự cố xảy ra, chúng ta không có thời gian để nghĩ ra quy trình hay tìm kiếm thông tin liên lạc.</p>
+                
+                <p>Sau khi tìm hiểu và hỏi các anh chị đi trước, mình đã tổng hợp được những thứ cần chuẩn bị:</p>
+
+                <h3>Những điều cần chuẩn bị</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="playbook" checked>
+                        <label for="playbook"><strong>Playbook chi tiết</strong>: Tôi luôn chuẩn bị sẵn các playbook cho các tình huống phổ biến như phishing, ransomware, malware, hay các cảnh báo từ WAF. Mỗi playbook đều có các bước cụ thể và checklist để không bỏ sót điều gì.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="roles" checked>
+                        <label for="roles"><strong>Phân vai rõ ràng</strong>: Ai là IR Lead? Ai phụ trách forensics? Ai liên hệ với IT Ops? Tôi luôn có danh sách liên hệ khẩn cấp với vai trò cụ thể của từng người.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="communication" checked>
+                        <label for="communication"><strong>Kênh truyền thông</strong>: War-room trên Slack/Teams, danh sách gọi khẩn cấp, và các mẫu thông báo sẵn có để không phải nghĩ nội dung khi đang stress.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="data-logging" checked>
+                        <label for="data-logging"><strong>Hệ thống logging</strong>: SIEM, EDR, NDR, firewall logs... Tất cả phải được đồng bộ thời gian (NTP) và lưu trữ đủ lâu để điều tra.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="tools" checked>
+                        <label for="tools"><strong>Công cụ sẵn sàng</strong>: EDR/NDR, SOAR, forensics toolkit, backup systems, và các công cụ quản lý mật khẩu/secret.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="legal" checked>
+                        <label for="legal"><strong>Quy trình pháp lý</strong>: Chain of custody cho bằng chứng, quy trình lưu trữ an toàn, và phân quyền truy cập bằng chứng.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="training" checked>
+                        <label for="training"><strong>Tập dượt định kỳ</strong>: Tabletop exercises, red team/blue team drills, và after-action reviews để cải thiện liên tục.</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="thresholds" checked>
+                        <label for="thresholds"><strong>Định nghĩa rõ ràng</strong>: Thế nào là một sự cố? Mức độ nghiêm trọng P1-P4 được định nghĩa như thế nào? Điều này giúp tránh tranh cãi khi sự cố xảy ra.</label>
+                    </div>
+                </div>
+
+                <p><strong>Kết quả cần có:</strong> Sau khi chuẩn bị xong, bạn sẽ có một bộ IR Plan hoàn chỉnh, danh bạ liên hệ, các runbook/playbook chi tiết, và các mẫu biểu sẵn có để sử dụng khi cần.</p>
+
+                <h2>Bước 2: Detection & Analysis – Phát hiện và phân tích</h2>
+                
+                <p>Đây là bước mà tôi thường gọi là "thời điểm quyết định". Khi nhận được một cảnh báo, câu hỏi đầu tiên luôn là: <em>"Đây có thực sự là một sự cố bảo mật hay chỉ là false positive?"</em></p>
+                
+                <p>Trong thực tế, tôi nhận được cảnh báo từ nhiều nguồn khác nhau:</p>
+                
+                <ul>
+                    <li><strong>Từ hệ thống</strong>: SIEM, EDR, NDR, WAF, IDS/IPS, CASB, Email security, DLP</li>
+                    <li><strong>Từ con người</strong>: Báo cáo của người dùng, threat intelligence, phát hiện bất thường trong hành vi (UEBA)</li>
+                </ul>
+                
+                <h3>Quy trình xử lý của tôi</h3>
+                
+                <p>Khi nhận được cảnh báo, tôi thường làm theo các bước sau:</p>
+                
+                <ol>
+                    <li><strong>Triage (Sàng lọc)</strong>: Đầu tiên, tôi kiểm tra độ tin cậy của alert, xem xét bối cảnh hệ thống và tài sản có thể bị ảnh hưởng. Đây là bước quan trọng để tránh lãng phí thời gian vào false positive.</li>
+                    <li><strong>Xác nhận sự cố</strong>: Nếu có dấu hiệu thực sự, tôi sẽ so sánh các IOC/IOA, kiểm tra hash, domain, IP, và xây dựng timeline của sự kiện.</li>
+                    <li><strong>Phân loại mức độ</strong>: Dựa trên tác động, tôi sẽ phân loại từ P1 (nghiêm trọng nhất) đến P4 (ít nghiêm trọng).</li>
+                    <li><strong>Mở hồ sơ sự cố</strong>: Gán IR ID, bắt đầu ghi chép chi tiết về who/what/when/where/how.</li>
+                </ol>
+                
+                <p><strong>Kết quả cần có:</strong> Sau bước này, tôi cần có quyết định rõ ràng về việc đây có phải là incident thực sự hay không, phạm vi ảnh hưởng tạm thời, và giả thuyết ban đầu về cách thức tấn công.</p>
+
+                <h2>Bước 3: Containment – Khoanh vùng ngay lập tức</h2>
+                
+                <p>Khi đã xác nhận có sự cố thực sự, bước tiếp theo là <strong>ngăn chặn sự lan rộng</strong>. Đây là bước mà tôi thường phải hành động nhanh nhất có thể, vì mỗi phút trôi qua, thiệt hại có thể tăng lên đáng kể.</p>
+                
+                <p>Trong thực tế, tôi thường áp dụng hai chiến lược:</p>
+                
+                <h3>Containment ngắn hạn (Immediate)</h3>
+                <p>Những hành động cần làm ngay lập tức:</p>
+                <ul>
+                    <li><strong>Cô lập endpoint</strong> qua EDR để ngăn malware lan sang máy khác</li>
+                    <li><strong>Chặn IP/domain</strong> trên firewall, WAF, hoặc DNS</li>
+                    <li><strong>Vô hiệu hóa tài khoản</strong> nghi vấn và rotate các token/API key</li>
+                    <li><strong>Snapshot VM</strong> để bảo toàn trạng thái hiện tại</li>
+                </ul>
+                
+                <h3>Containment dài hạn (Long-term)</h3>
+                <p>Những biện pháp để tăng cường bảo mật:</p>
+                <ul>
+                    <li><strong>Network segmentation</strong> để hạn chế lateral movement</li>
+                    <li><strong>Thay đổi ACL</strong> và nâng cấp MFA bắt buộc</li>
+                    <li><strong>Áp dụng rules bổ sung</strong> trên SIEM/SOAR để phát hiện sớm hơn</li>
+                </ul>
+                
+                <h3>Những điều cần lưu ý</h3>
+                <p>Trong quá trình containment, tôi luôn nhớ hai nguyên tắc quan trọng:</p>
+                <ul>
+                    <li><strong>Bảo toàn bằng chứng</strong>: Chụp RAM/disk nếu cần, lưu log nguyên gốc, và ghi chép chain of custody cẩn thận</li>
+                    <li><strong>Không "tự bóc cờ"</strong>: Đôi khi tôi cần theo dõi kẻ tấn công để hiểu rõ hơn về phương thức, nên không vội diệt các chỉ dấu</li>
+                </ul>
+                
+                <p><strong>Kết quả cần có:</strong> Danh sách các biện pháp containment đã thực hiện, tác động đến dịch vụ, và gói bằng chứng đầy đủ với thông tin hash, log path, thời gian và người phụ trách.</p>
+
+                <h2>Bước 4: Eradication – Loại bỏ hoàn toàn</h2>
+                
+                <p>Sau khi đã ngăn chặn sự lan rộng, bước tiếp theo là <strong>loại bỏ hoàn toàn</strong> nguyên nhân gốc và mọi dấu vết của cuộc tấn công. Đây là bước đòi hỏi sự cẩn thận và kiên nhẫn.</p>
+                
+                <h3>Những việc tôi thường làm trong bước này:</h3>
+                
+                <ul>
+                    <li><strong>Gỡ bỏ malware và persistence mechanisms</strong>: Kiểm tra và xóa scheduled tasks, services, registry run keys, startup items, LaunchAgents (macOS), crontab entries (Linux). Đây là những nơi mà malware thường ẩn náu để duy trì quyền truy cập.</li>
+                    <li><strong>Vá lỗ hổng và sửa cấu hình</strong>: Áp dụng patches, rotate secrets, tắt các dịch vụ không cần thiết, và sửa các lỗi IAM over-permission.</li>
+                    <li><strong>Kiểm tra lateral movement</strong>: Tìm kiếm các dấu hiệu của Pass-the-Hash/Ticket attacks, RDP/SSH sessions bất thường, và Cloud role assumption không hợp lệ.</li>
+                </ul>
+                
+                <p><strong>Kết quả cần có:</strong> Một bảng danh sách đầy đủ các IOC/IOA đã được loại bỏ, xác nhận root cause, và đảm bảo không còn kết nối C2 hay beacon nào hoạt động.</p>
+
+                <h2>Bước 5: Recovery – Phục hồi an toàn</h2>
+                
+                <p>Đây là bước mà tôi thường cảm thấy nhẹ nhõm nhất, nhưng cũng cần cẩn thận nhất. Sau khi đã loại bỏ hoàn toàn mối đe dọa, việc phục hồi hệ thống về trạng thái bình thường cần được thực hiện một cách an toàn và có kiểm soát.</p>
+                
+                <h3>Quy trình phục hồi của tôi:</h3>
+                
+                <ul>
+                    <li><strong>Khôi phục từ backup sạch</strong>: Tôi luôn đảm bảo backup được tạo trước khi sự cố xảy ra và không bị nhiễm malware. Nếu không chắc chắn, tôi sẽ tái triển khai từ golden image.</li>
+                    <li><strong>Thay đổi credentials</strong>: Rotate tất cả passwords, API keys, certificates, và các secrets khác.</li>
+                    <li><strong>Khởi chạy có giám sát</strong>: Khi đưa hệ thống trở lại hoạt động, tôi luôn bật monitoring và logging ở mức cao nhất.</li>
+                </ul>
+                
+                <h3>Validation và giám sát</h3>
+                <p>Sau khi phục hồi, tôi thực hiện:</p>
+                <ul>
+                    <li><strong>Quét lại toàn bộ</strong> để đảm bảo không còn malware</li>
+                    <li><strong>Săn lùng IOC</strong> trong 24-72 giờ đầu tiên</li>
+                    <li><strong>Giám sát tăng cường</strong> để phát hiện sớm nếu có dấu hiệu tái nhiễm</li>
+                </ul>
+                
+                <h3>Tiêu chí "OK để mở lại"</h3>
+                <p>Trước khi tuyên bố hệ thống an toàn, tôi cần đảm bảo:</p>
+                <ul>
+                    <li>Không còn beacon hay kết nối C2 nào hoạt động</li>
+                    <li>Không phát sinh IOC mới trong ít nhất 24-48 giờ</li>
+                    <li>Tất cả chức năng nghiệp vụ quan trọng hoạt động bình thường</li>
+                </ul>
+                
+                <p><strong>Lưu ý quan trọng:</strong> Tôi luôn thông báo rõ ràng cho nội bộ và khách hàng về tình trạng phục hồi, đồng thời cập nhật lãnh đạo về tiến độ.</p>
+
+                <h2>Bước 6: Lessons Learned – Học hỏi và cải thiện</h2>
+                
+                <p>Đây là bước mà tôi thường coi là quan trọng nhất, mặc dù nhiều người có xu hướng bỏ qua. Mỗi sự cố là một cơ hội quý giá để học hỏi và cải thiện hệ thống phòng thủ của chúng ta.</p>
+                
+                <h3>Post-Incident Review (AAR)</h3>
+                <p>Sau khi sự cố được giải quyết, tôi thường tổ chức một cuộc họp <strong>After Action Review</strong> với tất cả các bên liên quan. Trong cuộc họp này, chúng tôi thảo luận:</p>
+                <ul>
+                    <li><strong>Timeline chi tiết</strong> của toàn bộ sự cố</li>
+                    <li><strong>Điểm mạnh</strong>: Những gì chúng ta đã làm tốt</li>
+                    <li><strong>Điểm yếu</strong>: Những gì cần cải thiện</li>
+                    <li><strong>Khoảng trống</strong> trong quy trình và công cụ</li>
+                </ul>
+                
+                <h3>Hành động cải thiện</h3>
+                <p>Dựa trên kết quả AAR, tôi thường thực hiện:</p>
+                <ul>
+                    <li><strong>Cập nhật playbook</strong> và chính sách dựa trên kinh nghiệm thực tế</li>
+                    <li><strong>Đào tạo bổ sung</strong> cho team và người dùng về các lỗ hổng đã phát hiện</li>
+                    <li><strong>Điều chỉnh kiến trúc bảo mật</strong> theo nguyên tắc Zero Trust và least privilege</li>
+                    <li><strong>Đầu tư vào công cụ</strong> mới nếu cần thiết</li>
+                </ul>
+                
+                <p><strong>Kết quả cần có:</strong> Báo cáo tổng kết (cả executive và technical), danh sách action items cụ thể với người phụ trách (DRI) và deadline rõ ràng.</p>
+
+                <h2>Mức độ nghiêm trọng</h2>
+                <div class="table-container">
+                    <table class="severity-table">
+                        <thead>
+                            <tr>
+                                <th>Mức</th>
+                                <th>Mô tả nhanh</th>
+                                <th>Ví dụ</th>
+                                <th>SLA gợi ý</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>P1</strong></td>
+                                <td>Ảnh hưởng diện rộng / dữ liệu nhạy cảm</td>
+                                <td>Ransomware mã hóa hệ thống, rò rỉ PII</td>
+                                <td>Triage ≤ 15' / Contain ≤ 1h</td>
+                            </tr>
+                            <tr>
+                                <td><strong>P2</strong></td>
+                                <td>Ảnh hưởng đáng kể, giới hạn phạm vi</td>
+                                <td>Tài khoản domain admin bị chiếm</td>
+                                <td>Triage ≤ 30' / Contain ≤ 4h</td>
+                            </tr>
+                            <tr>
+                                <td><strong>P3</strong></td>
+                                <td>Rủi ro trung bình</td>
+                                <td>Máy trạm nhiễm adware, rule WAF chặn</td>
+                                <td>Triage ≤ 4h</td>
+                            </tr>
+                            <tr>
+                                <td><strong>P4</strong></td>
+                                <td>Thấp, theo dõi</td>
+                                <td>Scan bên ngoài, alert nghi false positive</td>
+                                <td>Theo dõi/đóng</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><em>Tùy doanh nghiệp mà tinh chỉnh SLA/định nghĩa.</em></p>
+
+                <h2>Vai trò & truyền thông (RACI gọn)</h2>
+                <ul>
+                    <li><strong>IR Lead (A/R)</strong>: quyết định, ưu tiên, báo cáo lãnh đạo.</li>
+                    <li><strong>SOC/Analyst (R)</strong>: triage, phát hiện, săn tìm.</li>
+                    <li><strong>Forensics (R)</strong>: thu thập bằng chứng, timeline, root cause.</li>
+                    <li><strong>IT Ops/Cloud (R)</strong>: cô lập, patch, khôi phục.</li>
+                    <li><strong>App Owner (C)</strong>: xác nhận tác động nghiệp vụ.</li>
+                    <li><strong>Pháp chế/Compliance (C)</strong>: tư vấn thông báo pháp lý.</li>
+                    <li><strong>Truyền thông (C)</strong>: thông điệp nội bộ/khách hàng/đối ngoại.</li>
+                    <li><strong>Lãnh đạo (I)</strong>: nhận cập nhật định kỳ.</li>
+                </ul>
+                <p>Kênh làm việc: <strong>War-room</strong> (họp nhanh nhịp 15–30'), kênh chat riêng, <strong>nhật ký sự cố</strong> tập trung (ticket/ wiki).</p>
+
+                <h2>Chỉ số đo lường (KPI/OKR) bạn nên theo dõi</h2>
+                <ul>
+                    <li><strong>MTTD, MTTC, MTTR</strong> (detect / contain / recover).</li>
+                    <li>% sự cố <strong>đáp ứng SLA</strong>, % <strong>false positive</strong>.</li>
+                    <li><strong>Coverage</strong> log & telemetry (bao nhiêu hệ thống vào SIEM/EDR).</li>
+                    <li>Số <strong>playbook</strong> được tập dượt/quý, thời gian <strong>patch</strong> trung bình.</li>
+                    <li><strong>Mean Time Between Incidents</strong> cho nhóm rủi ro cụ thể.</li>
+                </ul>
+
+                <h2>Ví dụ thực chiến (tóm tắt)</h2>
+                <p><strong>Tình huống</strong>: SIEM báo nhiều đăng nhập thất bại → thành công từ IP lạ vào tài khoản SaaS quan trọng.</p>
+                <ol>
+                    <li><strong>Detection</strong>: Analyst xác thực alert, kiểm IOC (ASN, geolocation), phát hiện token tạo mới.</li>
+                    <li><strong>Containment</strong>: Force logout, <strong>reset mật khẩu + revoke sessions</strong>, bật/bắt buộc <strong>MFA</strong>, chặn IP/ASN.</li>
+                    <li><strong>Eradication</strong>: Tìm rule mail forwarding đáng ngờ, gỡ OAuth app lạ, review audit log & API tokens.</li>
+                    <li><strong>Recovery</strong>: Khôi phục cấu hình chuẩn, theo dõi 72h, bổ sung DLP rule phát hiện forwarding.</li>
+                    <li><strong>Lessons</strong>: Cập nhật playbook "Tài khoản bị chiếm", đào tạo chống phishing MFA fatigue, tăng cảnh báo impossible travel.</li>
+                </ol>
+
+                <h2>Công cụ gợi ý theo từng bước (tùy quy mô)</h2>
+                <ul>
+                    <li><strong>Preparation</strong>: CMDB/asset, MDM, quản lý mật khẩu/secret, tự động hóa SOAR.</li>
+                    <li><strong>Detection</strong>: SIEM (tập trung log), EDR/NDR, UEBA, threat intel.</li>
+                    <li><strong>Containment</strong>: EDR isolate, firewall/WAF/DNS policy, cloud guardrail.</li>
+                    <li><strong>Eradication</strong>: Patch/vulnerability mgmt, IaC fix misconfig, credential rotation.</li>
+                    <li><strong>Recovery</strong>: Backup/restore, golden image, infra-as-code tái triển khai sạch.</li>
+                    <li><strong>Lessons</strong>: Wiki/ticket, postmortem template, đào tạo nhận thức.</li>
+                </ul>
+
+                <h2>Mẫu biểu </h2>
+                
+                <h3>1) Biên bản mở sự cố</h3>
+                <pre><code class="language-text">IR-ID: IR-2025-XXX
+Ngày/giờ phát hiện (UTC): 
+Người mở: 
+Mô tả ngắn: 
+Hệ thống/tài sản ảnh hưởng: 
+Mức độ (P1–P4): 
+IOC/IOA đã biết: 
+War-room link: 
+IR Lead: 
+Các bên liên quan:</code></pre>
+
+                <h3>2) Chain of Custody (bằng chứng)</h3>
+                <pre><code class="language-text">Evidence ID: 
+Mô tả: 
+Nguồn/Đường dẫn: 
+Hash (SHA-256): 
+Người thu thập -> thời gian: 
+Người bàn giao -> thời gian: 
+Vị trí lưu trữ an toàn: 
+Chữ ký/Xác nhận:</code></pre>
+
+                <h3>3) Ghi chép timeline sự cố</h3>
+                <pre><code class="language-text">[HH:MM] Ai | Hành động | Kết quả/Tham chiếu | Vé/Link</code></pre>
+
+                <h3>4) Mẫu thông báo nội bộ </h3>
+                <pre><code class="language-text">Tiêu đề: [IR-ID] Cập nhật sự cố [Mức độ]
+Nội dung: 
+- Tóm tắt: 
+- Tác động: 
+- Biện pháp đã thực hiện: 
+- Việc sắp tới & thời gian ước tính: 
+- Liên hệ: IR Lead – ...</code></pre>
+
+                <h2>10 sai lầm thường gặp </h2>
+                <ol>
+                    <li>Không <strong>chuẩn hóa</strong> khái niệm "sự cố" → tranh cãi, chậm kích hoạt.</li>
+                    <li>Không <strong>ghi chép timeline</strong> → khó điều tra/hậu kiểm.</li>
+                    <li><strong>Xóa sạch</strong> quá sớm → mất bằng chứng.</li>
+                    <li>Chỉ <strong>tắt báo động</strong> thay vì xử lý <strong>root cause</strong>.</li>
+                    <li>Thiếu <strong>phân vai & kênh liên lạc</strong> → hỗn loạn.</li>
+                    <li>Không kiểm soát <strong>quyền admin/secret</strong> → kẻ tấn công quay lại.</li>
+                    <li>Không có <strong>backup sạch</strong>/không thử <strong>khôi phục định kỳ</strong>.</li>
+                    <li>Không <strong>tabletop</strong> → lúc thật sự cố thì lúng túng.</li>
+                    <li>Thiếu <strong>MFA</strong> và giám sát đăng nhập bất thường.</li>
+                    <li><strong>Truyền thông kém</strong> → tổn hại niềm tin hơn cả sự cố.</li>
+                </ol>
+
+                <h2>Kết luận</h2>
+                
+                <p>Qua quá trình tìm hiểu về IR, mình nhận ra rằng một chương trình IR hiệu quả không bắt đầu khi chuông báo động reo, mà bắt đầu từ việc chuẩn bị kỹ lưỡng: con người, quy trình, công cụ, và dữ liệu.</p>
+                
+                <p>Mình hy vọng bài viết này sẽ giúp các bạn có cái nhìn tổng quan về quy trình IR 6 bước. Hãy áp dụng những bước trên, duy trì tập dượt định kỳ, đo lường MTTD/MTTR, và không ngừng cập nhật playbook dựa trên kinh nghiệm thực tế.</p>
+                
+                <p>Khi đó, mỗi sự cố sẽ không còn là nỗi sợ hãi mà trở thành <strong>cơ hội để nâng cấp hệ miễn dịch</strong> an ninh của tổ chức. Chúc các bạn thành công trong việc xây dựng và vận hành chương trình IR hiệu quả!</p>
+                
+                <p><em>Nếu các bạn có câu hỏi hoặc muốn chia sẻ kinh nghiệm về IR, hãy chia sẻ với mình nhé! Mình cũng đang học hỏi và rất muốn được trao đổi thêm.</em></p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&h=200&fit=crop" alt="Cloud Security">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="#">☁️ Cloud Security Best Practices</a></h4>
+                        <p>Các thực hành tốt nhất để bảo mật môi trường cloud...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=300&h=200&fit=crop" alt="CTF Writeup">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="#">🏆 CTF Writeup Collection</a></h4>
+                        <p>Tuyển tập các bài writeup từ các cuộc thi CTF...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

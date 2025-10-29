@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 cấu hình sai phổ biến nhất trên AWS khiến hệ thống "lộ bụng" - Vũ Văn Thông</title>
+    <meta name="description" content="Misconfiguration vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây. Hướng dẫn chi tiết 10 lỗi cấu hình phổ biến trên AWS và cách khắc phục">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Cloud Security</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        25 Tháng 1, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        18 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">☁️ 10 cấu hình sai phổ biến nhất trên AWS khiến hệ thống "lộ bụng"</h1>
+                <p class="post-subtitle">Misconfiguration vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây</p>
+                
+                <div class="post-tags">
+                    <span class="tag">AWS</span>
+                    <span class="tag">Cloud Security</span>
+                    <span class="tag">Misconfiguration</span>
+                    <span class="tag">S3</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn về một vấn đề mà mình rất quan tâm - <strong>Misconfiguration</strong> trên AWS. Khi học về Cloud Security, mình nhận ra rằng đây vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây. Tenable cho biết <strong>9% tài nguyên lưu trữ công khai trên cloud chứa dữ liệu nhạy cảm</strong> (97% ở mức restricted/confidential). Gartner cũng nhiều năm liền nhấn mạnh: <strong>đa số sự cố bảo mật cloud xuất phát từ phía khách hàng</strong>, chủ yếu do cấu hình sai.</p>
+                </div>
+
+                <h2>Thống kê đáng báo động mà mình tìm hiểu được</h2>
+                
+                <p>Khi mình tìm hiểu về Cloud Security, mình thấy những con số này thực sự đáng lo ngại:</p>
+                
+                <div class="stats-highlight">
+                    <div class="stat-item">
+                        <h3>9%</h3>
+                        <p>Tài nguyên lưu trữ cloud công khai chứa dữ liệu nhạy cảm</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>97%</h3>
+                        <p>Trong số đó ở mức restricted/confidential</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Đa số</h3>
+                        <p>Sự cố bảo mật cloud xuất phát từ phía khách hàng</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Chủ yếu</h3>
+                        <p>Do cấu hình sai (misconfiguration)</p>
+                    </div>
+                </div>
+
+                <p>Sau khi tìm hiểu, mình đã tổng hợp được <strong>10 cấu hình sai (misconfig) "đụng là thấy"</strong> trong môi trường AWS, vì sao nguy hiểm, <strong>dấu hiệu nhận biết</strong>, <strong>cách tự kiểm nhanh</strong> (console/CLI), và <strong>hướng khắc phục bền vững</strong> (chuẩn hóa bằng AWS Config/Security Hub/IaC).</p>
+
+                <h2>1. S3 để lộ công khai (không chặn public, bucket policy hở, quên dùng OAC với CloudFront)</h2>
+                
+                <div class="misconfig-card critical">
+                    <div class="misconfig-header">
+                        <h3>🔴 CRITICAL</h3>
+                        <span class="severity">Mức độ: Nghiêm trọng</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Dữ liệu tệp sao lưu, log, ảnh khách hàng… dễ bị thu thập hàng loạt khi <strong>Block Public Access</strong> bị tắt hoặc bucket policy cho phép <code>Principal:"*"</code>. Dù AWS đã <strong>bật mặc định</strong> Block Public Access và <strong>tắt ACL cho bucket mới từ 04/2023</strong>, nhiều hệ thống cũ vẫn còn cấu hình mở hoặc vô tình tắt đi.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li><code>IsPublic: true</code> ở bucket</li>
+                            <li>CloudFront truy cập trực tiếp S3 origin (không dùng Origin Access Control – OAC)</li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh (CLI):</h4>
+                        <pre><code class="language-bash">aws s3api get-bucket-policy-status --bucket &lt;BUCKET&gt;
+aws s3api get-public-access-block --bucket &lt;BUCKET&gt;</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Bật/duy trì Block Public Access ở <strong>account level</strong></li>
+                            <li>Dùng <strong>OAC</strong> khi phân phối qua CloudFront</li>
+                            <li>Giữ <strong>Object Ownership = Bucket owner enforced</strong> để vô hiệu ACL</li>
+                            <li>Thiết lập Security Hub theo FSBP (S3 controls) để cảnh báo lệch chuẩn</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>2. IAM quá rộng quyền & dùng root/long‑lived keys</h2>
+                
+                <div class="misconfig-card critical">
+                    <div class="misconfig-header">
+                        <h3>🔴 CRITICAL</h3>
+                        <span class="severity">Mức độ: Nghiêm trọng</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Quyền <code>*:*</code> tạo "đường cao tốc" cho leo thang đặc quyền; dùng <strong>root</strong> và không bật <strong>MFA</strong> là rủi ro chí mạng. AWS khuyến nghị <strong>chỉ dùng role</strong>, <strong>ít nhất‑đủ dùng</strong>, và <strong>MFA cho root</strong>.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>User đính kèm policy trực tiếp</li>
+                            <li>Access key sống lâu</li>
+                            <li>Root đăng nhập thường xuyên, không có MFA</li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh:</h4>
+                        <pre><code class="language-bash">aws iam get-account-summary --query 'SummaryMap.AccountMFAEnabled'</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Chuyển sang <strong>federation/SSO + role</strong></li>
+                            <li>Tách nhiệm vụ, bật <strong>MFA cho root</strong></li>
+                            <li>Audit wildcard bằng Access Analyzer</li>
+                            <li>Theo dõi <strong>IAM controls</strong> trong Security Hub (FSBP)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>3. Security Group/NACL mở 0.0.0.0/0 cho SSH/RDP/DB</h2>
+                
+                <div class="misconfig-card high">
+                    <div class="misconfig-header">
+                        <h3>🟠 HIGH</h3>
+                        <span class="severity">Mức độ: Cao</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Cổng 22/3389/3306/5432… mở Internet = bề mặt tấn công trực tiếp.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>Inbound <code>0.0.0.0/0</code> vào cổng quản trị/cơ sở dữ liệu</li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh:</h4>
+                        <pre><code class="language-bash">aws ec2 describe-security-groups \
+  --filters Name=ip-permission.cidr,Values=0.0.0.0/0</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Chỉ cho phép IP/ASN tin cậy (hoặc qua <strong>bastion/VPN/SSM Session Manager</strong>)</li>
+                            <li>Dùng <strong>SG referencing</strong> giữa tầng</li>
+                            <li>Bật <strong>Security Hub EC2.18/EC2.19/EC2.21</strong> để bắt config nguy cơ cao</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>4. CloudTrail chưa chuẩn (không multi‑Region, không log validation, không đẩy CloudWatch)</h2>
+                
+                <div class="misconfig-card high">
+                    <div class="misconfig-header">
+                        <h3>🟠 HIGH</h3>
+                        <span class="severity">Mức độ: Cao</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Thiếu dấu vết phá án; dễ bị <em>anti‑forensic</em>.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>Chỉ có trail ở một Region</li>
+                            <li><strong>Log file validation</strong> tắt</li>
+                            <li>Chưa tích hợp <strong>CloudWatch Logs</strong></li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh:</h4>
+                        <p>Vào <strong>CloudTrail → Trails</strong> xem <code>Is multi‑Region</code> và <code>Log file validation</code>.</p>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Tạo <strong>1 multi‑Region trail</strong> cho management events (read/write)</li>
+                            <li>Bật <strong>validation + SSE‑KMS</strong></li>
+                            <li>Tích hợp <strong>CloudWatch Logs</strong></li>
+                            <li>Theo dõi <strong>CloudTrail.1/.2/.4/.5</strong> trong Security Hub</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>5. GuardDuty & Security Hub chưa bật "toàn cơ quan"</h2>
+                
+                <div class="misconfig-card medium">
+                    <div class="misconfig-header">
+                        <h3>🟡 MEDIUM</h3>
+                        <span class="severity">Mức độ: Trung bình</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Thiếu phát hiện sớm các hành vi bất thường (crypto‑mining, credential exfil, DNS lạ…), thiếu bức tranh posture.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>Không có <strong>detector</strong> ở các Region</li>
+                            <li>Security Hub chưa kích hoạt <strong>FSBP</strong></li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh (GuardDuty):</h4>
+                        <pre><code class="language-bash">aws guardduty list-detectors</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Chỉ định <strong>Delegated Admin</strong> qua <strong>AWS Organizations</strong></li>
+                            <li>Auto‑enable <strong>GuardDuty</strong> & <strong>Security Hub</strong> cho <strong>mọi account/Region</strong></li>
+                            <li>Ingest findings về một chỗ để xử lý</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>6. Snapshot công khai (EBS/RDS) hoặc không chặn public sharing</h2>
+                
+                <div class="misconfig-card critical">
+                    <div class="misconfig-header">
+                        <h3>🔴 CRITICAL</h3>
+                        <span class="severity">Mức độ: Nghiêm trọng</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Snapshot = ảnh chụp dữ liệu/volume đầy đủ; <strong>public</strong> = ai cũng copy/restore được. RDS snapshot public cho phép <strong>mọi tài khoản</strong> tạo instance từ snapshot đó.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>EBS <strong>Block Public Access for Snapshots</strong> chưa bật</li>
+                            <li>Có RDS snapshot bị share public</li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh (EBS):</h4>
+                        <pre><code class="language-bash">aws ec2 get-snapshot-block-public-access-state</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Bật <strong>Block Public Access for EBS Snapshots</strong> ở <strong>mọi Region</strong></li>
+                            <li>Dùng <strong>AWS Config rule `rds-snapshots-public-prohibited`</strong></li>
+                            <li>Đặt SCP/ci‑policy cấm public sharing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>7. Mã hóa dữ liệu chưa bật mặc định (EBS/S3/RDS)</h2>
+                
+                <div class="misconfig-card high">
+                    <div class="misconfig-header">
+                        <h3>🟠 HIGH</h3>
+                        <span class="severity">Mức độ: Cao</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Mất thiết bị/ảnh chụp/log = lộ dữ liệu nếu không mã hóa.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>EBS <strong>default encryption</strong> tắt</li>
+                            <li>RDS chưa bật <strong>Encryption at rest</strong></li>
+                            <li>(S3 hiện <strong>mặc định mã hóa SSE‑S3</strong> cho mọi bucket/đối tượng mới nhưng vẫn nên kiểm chứng và dùng KMS khi cần)</li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh:</h4>
+                        <pre><code class="language-bash">aws ec2 get-ebs-encryption-by-default</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Bật <strong>EBS default encryption</strong></li>
+                            <li>Tạo <strong>RDS với encryption</strong> (KMS CMK theo miền dữ liệu)</li>
+                            <li>Xem xét chuyển S3 sang <strong>SSE‑KMS</strong> khi cần kiểm soát khóa/giám sát truy cập</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>8. EKS lộ API endpoint & thiếu audit logging/secret encryption</h2>
+                
+                <div class="misconfig-card high">
+                    <div class="misconfig-header">
+                        <h3>🟠 HIGH</h3>
+                        <span class="severity">Mức độ: Cao</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>API server public không giới hạn CIDR dễ bị dò quét; không <strong>audit log</strong> khó điều tra; <strong>K8s secrets</strong> không bật <strong>KMS envelope encryption</strong> = rủi ro lộ bí mật.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li><code>endpointPublicAccess=true</code> và <code>publicAccessCidrs</code> = <code>0.0.0.0/0</code></li>
+                            <li>Control plane logs tắt</li>
+                        </ul>
+                        
+                        <h4>Tự kiểm nhanh (CLI):</h4>
+                        <pre><code class="language-bash">aws eks describe-cluster --name &lt;CLUSTER&gt; \
+  --query 'cluster.resourcesVpcConfig.{public:endpointPublicAccess,cidrs:publicAccessCidrs}'</code></pre>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li><strong>Private endpoint</strong> (hoặc public + whitelist CIDR)</li>
+                            <li>Bật <strong>control plane logging</strong> (API/Audit)</li>
+                            <li><strong>KMS secrets encryption</strong> cho EKS</li>
+                            <li>Theo dõi <strong>EKS.1/EKS.3/EKS.8</strong> trong Security Hub</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>9. API Gateway không gắn cơ chế xác thực (authorizer)</h2>
+                
+                <div class="misconfig-card medium">
+                    <div class="misconfig-header">
+                        <h3>🟡 MEDIUM</h3>
+                        <span class="severity">Mức độ: Trung bình</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Route "trần" = mọi người gọi được, kể cả tài nguyên nội bộ.</p>
+                        
+                        <h4>Dấu hiệu nhận biết:</h4>
+                        <ul>
+                            <li>Nhiều route <code>NONE</code>/<code>UNSPECIFIED</code></li>
+                        </ul>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Buộc <strong>JWT/Cognito/Lambda Authorizer</strong></li>
+                            <li>Gắn WAF nếu public</li>
+                            <li>Bật logging/X‑Ray</li>
+                            <li>Theo dõi <strong>APIGateway.8</strong> (và .1/.4/.9) trong Security Hub</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>10. Thiếu "giám sát mạng" & rào chắn egress (VPC Flow Logs, VPC Endpoint, S3 VPC‑only)</h2>
+                
+                <div class="misconfig-card medium">
+                    <div class="misconfig-header">
+                        <h3>🟡 MEDIUM</h3>
+                        <span class="severity">Mức độ: Trung bình</span>
+                    </div>
+                    
+                    <div class="misconfig-content">
+                        <h4>Vì sao nguy hiểm:</h4>
+                        <p>Không có <strong>VPC Flow Logs</strong> = mù lưu lượng; không ràng buộc <strong>VPC Endpoint</strong> = dữ liệu đi Internet public; một số dịch vụ managed (OpenSearch/RDS/ElastiCache…) để <strong>public endpoint</strong>.</p>
+                        
+                        <h4>Khắc phục bền vững:</h4>
+                        <ul>
+                            <li>Bật <strong>VPC Flow Logs cho mọi VPC</strong></li>
+                            <li>Dùng <strong>VPC Endpoint</strong> và <strong>bucket policy</strong> để chỉ cho phép truy cập S3 qua endpoint</li>
+                            <li>Với OpenSearch, triển khai <strong>trong VPC</strong>, hạn chế truy cập bằng SG/IAM/FGAC</li>
+                            <li>Theo dõi <strong>EC2.6/EC2.10</strong> và <strong>OpenSearch in VPC</strong> trong best practices</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Phụ lục: Mỗi mục kiểm thế nào cho "nhanh – gọn – chắc"</h2>
+                
+                <div class="quick-check-section">
+                    <div class="check-method">
+                        <h3>🔧 Bật chuẩn FSBP trong Security Hub</h3>
+                        <p>Để có bộ kiểm nền tảng (EBS public snapshots, SG mở, IMDSv2, EKS audit logging…). Đây là "bản đồ" misconfig chính thức từ AWS.</p>
+                    </div>
+                    
+                    <div class="check-method">
+                        <h3>🛡️ Triển khai GuardDuty toàn tổ chức</h3>
+                        <p>Để có tín hiệu đe doạ thời gian thực (DNS lạ, credential gọi API bất thường…).</p>
+                    </div>
+                    
+                    <div class="check-method">
+                        <h3>🔍 Quét nhanh bằng Prowler (open‑source)</h3>
+                        <p>Chạy "khám tổng quát" multi‑account, xuất báo cáo CSV/HTML để ưu tiên xử lý. Có hướng dẫn chính thức của AWS cho mô hình hợp nhất báo cáo Prowler.</p>
+                    </div>
+                </div>
+
+                <h2>Checklist tóm tắt (đưa vào sprint hardening tuần này)</h2>
+                
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="s3-check" checked>
+                        <label for="s3-check"><strong>S3:</strong> <code>get-bucket-policy-status</code>, <strong>Block Public Access</strong> ở account, <strong>OAC</strong> cho CloudFront, <strong>Bucket owner enforced</strong></label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="iam-check" checked>
+                        <label for="iam-check"><strong>IAM:</strong> bật <strong>MFA root</strong>, bỏ policy gắn trực tiếp vào user, cấm wildcard, dùng role/federation</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="network-check" checked>
+                        <label for="network-check"><strong>Network:</strong> đóng SSH/RDP/DB từ Internet; dùng bastion/VPN/SSM; bật <strong>VPC Flow Logs</strong></label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="cloudtrail-check" checked>
+                        <label for="cloudtrail-check"><strong>CloudTrail:</strong> 1 <strong>multi‑Region trail</strong> + <strong>log validation</strong> + <strong>CloudWatch Logs</strong> + SSE‑KMS</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="guardduty-check" checked>
+                        <label for="guardduty-check"><strong>GuardDuty & Security Hub:</strong> enable toàn bộ account/Region qua Organizations (delegated admin)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="snapshots-check" checked>
+                        <label for="snapshots-check"><strong>Snapshots:</strong> bật <strong>Block Public Access for EBS Snapshots</strong>; kiểm <strong>RDS snapshots public</strong> (AWS Config rule)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="encryption-check" checked>
+                        <label for="encryption-check"><strong>Encryption:</strong> bật <strong>EBS default encryption</strong>; đảm bảo <strong>RDS encrypted</strong>; xác nhận S3 đã <strong>SSE‑S3</strong> (mặc định) hoặc <strong>SSE‑KMS</strong> cho dữ liệu nhạy cảm</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="eks-check" checked>
+                        <label for="eks-check"><strong>EKS:</strong> private endpoint/giới hạn CIDR, bật <strong>control plane logging</strong>, <strong>KMS cho secrets</strong></label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="apigateway-check" checked>
+                        <label for="apigateway-check"><strong>API Gateway:</strong> bắt buộc <strong>authorizer</strong>, gắn <strong>WAF</strong>, bật <strong>logging</strong></label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="opensearch-check" checked>
+                        <label for="opensearch-check"><strong>OpenSearch/RDS/ElastiCache:</strong> triển khai <strong>trong VPC</strong>, chặn public endpoint, kiểm soát truy cập bằng IAM/SG/FGAC</label>
+                    </div>
+                </div>
+
+                <h2>Một chút "khoa học dữ liệu" để thuyết phục sếp 📊</h2>
+                
+                <div class="data-science-section">
+                    <div class="stat-highlight">
+                        <h3>9%</h3>
+                        <p>Tài nguyên lưu trữ cloud công khai có chứa dữ liệu nhạy cảm – <strong>97%</strong> trong số đó là <em>restricted/confidential</em>. (Tenable, 2025)</p>
+                    </div>
+                    
+                    <div class="stat-highlight">
+                        <h3>Nhiều tổ chức</h3>
+                        <p><strong>Vẫn gặp sự cố vì misconfig</strong> – luận điểm "phần lớn lỗi cloud do khách hàng" vẫn được các hãng lớn nhắc lại đến <strong>2025</strong>.</p>
+                    </div>
+                </div>
+
+                <h2>Kết luận</h2>
+                
+                <p>Qua quá trình tìm hiểu về AWS misconfiguration, mình nhận ra rằng không phải "nguy cơ Zero‑day" mới làm ta mất ngủ; <strong>một Security Group mở 0.0.0.0/0 hay một snapshot công khai</strong> đủ khiến đêm dài. Mình nghĩ cách tốt nhất là bắt đầu từ những thứ <strong>đơn giản – đo được – tự động hoá được</strong>: bật Security Hub (FSBP), GuardDuty toàn tổ chức, quét Prowler định kỳ, và đưa các rule "không mặc cả" (encryption, public‑access block, IMDSv2…) vào IaC/CI.</p>
+                
+                <div class="call-to-action">
+                    <h3>👉 Call to action:</h3>
+                    <p>Các bạn có muốn mình <strong>chuyển 10 mục trên thành một checklist 1‑page</strong> (CSV hoặc Markdown) để dán vào sprint hardening không? Mình có thể làm ngay!</p>
+                </div>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300&h=200&fit=crop" alt="Blue Team">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=300&h=200&fit=crop" alt="Red Blue Purple Teams">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="red-blue-purple-teams.html">🔴🔵🟣 Phân biệt Red Team – Blue Team – Purple Team</a></h4>
+                        <p>Hiểu rõ vai trò của từng "màu" trong bảo mật mạng...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

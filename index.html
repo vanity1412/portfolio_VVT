@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Vũ Văn Thông</title>
+    <meta name="description" content="Portfolio cá nhân của Vũ Văn Thông - Sinh viên năm 3 Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh, chuyên ngành An toàn thông tin">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home" data-speed="0.3">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Xin chào, tôi là <span class="highlight">Vũ Văn Thông</span> 👋
+                    </h1>
+                    <p class="hero-subtitle">
+                        Tôi là <span class="typing-text">Sinh viên An toàn thông tin</span>
+                    </p>
+                    <p class="hero-description">
+                        Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh - Chuyên ngành An toàn thông tin
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="components/contact.html" class="btn btn-primary">Liên hệ ngay</a>
+                        <a href="components/projects.html" class="btn btn-secondary">Xem dự án</a>
+                        <a href="posts/projects/web_homework.html" class="btn btn-homework" target="_blank">
+                            <i class="fas fa-code"></i>
+                            <span>Web Homework</span>
+                            <div class="btn-glow"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-container">
+                        <img src="assets/img/myface.jpg" alt="Vũ Văn Thông" class="profile-img">
+                        <div class="image-bg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick About Preview -->
+    <section class="about-preview">
+        <div class="container">
+            <div class="about-preview-content">
+                <div class="about-preview-text">
+                    <h2>Về tôi</h2>
+                    <p>
+                        Tôi là sinh viên năm 3 tại Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh, chuyên ngành An toàn thông tin. 
+                        Với niềm đam mê về bảo mật mạng và an ninh thông tin, tôi đang học tập và phát triển kỹ năng trong lĩnh vực 
+                        bảo vệ hệ thống, phân tích malware và đánh giá rủi ro bảo mật.
+                    </p>
+                    <a href="components/about.html" class="btn btn-outline">Tìm hiểu thêm</a>
+                </div>
+                <div class="about-preview-stats">
+                    <div class="stat">
+                        <h4>3</h4>
+                        <p>Năm học</p>
+                    </div>
+                    <div class="stat">
+                        <h4>8.5+</h4>
+                        <p>GPA hiện tại</p>
+                    </div>
+                    <div class="stat">
+                        <h4>15+</h4>
+                        <p>Dự án bảo mật</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Preview -->
+    <section class="skills-preview">
+        <div class="container">
+            <h2 class="section-title">Kỹ năng chính</h2>
+            <div class="skills-preview-grid">
+                <div class="skill-preview-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Network Security</h3>
+                    <p>85%</p>
+                </div>
+                <div class="skill-preview-item">
+                    <i class="fas fa-bug"></i>
+                    <h3>Penetration Testing</h3>
+                    <p>80%</p>
+                </div>
+                <div class="skill-preview-item">
+                    <i class="fas fa-search"></i>
+                    <h3>Malware Analysis</h3>
+                    <p>75%</p>
+                </div>
+                <div class="skill-preview-item">
+                    <i class="fas fa-lock"></i>
+                    <h3>Cryptography</h3>
+                    <p>70%</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="components/skills.html" class="btn btn-primary">Xem tất cả kỹ năng</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Preview -->
+    <section class="projects-preview">
+        <div class="container">
+            <h2 class="section-title">Dự án nổi bật</h2>
+            <div class="projects-preview-grid">
+                <div class="project-preview-card">
+                    <div class="project-preview-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=250&fit=crop" alt="Network Security Assessment">
+                    </div>
+                    <div class="project-preview-content">
+                        <h3>Network Security Assessment</h3>
+                        <p>Đánh giá bảo mật mạng doanh nghiệp và phát hiện lỗ hổng</p>
+                    </div>
+                </div>
+                <div class="project-preview-card">
+                    <div class="project-preview-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=250&fit=crop" alt="Penetration Testing">
+                    </div>
+                    <div class="project-preview-content">
+                        <h3>Web Application Penetration Testing</h3>
+                        <p>Kiểm thử xâm nhập ứng dụng web và báo cáo lỗ hổng</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="components/projects.html" class="btn btn-primary">Xem tất cả dự án</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="contact-cta">
+        <div class="container">
+            <div class="contact-cta-content">
+                <h2>Sẵn sàng bắt đầu dự án của bạn?</h2>
+                <p>Hãy liên hệ với tôi để cùng tạo ra những sản phẩm tuyệt vời!</p>
+                <a href="components/contact.html" class="btn btn-primary">Liên hệ ngay</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <!-- Sử dụng file mp3 của Beethoven -->
+            <source src="assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <!-- Fallback: Sử dụng nhạc miễn phí nếu file local không có -->
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="assets/js/load-components.js"></script>
+    <!-- Core Scripts -->
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/global-audio.js"></script>
+    <script src="assets/js/audio-player.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="assets/js/dark-mode.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
