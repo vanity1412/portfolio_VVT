@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beacon Detection Challenge: Nhật ký SOC của sinh viên năm 3 - Vũ Văn Thông</title>
+    <meta name="description" content="Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý C2 beacon trong lab SOC mini. Hướng dẫn chi tiết quy trình IR từ góc nhìn sinh viên">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Blue Team</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        31 Tháng 10, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                                18 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">📡 Beacon Detection Challenge: Nhật ký SOC của sinh viên năm 3</h1>
+                <p class="post-subtitle">Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý C2 beacon trong lab SOC mini</p>
+                
+                <div class="post-tags">
+                    <span class="tag">SOC</span>
+                    <span class="tag">Threat Hunting</span>
+                    <span class="tag">C2 Detection</span>
+                    <span class="tag">Network Security</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn một thử thách rất thú vị - mình đã "bắt sống" một C2 beacon âm thầm trong lab SOC mini mà mình tự dựng. Đây là bài viết mô phỏng 100% phục vụ học tập, mọi dữ kiện/IP/domain đều được ẩn/giả định.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h4>⚠️ Lưu ý quan trọng</h4>
+                    <p>Bài viết này là <strong>mô phỏng 100%</strong> phục vụ học tập. Mọi dữ kiện, IP, domain đều được <strong>ẩn/giả định</strong> theo chuẩn RFC 5737. Mục đích là chia sẻ kiến thức và kinh nghiệm học tập.</p>
+                </div>
+
+                <h2>Bối cảnh & mục tiêu học tập</h2>
+                
+                <p>Khi mình học về Threat Hunting và C2 Detection, mình luôn thắc mắc: "Làm sao để phát hiện một beacon C2 khi nó hoạt động rất âm thầm?". Để trả lời câu hỏi này, mình đã dựng một lab SOC mini và thực hiện một bài tập mô phỏng C2 beacon.</p>
+
+                <div class="lab-setup">
+                    <h3>Môi trường lab của mình:</h3>
+                    <ul>
+                        <li><strong>Attacker</strong>: <code>ATTACKER-01</code> (VPS mô phỏng máy điều khiển C2)</li>
+                        <li><strong>C2 server</strong>: <code>c2-edge.example.net</code> → IP giả lập <code>203.0.113.77</code> (RFC 5737)</li>
+                        <li><strong>Client (người dùng)</strong>: <code>THONG-LAB-WIN02</code> (Windows 10), IP nội bộ <code>10.10.30.21</code></li>
+                        <li><strong>Telemetries</strong>: EDR (process/DNS/HTTP/TLS), Proxy, NetFlow, Zeek</li>
+                    </ul>
+                </div>
+
+                <div class="roles-setup">
+                    <h3>Vai trò trong lab:</h3>
+                    <ul>
+                        <li><strong>Mình (Thông)</strong>: SOC L1 (triage) + SOC L2 (investigation)</li>
+                        <li><strong>Mentor</strong>: SOC L3 (phê duyệt & quyết định)</li>
+                    </ul>
+                </div>
+
+                <div class="learning-goals">
+                    <h3>Mục tiêu học tập:</h3>
+                    <ol>
+                        <li>Nhận diện beaconing: lưu lượng nhỏ, định kỳ + jitter, UA/JA3 bất thường</li>
+                        <li>Correlate nhiều nguồn log: DNS ↔ HTTP/TLS ↔ EDR ↔ NetFlow</li>
+                        <li>Thực hành IR: cô lập, chặn, săn bám (hunt) & RCA</li>
+                    </ol>
+                </div>
+
+                <h2>09:12 – Dấu hiệu đầu tiên trên dashboard</h2>
+                
+                <p><strong>Ngày 23/10/2025, 09:12 (UTC+7)</strong>, bảng điều khiển NDR highlight "Suspected Beaconing Pattern":</p>
+
+                <div class="alert-details">
+                    <h3>🚨 Suspected Beaconing Pattern Detected</h3>
+                    <div class="alert-info">
+                        <div class="info-item">
+                            <strong>Indicators (sample)</strong>
+                            <ul>
+                                <li>Host: <code>THONG-LAB-WIN02</code></li>
+                                <li>DST Domain: <code>c2-edge.example.net</code></li>
+                                <li>DST IP: <code>203.0.113.77</code></li>
+                                <li>Protocol: HTTPS (TCP/443)</li>
+                                <li>Periodicity: ~60s ± 10% (jitter nhẹ)</li>
+                                <li>Req size: 300–450 bytes; Resp size: 120–200 bytes</li>
+                                <li>User-Agent: <code>Mozilla/5.0 (Windows NT 10.0; Win64; x64) OfficeSvc/16.0</code> (ngụy trang như Office)</li>
+                                <li>JA3 (TLS client fp): <code>771,4865-4866-4867-52393,...</code> (giả lập)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Mình nghĩ: "Pattern này giống beacon C2: nhỏ, đều, dai dẳng."</p>
+
+                <h2>Triage nhanh (SOC L1)</h2>
+                
+                <div class="triage-section">
+                    <h3>Goal: xác thực nghi ngờ, tránh false positive</h3>
+                    <p>Mình cần kiểm tra xem đây có phải là app hợp pháp cũng có heartbeat hay không.</p>
+
+                    <div class="triage-checklist">
+                        <h3>Checklist mình sử dụng:</h3>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="periodicity" checked>
+                            <label for="periodicity">Định kỳ gần đều (có jitter) trong ≥ 30 phút</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="rare-dest" checked>
+                            <label for="rare-dest">Đích hiếm lạ (rare dest) với endpoint này</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="stable-size" checked>
+                            <label for="stable-size">Kích thước gói tương đối ổn định & nhỏ</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="ua-ja3" checked>
+                            <label for="ua-ja3">UA/JA3 không khớp baseline của máy</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="allowlist" checked>
+                            <label for="allowlist">Không khớp allowlist (CDN, update server hợp lệ)</label>
+                        </div>
+                    </div>
+
+                    <div class="triage-conclusion">
+                        <p>→ <strong>Kết luận L1</strong>: True Positive (nghi vấn beacon) ⇒ Escalate L2.</p>
+                    </div>
+                </div>
+
+                <h2>Điều tra sâu (SOC L2)</h2>
+                
+                <div class="investigation-section">
+                    <h3>1) DNS → Domain hiếm + TTL "khó chịu"</h3>
+                    <p><code>THONG-LAB-WIN02</code> truy vấn <code>c2-edge.example.net</code> mỗi ~60s.</p>
+                    <p>TTL thấp (giả lập 60s) → thuận lợi cho fast-flux/jitter.</p>
+
+                    <div class="query-section">
+                        <h4>KQL – tìm host nói chuyện với domain hiếm</h4>
+                        <pre><code class="language-kql">dns.question.name: "c2-edge.example.net" 
+AND host.name: "THONG-LAB-WIN02"</code></pre>
+                    </div>
+
+                    <h3>2) HTTP/TLS → Hành vi "đều tay"</h3>
+                    <ul>
+                        <li>URI lặp: <code>/updates/checkin?id=&lt;GUID&gt;&v=1601</code></li>
+                        <li>Status: 200/204; Body rất nhỏ</li>
+                        <li>JA3/JA3S không khớp phần mềm doanh nghiệp tiêu chuẩn</li>
+                        <li>Cert: Issuer hợp pháp (Let's Encrypt giả lập) nhưng SNI/CN "khó liên hệ nghiệp vụ"</li>
+                    </ul>
+
+                    <div class="query-section">
+                        <h4>Zeek-like KQL (giả lập mapping)</h4>
+                        <pre><code class="language-kql">event.dataset: "zeek.http" 
+AND destination.domain: "c2-edge.example.net"
+AND http.response.status_code: (200 or 204)
+AND network.bytes < 800
+AND host.name: "THONG-LAB-WIN02"</code></pre>
+                    </div>
+
+                    <div class="query-section">
+                        <h4>TLS/JA3</h4>
+                        <pre><code class="language-kql">event.dataset: "zeek.ssl"
+AND destination.ip: "203.0.113.77"
+AND tls.ja3: "771,4865-4866-4867-52393,..."  // ví dụ
+AND host.name: "THONG-LAB-WIN02"</code></pre>
+                    </div>
+
+                    <h3>3) NetFlow → Nhịp điệu 60s ± jitter</h3>
+                    <div class="query-section">
+                        <pre><code class="language-kql">event.dataset: "netflow"
+AND source.ip: "10.10.30.21"
+AND destination.ip: "203.0.113.77"</code></pre>
+                    </div>
+                    <p><strong>Quan sát</strong>: mỗi ~60s có 1 flow ngắn, bytes ra vào thấp & gần cố định.</p>
+
+                    <h3>4) EDR – Truy vết process gốc</h3>
+                    <ul>
+                        <li><strong>Parent</strong>: <code>C:\Users\client\AppData\Roaming\winsvchelper\winsvchelper.exe</code></li>
+                        <li><strong>Child DNS/HTTP</strong>: chính tiến trình này gọi ra <code>c2-edge.example.net</code></li>
+                        <li><strong>Persistence</strong>: Scheduled Task "Office Telemetry" chạy mỗi 1 phút</li>
+                    </ul>
+
+                    <div class="query-section">
+                        <h4>EDR query (pseudo)</h4>
+                        <pre><code class="language-kql">process where host="THONG-LAB-WIN02" 
+and (dns_request.domain="c2-edge.example.net" or netconn.dst_ip="203.0.113.77")
+| project timestamp, process.name, process.parent, cmdline, sha256</code></pre>
+                    </div>
+
+                    <div class="conclusion-l2">
+                        <h3>Kết luận L2:</h3>
+                        <p>Chuỗi beaconing → check-in hợp lệ với dấu hiệu C2. Tồn tại persistence (Scheduled Task). <strong>INCIDENT xác thực</strong>.</p>
+                    </div>
+                </div>
+
+                <h2>Nâng cấp sự kiện & kích hoạt IR</h2>
+                
+                <div class="incident-escalation">
+                    <ul>
+                        <li><strong>Trước</strong>: Alert – Suspected Beaconing</li>
+                        <li><strong>Sau</strong>: <strong>INCIDENT – Active C2 Beacon (Critical)</strong></li>
+                        <li><strong>Case ID</strong>: <code>INC-2025-1042</code></li>
+                    </ul>
+                </div>
+
+                <div class="ir-playbook">
+                    <h3>Playbook hành động (lab):</h3>
+                    <div class="playbook-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Quarantine</h4>
+                                <p><code>THONG-LAB-WIN02</code> (EDR/NGFW). ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Block/Sinkhole</h4>
+                                <p>domain <code>c2-edge.example.net</code>, IP <code>203.0.113.77</code>. ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Kill & Contain</h4>
+                                <p>chấm dứt <code>winsvchelper.exe</code>, chặn hash trên EDR. ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Remove persistence</h4>
+                                <p>xóa Scheduled Task "Office Telemetry". ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Forensics</h4>
+                                <p>thu thập memory image, prefetch, registry run keys, shimcache, timeline MFT, Zeek/PCAP. ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">6</div>
+                            <div class="step-content">
+                                <h4>Hunt lateral</h4>
+                                <p>kiểm tra SMB/WinRM/RDP, xem có tải payload hay exfil chưa. ✅</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Root Cause Analysis (giả lập)</h2>
+                
+                <div class="root-causes">
+                    <div class="cause-item">
+                        <h3>🎣 Phishing trước đó</h3>
+                        <p>user client mở file "Salary_Adjustment_2025.pdf.exe"</p>
+                    </div>
+                    
+                    <div class="cause-item">
+                        <h3>🔓 EDR allow policy quá lỏng</h3>
+                        <p>cho thư mục <code>%AppData%</code></p>
+                    </div>
+                    
+                    <div class="cause-item">
+                        <h3>🌐 Egress chưa chặn</h3>
+                        <p>DoH/rare TLD & thiếu DNS RPZ/Threat Intel</p>
+                    </div>
+                    
+                    <div class="cause-item">
+                        <h3>🔍 Không có TLS fingerprinting</h3>
+                        <p>baseline → khó spot JA3 lạ</p>
+                    </div>
+                </div>
+
+                <div class="mitre-attack">
+                    <h3>MITRE ATT&CK (tham chiếu):</h3>
+                    <ul>
+                        <li><strong>TA0011</strong> Command and Control</li>
+                        <li><strong>T1071.001</strong> Web Protocols (HTTPS)</li>
+                        <li><strong>T1568</strong> Dynamic Resolution (DNS)</li>
+                        <li><strong>T1105</strong> Ingress Tool Transfer (nếu có tải thêm)</li>
+                        <li><strong>TA0003</strong> Persistence: <strong>T1053.005</strong> (Scheduled Task)</li>
+                    </ul>
+                </div>
+
+                <h2>Email tóm tắt gửi lãnh đạo (giả lập)</h2>
+                
+                <div class="email-template">
+                    <div class="email-header">
+                        <strong>Subject</strong>: [Executive Summary] Active C2 Beacon on Windows Client — <strong>Critical</strong>
+                    </div>
+                    
+                    <div class="email-body">
+                        <p>Kính gửi thầy/cô & mentor,</p>
+                        
+                        <p>Sáng <strong>23/10/2025 (UTC+7)</strong>, SOC lab xác định C2 beacon từ <code>THONG-LAB-WIN02</code> tới <code>c2-edge.example.net</code> (<code>203.0.113.77</code>) qua HTTPS theo chu kỳ ~60s ± jitter. EDR ghi nhận tiến trình <code>winsvchelper.exe</code> (không hợp lệ) cùng Scheduled Task giả mạo "Office Telemetry".</p>
+                        
+                        <h4>Đã xử lý:</h4>
+                        <p>Cô lập máy, block domain/IP, tiêu diệt tiến trình, gỡ persistence, thu thập forensics, săn bám lateral.</p>
+                        
+                        <h4>Mức độ:</h4>
+                        <p><strong>Critical</strong> (kênh C2 chủ động).</p>
+                        
+                        <h4>Nguyên nhân sơ bộ:</h4>
+                        <p>Khả năng do phishing + egress/DNS control yếu.</p>
+                        
+                        <p>Đề xuất họp <strong>Post-Incident Review lúc 14:00, 23/10/2025</strong> để chốt khắc phục dài hạn.</p>
+                        
+                        <p>Trân trọng,<br>
+                        <strong>Thông</strong> – SOC Lab (Sinh viên năm 3)</p>
+                    </div>
+                </div>
+
+                <h2>Bảng quyết định triage (mẫu)</h2>
+                
+                <div class="triage-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mục kiểm tra</th>
+                                <th>Mô tả</th>
+                                <th>Kết quả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Periodicity</td>
+                                <td>Chu kỳ ~60s ± 10% ≥ 30 phút</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>Rare dest</td>
+                                <td>Domain/IP hiếm với endpoint</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>Kích thước ổn định</td>
+                                <td>Request/Response nhỏ và đều</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>UA/JA3 lạ</td>
+                                <td>Không thuộc baseline phần mềm doanh nghiệp</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>TI/Allowlist</td>
+                                <td>Không thuộc allowlist; TI không legit</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr class="decision-row">
+                                <td><strong>Quyết định</strong></td>
+                                <td><strong>True Positive – Beacon</strong></td>
+                                <td><strong>ESCALATE</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Khuyến nghị phòng thủ (áp dụng ngay trong lab)</h2>
+                
+                <div class="hardening-recommendations">
+                    <div class="recommendation-category">
+                        <h3>🔒 DNS Security</h3>
+                        <ul>
+                            <li>RPZ/sinkhole, block DoH lạ, monitor NXDomain burst/DGA</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🌐 Egress Policy</h3>
+                        <ul>
+                            <li>chặn ra Internet theo allowlist (proxy), TLS SNI/JA3 kiểm soát</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🛡️ EDR Hardening</h3>
+                        <ul>
+                            <li>chặn process hollowing/LOLbins, bảo vệ %AppData%, block hash</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>📧 Email Security</h3>
+                        <ul>
+                            <li>sandbox file đính kèm, cảnh báo double extension</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>📊 Baselining</h3>
+                        <ul>
+                            <li>lập UA/JA3 baseline theo asset group</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🔍 Detections</h3>
+                        <ul>
+                            <li>rule cho periodicity + low-bytes + rare dest; correlation DNS↔TLS↔HTTP</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Truy vấn mẫu mình dùng (tham khảo)</h2>
+                
+                <div class="useful-queries">
+                    <h3>KQL – phát hiện chu kỳ thô (bin time)</h3>
+                    <pre><code class="language-kql">event.dataset: "proxy" AND host.name: "THONG-LAB-WIN02" 
+AND destination.domain: "c2-edge.example.net"
+| stats count() by date_histogram(field: "@timestamp", fixed_interval: "1m")</code></pre>
+                    
+                    <h3>KQL – lọc beacon nhỏ & đều qua HTTPS</h3>
+                    <pre><code class="language-kql">event.dataset: "zeek.http" AND destination.domain: "c2-edge.example.net" 
+AND http.response.status_code: (200 or 204)
+AND bytes <= 800 AND user_agent.original: "Mozilla*OfficeSvc*"
+AND host.name: "THONG-LAB-WIN02"</code></pre>
+                    
+                    <h3>Splunk SPL – đo "nhịp" 60s</h3>
+                    <pre><code class="language-splunk">index=proxy host=THONG-LAB-WIN02 dest_domain="c2-edge.example.net"
+| bin _time span=60s
+| stats count avg(bytes_out) avg(bytes_in) by _time
+| eventstats stdev(count) as std p95(count) as p95
+| where count>=1</code></pre>
+                    
+                    <h3>Sigma (ý tưởng, rút gọn)</h3>
+                    <pre><code class="language-yaml">title: Possible C2 Beacon via Low-Size Periodic HTTPS
+logsource: category: proxy
+detection:
+  sel:
+    cs-host: "c2-edge.example.net"
+    sc-status|contains: ["200","204"]
+    bytes|lt: 800
+  condition: sel
+level: high</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <h3>💡 Mẹo quan trọng:</h3>
+                    <p>Tránh phụ thuộc 1 dấu hiệu. Kết hợp: <strong>periodicity + rare dest + low-bytes + UA/JA3 bất thường + không thuộc allowlist</strong>.</p>
+                </div>
+
+                <h2>Bài học mình rút ra</h2>
+                
+                <div class="lesson-learned">
+                    <blockquote>
+                        <p>"Beacon không ồn, nhưng đều. Chìa khóa là baseline và correlation đa nguồn. Nếu không kiểm soát egress/DNS, kẻ tấn công (attacker) sẽ luôn tìm thấy đường thì thầm ra ngoài."</p>
+                    </blockquote>
+                </div>
+
+                <h2>Kết luận</h2>
+                
+                <p>Qua bài tập này, mình đã học được rất nhiều điều về việc phát hiện và xử lý C2 beacon. Điều quan trọng nhất mình nhận ra là: <strong>Beacon detection không chỉ dựa vào một dấu hiệu duy nhất, mà cần kết hợp nhiều nguồn dữ liệu khác nhau</strong>.</p>
+                
+                <p>Việc thiết lập baseline và correlation đa nguồn là chìa khóa để phát hiện những hoạt động âm thầm như C2 beacon. Mình cũng hiểu rõ hơn về tầm quan trọng của việc kiểm soát egress traffic và DNS security.</p>
+                
+                <p>Mình hy vọng bài viết này sẽ giúp các bạn có cái nhìn thực tế về công việc Threat Hunting và C2 Detection. Nếu các bạn có câu hỏi hoặc muốn chia sẻ kinh nghiệm, hãy liên hệ với mình nhé!</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300&h=200&fit=crop" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=200&fit=crop" alt="SOC Introduction">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="soc-introduction.html">🛡️ SOC là gì? Giới thiệu đơn giản về Security Operations Center</a></h4>
+                        <p>Hướng dẫn cơ bản về trung tâm trực an ninh mạng cho người mới bắt đầu...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

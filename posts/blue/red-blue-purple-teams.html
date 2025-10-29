@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân biệt Red Team – Blue Team – Purple Team: Ai là ai trong "chiến trường" an ninh mạng? - Vũ Văn Thông</title>
+    <meta name="description" content="Hiểu rõ vai trò của Red Team, Blue Team và Purple Team trong bảo mật mạng. Hướng dẫn chi tiết từ góc nhìn của một sinh viên đang học bảo mật">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Blue Team</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        20 Tháng 1, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        12 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🔴🔵🟣 Phân biệt Red Team – Blue Team – Purple Team: Ai là ai trong "chiến trường" an ninh mạng?</h1>
+                <p class="post-subtitle">Hiểu rõ vai trò của từng "màu" trong bảo mật mạng từ góc nhìn của một sinh viên đang học bảo mật</p>
+                
+                <div class="post-tags">
+                    <span class="tag">Red Team</span>
+                    <span class="tag">Blue Team</span>
+                    <span class="tag">Purple Team</span>
+                    <span class="tag">Cybersecurity</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Khi mới bước vào thế giới bảo mật, mình thường bối rối với các thuật ngữ "Red Team", "Blue Team", "Purple Team". Họ là ai? Làm gì? Và tại sao lại quan trọng đến vậy? Sau một thời gian tìm hiểu và học hỏi từ các anh chị đi trước, mình muốn chia sẻ với các bạn những gì mình đã học được về "chiến trường" màu sắc này.</p>
+                </div>
+
+                <h2>Vì sao mình cần biết "màu" của mình?</h2>
+                
+                <p>Khi mình mới học về bảo mật, mình cũng thắc mắc tại sao phải phân biệt các "màu" này. Sau khi tìm hiểu, mình hiểu được tầm quan trọng của việc này. Hãy xem một vài con số mà mình đã tổng hợp được:</p>
+                
+                <div class="stats-highlight">
+                    <div class="stat-item">
+                        <h3>4,4 triệu USD</h3>
+                        <p>Chi phí trung bình của một vụ vi phạm dữ liệu toàn cầu năm 2025 (giảm 9% so với 2024 nhờ phát hiện & cô lập nhanh hơn)</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>97%</h3>
+                        <p>Tổ chức gặp sự cố liên quan AI thiếu kiểm soát truy cập AI</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>44%</h3>
+                        <p>Các vụ việc có liên quan đến ransomware</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>60%</h3>
+                        <p>Sự cố bảo mật có yếu tố con người</p>
+                    </div>
+                </div>
+                
+                <p><strong>Thông điệp rõ ràng:</strong> Con người + thông tin đăng nhập + lỗ hổng biên là combo "đường vào" của attacker. Red–Blue–Purple phối hợp tốt sẽ giảm MTTD/MTTR và tiền bạc mất mát.</p>
+
+                <h2>Định nghĩa ngắn gọn (chuẩn, dễ nhớ)</h2>
+                
+                <div class="team-definitions">
+                    <div class="team-card red-team">
+                        <div class="team-icon">🔴</div>
+                        <h3>Red Team</h3>
+                        <p>Nhóm <strong>giả lập đối thủ</strong> được ủy quyền để kiểm chứng năng lực phòng thủ của tổ chức bằng cách mô phỏng tấn công thực chiến.</p>
+                        <div class="team-focus">
+                            <strong>Mục tiêu:</strong> Chứng minh rủi ro qua mô phỏng tấn công có mục tiêu
+                        </div>
+                    </div>
+                    
+                    <div class="team-card blue-team">
+                        <div class="team-icon">🔵</div>
+                        <h3>Blue Team</h3>
+                        <p>Nhóm <strong>phòng thủ vận hành</strong>—giám sát, phát hiện, ứng phó, điều tra số và phục hồi hệ thống (SOC/IR/Hunting/Hardening).</p>
+                        <div class="team-focus">
+                            <strong>Mục tiêu:</strong> Phát hiện sớm, chặn nhanh, phục hồi an toàn
+                        </div>
+                    </div>
+                    
+                    <div class="team-card purple-team">
+                        <div class="team-icon">🟣</div>
+                        <h3>Purple Team</h3>
+                        <p><strong>Cơ chế/nhóm phối hợp</strong> Red–Blue theo MITRE ATT&CK, test lặp lại theo kịch bản để biến "đòn tấn công" thành bài học đo được.</p>
+                        <div class="team-focus">
+                            <strong>Mục tiêu:</strong> Kết nối Red–Blue để đo & cải tiến liên tục
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Bảng so sánh "cắn một miếng là hiểu"</h2>
+                
+                <div class="table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Tiêu chí</th>
+                                <th class="red-header">Red Team</th>
+                                <th class="blue-header">Blue Team</th>
+                                <th class="purple-header">Purple Team</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mục tiêu</strong></td>
+                                <td>Chứng minh rủi ro qua mô phỏng tấn công có mục tiêu</td>
+                                <td>Phát hiện sớm, chặn nhanh, phục hồi an toàn</td>
+                                <td>Kết nối Red–Blue để đo & cải tiến liên tục</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sản phẩm</strong></td>
+                                <td>Báo cáo đường đi (kill chain), bằng chứng chiếm quyền, khuyến nghị</td>
+                                <td>Rule/use-case SIEM, playbook IR, dashboard MTTD/MTTR</td>
+                                <td>Bản đồ ATT&CK coverage, bài test lặp lại, backlog cải tiến</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kỹ năng</strong></td>
+                                <td>Adversary emulation, OPSEC, social engineering</td>
+                                <td>Detection engineering, threat hunting, IR, forensics</td>
+                                <td>Facilitation, ATT&CK mapping, đo hiệu quả</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Công cụ</strong></td>
+                                <td>Caldera/Sliver/Kali, phishing kit</td>
+                                <td>SIEM/EDR/NDR, SOAR, UEBA</td>
+                                <td>Atomic Red Team, Sigma rules</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Mini-sơ đồ "ai làm gì"</h2>
+                
+                <div class="workflow-diagram">
+                    <pre><code class="language-text">Goal-based attack scenario
+        |
+     [RED]  → Thực thi TTP (ATT&CK), giữ OPSEC
+        |
+   [PURPLE] → Map ATT&CK | đặt chỉ số | lên kịch bản test
+        |
+     [BLUE] → Rule/Use case | Triage | Contain | IR/Forensics
+        |
+   [PURPLE] → Đo coverage & time-to-alert | mở backlog cải tiến</code></pre>
+                </div>
+
+                <h2>Ví dụ thực tế: "Một ngày màu tím"</h2>
+                
+                <p><strong>Kịch bản:</strong> Threat intel cho thấy gia tăng infostealer + credential dump → rủi ro account takeover và email takeover.</p>
+                
+                <div class="scenario-steps">
+                    <div class="step red-step">
+                        <h4>🔴 Red Team mô phỏng:</h4>
+                        <ul>
+                            <li>Đánh cắp cookie/trình duyệt</li>
+                            <li>Reuse session/token</li>
+                            <li>Chiếm email/app</li>
+                            <li>Leo thang nội bộ (theo ATT&CK)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step blue-step">
+                        <h4>🔵 Blue Team bật detection:</h4>
+                        <ul>
+                            <li>Rule phát hiện đăng nhập bất thường</li>
+                            <li>Forwarding rule lạ</li>
+                            <li>Impossible travel</li>
+                            <li>Login không MFA</li>
+                            <li>Cảnh báo cho thiết bị biên & lỗ hổng công khai</li>
+                            <li>Theo dõi ransomware (có mặt trong 44% case)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step purple-step">
+                        <h4>🟣 Purple Team điều phối & đo:</h4>
+                        <ul>
+                            <li>Chạy Atomic Red Team cho các kỹ thuật tương ứng</li>
+                            <li>Ghi thời gian đến cảnh báo</li>
+                            <li>Nếu miss → chỉnh Sigma rules rồi re-test đến khi pass</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Kết quả kỳ vọng:</h3>
+                <ul>
+                    <li>Time-to-alert < 3 phút</li>
+                    <li>Containment tự động qua SOAR cho tài khoản/địa chỉ IP/ASN</li>
+                    <li>Post-incident: bật phishing-resistant MFA/passkeys, tighten session mgmt, gỡ OAuth app lạ</li>
+                </ul>
+
+                <h2>Checklist 30 ngày (hợp cho sinh viên)</h2>
+                
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="use-case" checked>
+                        <label for="use-case"><strong>Chọn 1 use case:</strong> Credential abuse vào SaaS/Email</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="sigma-rules" checked>
+                        <label for="sigma-rules"><strong>Viết 3 Sigma rules:</strong> Login bất thường, impossible travel, suspicious forwarding. Đưa vào SIEM test dữ liệu mẫu</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="atomic-test" checked>
+                        <label for="atomic-test"><strong>Dùng Atomic Red Team/MITRE Caldera</strong> chạy test TTP tương ứng → chụp ảnh log → alert</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="purple-report" checked>
+                        <label for="purple-report"><strong>Lập Purple Report 1–2 trang:</strong> Mục tiêu → test → kết quả → cải tiến → re-test (đính timeline & số đo)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="linkedin-post" checked>
+                        <label for="linkedin-post"><strong>Đăng LinkedIn:</strong> 1 ảnh dashboard + 3 số liệu nổi bật (ransomware 44%, human ~60%, third-party 30%)</label>
+                    </div>
+                </div>
+
+                <h2>Q&A nhanh cho phần bình luận trên LinkedIn</h2>
+                
+                <div class="qa-section">
+                    <div class="qa-item">
+                        <h4>❓ Red Team có khác pentest?</h4>
+                        <p><strong>Có.</strong> Pentest thường phạm vi hẹp (tìm lỗ hổng kỹ thuật); Red Team đi theo mục tiêu kinh doanh (ví dụ: exfiltrate dữ liệu), có thể thử cả quy trình & con người.</p>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <h4>❓ Blue Team chỉ là SOC?</h4>
+                        <p><strong>SOC chỉ là một phần</strong> của Blue. Blue còn bao gồm IR/forensics/hardening/hunting—tức vận hành phòng thủ end-to-end.</p>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <h4>❓ Purple Team có "đánh" không?</h4>
+                        <p><strong>Purple không thay</strong> Red/Blue; Purple kết nối và biến mỗi đòn tấn công thành bài kiểm tra có số đo để nâng cấp detection.</p>
+                    </div>
+                </div>
+
+                <h2>Lộ trình học nhanh (theo "màu")</h2>
+                
+                <div class="learning-paths">
+                    <div class="path-card red-path">
+                        <h3>🔴 Muốn vào Red Team:</h3>
+                        <ul>
+                            <li>Linux cơ bản, web/app, AD, OPSEC</li>
+                            <li>Học adversary emulation (Caldera)</li>
+                            <li>Viết báo cáo tập trung tác động đến business</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="path-card blue-path">
+                        <h3>🔵 Hợp Blue Team:</h3>
+                        <ul>
+                            <li>Log 101 (Windows/Linux/HTTP/Auth)</li>
+                            <li>Detection engineering</li>
+                            <li>IR, luyện viết Sigma rules</li>
+                            <li>Dựng lab SIEM mini</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="path-card purple-path">
+                        <h3>🟣 Thích Purple Team:</h3>
+                        <ul>
+                            <li>Học ATT&CK mapping</li>
+                            <li>Facilitation, số đo (time-to-detect, coverage %)</li>
+                            <li>Set lịch purple day hàng tháng cùng Red/Blue</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Kết: Bạn chọn màu nào?</h2>
+                
+                <p>Sau khi tìm hiểu về các team này, mình đang nghiêng về <strong>Purple</strong>—vì mình cảm thấy việc "test xong → rule sáng → rủi ro giảm thấy rõ" rất thú vị và có ý nghĩa 😄</p>
+                
+                <p>Còn các bạn thì sao? <strong>Red</strong> để "đột nhập có mục tiêu", <strong>Blue</strong> để "giữ thành vững chắc", hay <strong>Purple</strong> để "đo lường & cải tiến" liên tục?</p>
+                
+                <div class="call-to-action">
+                    <h3>👉 Call to action cho LinkedIn:</h3>
+                    <p>Hãy bình luận <strong>màu của bạn</strong> + <strong>1 kỹ năng</strong> sẽ luyện trong 30 ngày tới. Nếu cần, mình có thể chia sẻ <strong>template Purple Report</strong> + <strong>3 Sigma rules</strong> mẫu để các bạn dùng ngay.</p>
+                </div>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300&h=200&fit=crop" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&h=200&fit=crop" alt="Cloud Security">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="#">☁️ Cloud Security Best Practices</a></h4>
+                        <p>Các thực hành tốt nhất để bảo mật môi trường cloud...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

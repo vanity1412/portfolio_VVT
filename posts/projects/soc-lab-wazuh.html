@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tự xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox - Vũ Văn Thông</title>
+    <meta name="description" content="Hướng dẫn chi tiết từng bước để xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox. Phù hợp cho người mới bắt đầu học an ninh mạng.">
+    <meta name="keywords" content="SOC, Wazuh, VirtualBox, lab security, SIEM, XDR, blue team, cybersecurity">
+    <meta name="author" content="Văn Thông">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://vuvanthong.com/posts/projects/soc-lab-wazuh.html">
+    <meta property="og:title" content="Tự xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox">
+    <meta property="og:description" content="Hướng dẫn chi tiết từng bước để xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox. Phù hợp cho người mới bắt đầu học an ninh mạng.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&h=630&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://vuvanthong.com/posts/projects/soc-lab-wazuh.html">
+    <meta property="twitter:title" content="Tự xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox">
+    <meta property="twitter:description" content="Hướng dẫn chi tiết từng bước để xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox. Phù hợp cho người mới bắt đầu học an ninh mạng.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&h=630&fit=crop">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post -->
+    <section class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <div class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html">
+                        <i class="fas fa-home"></i>
+                        Blog
+                    </a>
+                    <span style="margin: 0 0.5rem;">/</span>
+                    <a href="../../blog.html">Projects</a>
+                    <span style="margin: 0 0.5rem;">/</span>
+                    <span>SOC Lab với Wazuh</span>
+                </div>
+                
+                <h1 class="post-title">🚀 Tự xây dựng <strong>lab SOC mini</strong> tại nhà với <strong>Wazuh</strong> và <strong>VirtualBox</strong></h1>
+                
+                <p class="post-subtitle">
+                    Siêu chi tiết, từng bước - Viết cho người mới bắt đầu, dễ làm theo, có lệnh "copy–paste", kiểm thử an toàn, và mục mở rộng cho người học an ninh mạng.
+                </p>
+                
+                <div class="post-meta">
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        28 Tháng 10, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        25 phút đọc
+                    </span>
+                    <span class="post-author">
+                        <i class="far fa-user"></i>
+                        Văn Thông
+                    </span>
+                </div>
+            </div>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <!-- Table of Contents -->
+                <div class="post-excerpt">
+                    <h3><i class="fas fa-list"></i> Mục lục</h3>
+                    <ol>
+                        <li><a href="#soc-la-gi">SOC là gì? Vì sao chọn Wazuh?</a></li>
+                        <li><a href="#kien-truc">Kiến trúc lab & sơ đồ mạng</a></li>
+                        <li><a href="#chuan-bi">Chuẩn bị: phần cứng, phần mềm, file ISO</a></li>
+                        <li><a href="#mang-vbox">Tạo mạng trong VirtualBox (Bridged vs NAT + Host-only)</a></li>
+                        <li><a href="#vm-wazuh">Tạo VM Wazuh Server (Ubuntu)</a></li>
+                        <li><a href="#cai-wazuh">Cài Wazuh all-in-one (Server + Indexer + Dashboard)</a></li>
+                        <li><a href="#vm-windows">Tạo VM Windows Endpoint</a></li>
+                        <li><a href="#sysmon">Cài Sysmon và cấu hình log nâng cao (Windows)</a></li>
+                        <li><a href="#agent-win">Cài Wazuh Agent trên Windows & kết nối về Server</a></li>
+                        <li><a href="#kiem-thu">Kiểm thử SOC mini: 3 bài test an toàn</a></li>
+                        <li><a href="#best-practices">Bảo mật & thực hành tốt (best practices)</a></li>
+                        <li><a href="#troubleshooting">Khắc phục sự cố thường gặp</a></li>
+                        <li><a href="#mo-rong">Mở rộng lab</a></li>
+                        <li><a href="#ports">Phụ lục A: Bảng cổng dịch vụ Wazuh</a></li>
+                        <li><a href="#cheatsheet">Phụ lục B: Cheat sheet lệnh</a></li>
+                    </ol>
+                </div>
+
+                <!-- Section 1: SOC là gì? -->
+                <h2 id="soc-la-gi">1) SOC là gì? Vì sao chọn Wazuh?</h2>
+                
+                <p><strong>SOC (Security Operations Center)</strong> là "trung tâm điều hành an ninh", nơi bạn <strong>thu thập log</strong>, <strong>phát hiện bất thường</strong>, <strong>cảnh báo</strong> và <strong>điều tra sự cố</strong>.</p>
+                
+                <p><strong>Wazuh</strong> là nền tảng <strong>mã nguồn mở</strong> cho XDR/SIEM: dễ dựng lab, tài liệu đầy đủ, giao diện web trực quan, agent nhẹ, hỗ trợ Windows/Linux/macOS. Với lab nhỏ, bạn dùng <strong>all‑in‑one</strong> (Server + Indexer + Dashboard chung một VM) là đủ.</p>
+
+                <!-- Section 2: Kiến trúc lab -->
+                <h2 id="kien-truc">2) Kiến trúc lab & sơ đồ mạng</h2>
+                
+                <p><strong>Mục tiêu:</strong> 1 máy chủ <strong>Wazuh</strong> (Ubuntu) giám sát 1 máy <strong>Windows</strong> (endpoint).</p>
+                
+                <div class="workflow-diagram">
+[Host laptop/PC]
+    │
+    ├── (VirtualBox)
+    │     ├── VM #1: Ubuntu Server 22.04  →  Wazuh all-in-one
+    │     └── VM #2: Windows 10/11        →  Endpoint + Wazuh Agent + Sysmon
+    │
+    └── Mạng: Bridged  (đơn giản)  hoặc  NAT + Host‑only (cô lập lab)
+                </div>
+                
+                <p><strong>Cổng mặc định cần dùng</strong> (xem Phụ lục): 1514/TCP (agent↔server), 1515/TCP (enrollment), 55000/TCP (Wazuh API), 443/TCP (Dashboard).</p>
+
+                <!-- Section 3: Chuẩn bị -->
+                <h2 id="chuan-bi">3) Chuẩn bị: phần cứng, phần mềm, file ISO</h2>
+                
+                <h3>Phần cứng đề xuất (lab nhỏ: ≤5 agent)</h3>
+                <ul>
+                    <li>CPU 4 core+</li>
+                    <li>RAM 12–16 GB (tối thiểu có thể 8 GB nhưng sẽ chật)</li>
+                    <li>SSD trống ≥ 60–100 GB</li>
+                </ul>
+
+                <h3>Phần mềm cần</h3>
+                <ul>
+                    <li><strong>VirtualBox</strong> (kèm Extension Pack – tuỳ chọn).</li>
+                    <li><strong>Ubuntu Server 22.04/24.04 ISO</strong> (64‑bit).</li>
+                    <li><strong>Windows 10/11 ISO</strong> (bản dùng thử/học tập tuỳ bạn).</li>
+                    <li><strong>Wazuh install script</strong> (trợ lý cài all‑in‑one).</li>
+                    <li><strong>Sysmon</strong> (bộ Sysinternals) + file cấu hình <strong>sysmonconfig</strong> phổ biến.</li>
+                </ul>
+                
+                <div class="post-excerpt">
+                    <strong>Mẹo:</strong> Tải trước các ISO để tiết kiệm thời gian khi dựng lab. Đảm bảo BIOS/UEFI đã bật <strong>Virtualization</strong> (Intel VT‑x/AMD‑V).
+                </div>
+
+                <!-- Section 4: Tạo mạng VirtualBox -->
+                <h2 id="mang-vbox">4) Tạo mạng trong VirtualBox (Bridged vs NAT + Host‑only)</h2>
+                
+                <p>Bạn có 2 lựa chọn đơn giản:</p>
+
+                <h3>Lựa chọn A — <strong>Bridged Adapter (dễ nhất)</strong></h3>
+                <ul>
+                    <li>Mỗi VM nhận <strong>IP trong cùng LAN</strong> với máy thật → Laptop/PC và 2 VM "nhìn thấy" nhau trực tiếp.</li>
+                    <li>Chỉ cần chọn <strong>Network > Adapter 1 > Attached to: Bridged Adapter</strong> cho từng VM. Chọn đúng card mạng đang dùng (Wi‑Fi/Ethernet).</li>
+                </ul>
+
+                <h3>Lựa chọn B — <strong>NAT + Host‑only (an toàn/cô lập hơn)</strong></h3>
+                <ul>
+                    <li><strong>NAT</strong> cho Internet outbound; <strong>Host‑only</strong> để 2 VM nói chuyện với nhau và với host.</li>
+                    <li>Bước gợi ý:
+                        <ol>
+                            <li>VirtualBox <strong>File > Host Network Manager</strong> → Create <strong>Host‑only</strong> <code>vboxnet0</code> (DHCP bật).</li>
+                            <li>Với mỗi VM: Adapter 1 = <strong>NAT</strong>; Adapter 2 = <strong>Host‑only</strong> (<code>vboxnet0</code>).</li>
+                            <li>Dùng IP <strong>Host‑only</strong> để Wazuh và Windows trao đổi.</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <div class="post-excerpt">
+                    <strong>Khuyến nghị:</strong> Nếu bạn viết blog cho người mới, <strong>Bridged</strong> là con đường ít rắc rối nhất. Nếu bạn muốn lab kín, chọn <strong>NAT+Host‑only</strong>.
+                </div>
+
+                <!-- Section 5: Tạo VM Wazuh -->
+                <h2 id="vm-wazuh">5) Tạo VM <strong>Wazuh Server</strong> (Ubuntu)</h2>
+
+                <h3>Bước 5.1 — Tạo VM mới</h3>
+                <ol>
+                    <li><strong>New</strong> → Name: <code>wazuh-server</code></li>
+                    <li>Type: <strong>Linux</strong>, Version: <strong>Ubuntu (64‑bit)</strong></li>
+                    <li>Memory: <strong>4096–8192 MB</strong> (tuỳ RAM máy bạn)</li>
+                    <li>CPU: <strong>2 vCPU</strong> (tốt hơn: 4 vCPU)</li>
+                    <li>Disk: <strong>VDI</strong>, <strong>Dynamically allocated</strong>, size <strong>50–100 GB</strong></li>
+                    <li><strong>Network</strong>: chọn theo mục 4 (Bridged <em>hoặc</em> NAT+Host‑only)</li>
+                    <li>Mount ISO Ubuntu vào <strong>Storage > Controller: IDE/SATA > Choose disk</strong></li>
+                </ol>
+
+                <h3>Bước 5.2 — Cài Ubuntu tối giản</h3>
+                <ul>
+                    <li>Chọn <strong>Install Ubuntu Server</strong></li>
+                    <li>Ngôn ngữ/keyboard tuỳ bạn</li>
+                    <li><strong>Hostname:</strong> <code>wazuh-server</code></li>
+                    <li>Tạo user <code>wazuhadmin</code> (ghi nhớ mật khẩu)</li>
+                    <li><strong>OpenSSH server:</strong> <em>Enable</em> (để SSH tiện quản trị)</li>
+                    <li>Partition: <strong>Use entire disk</strong> (mặc định)</li>
+                </ul>
+
+                <h3>Bước 5.3 — Cập nhật & tiện ích cơ bản</h3>
+                <p>Đăng nhập rồi chạy:</p>
+                <pre><code class="language-bash">sudo apt update && sudo apt -y upgrade
+sudo apt -y install curl tar ufw jq</code></pre>
+
+                <h3>Bước 5.4 — (Tuỳ chọn) IP tĩnh cho VM</h3>
+                <p>Nếu bạn dùng <strong>Host‑only</strong> hoặc muốn IP cố định:</p>
+                <pre><code class="language-bash">ip a   # xem tên interface, ví dụ: enp0s3
+# chỉnh netplan:
+sudo nano /etc/netplan/01-netcfg.yaml
+# ví dụ mẫu:
+# network:
+#   version: 2
+#   ethernets:
+#     enp0s3:
+#       addresses: [192.168.56.10/24]
+#       gateway4: 192.168.56.1
+#       nameservers:
+#         addresses: [1.1.1.1,8.8.8.8]
+
+sudo netplan apply</code></pre>
+
+                <!-- Section 6: Cài Wazuh -->
+                <h2 id="cai-wazuh">6) Cài <strong>Wazuh all‑in‑one</strong> (Server + Indexer + Dashboard)</h2>
+                
+                <div class="post-excerpt">
+                    <strong>Cách nhanh, gọn cho lab:</strong> dùng <strong>installation assistant</strong>.
+                </div>
+
+                <h3>Bước 6.1 — Chạy script cài đặt</h3>
+                <pre><code class="language-bash"># Tải và cài đặt (all‑in‑one)
+curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a</code></pre>
+                
+                <p>Kết thúc, màn hình in tóm tắt đại loại như:</p>
+                <pre><code class="language-bash">INFO: You can access the web interface https://&lt;WAZUH_DASHBOARD_IP_ADDRESS&gt;
+User: admin
+Password: &lt;ADMIN_PASSWORD&gt;</code></pre>
+
+                <h3>Bước 6.2 — Truy cập Dashboard</h3>
+                <ul>
+                    <li>Trên <strong>máy thật</strong>, mở trình duyệt: <code>https://&lt;IP_WAZUH&gt;</code></li>
+                    <li>Lần đầu có cảnh báo chứng chỉ tự ký → <strong>Accept/Continue</strong>.</li>
+                    <li>Đăng nhập <code>admin</code> / <code>&lt;ADMIN_PASSWORD&gt;</code></li>
+                    <li>(Tuỳ chọn) In ra các mật khẩu thành phần:</li>
+                </ul>
+                <pre><code class="language-bash">sudo tar -O -xvf wazuh-install-files.tar \
+  wazuh-install-files/wazuh-passwords.txt</code></pre>
+
+                <h3>Bước 6.3 — Mở cổng tường lửa (nếu bật UFW)</h3>
+                <pre><code class="language-bash">sudo ufw allow 443/tcp     # Dashboard
+sudo ufw allow 1514/tcp    # Agent -> Server
+sudo ufw allow 1515/tcp     # Enrollment
+sudo ufw allow 55000/tcp    # Wazuh API
+sudo ufw reload</code></pre>
+
+                <h3>Bước 6.4 — Kiểm tra dịch vụ</h3>
+                <pre><code class="language-bash">sudo systemctl status wazuh-manager
+sudo systemctl status wazuh-dashboard
+sudo systemctl status wazuh-indexer
+# hoặc kiểm tra nhanh cổng lắng nghe
+sudo ss -tulpn | egrep ':443|:1514|:1515|:55000|:9200'</code></pre>
+                
+                <div class="post-excerpt">
+                    <strong>Ghi chú:</strong> Muốn gỡ cài đặt, chạy lại script với <code>-u</code>. Với lab, bạn có thể <strong>snapshot VM</strong> sau khi cài xong để dễ quay lại trạng thái sạch.
+                </div>
+
+                <!-- Section 7: Tạo VM Windows -->
+                <h2 id="vm-windows">7) Tạo VM <strong>Windows Endpoint</strong></h2>
+
+                <h3>Bước 7.1 — Tạo VM</h3>
+                <ol>
+                    <li><strong>New</strong> → Name: <code>win-agent</code></li>
+                    <li>Type: <strong>Windows</strong>, Version: <strong>Windows 10/11 (64‑bit)</strong></li>
+                    <li>Memory: <strong>3072–4096 MB</strong></li>
+                    <li>CPU: <strong>2 vCPU</strong></li>
+                    <li>Disk: <strong>VDI</strong>, <strong>Dynamically allocated</strong>, size <strong>40–60 GB</strong></li>
+                    <li><strong>Network</strong>: chọn giống với <code>wazuh-server</code> (Bridged <em>hoặc</em> NAT+Host‑only)</li>
+                    <li>Mount ISO Windows → cài đặt như bình thường</li>
+                </ol>
+
+                <h3>Bước 7.2 — Cấu hình nhanh sau cài</h3>
+                <ul>
+                    <li>Đặt hostname: <code>win-agent</code></li>
+                    <li>Cập nhật Windows Update</li>
+                    <li>Bật <strong>Remote Desktop</strong> (tuỳ nhu cầu)</li>
+                    <li>Cài <strong>7‑Zip</strong>/<strong>PowerShell 7</strong> (tuỳ thích).</li>
+                    <li>Kiểm tra IP: <code>ipconfig</code></li>
+                </ul>
+
+                <!-- Section 8: Cài Sysmon -->
+                <h2 id="sysmon">8) Cài <strong>Sysmon</strong> và cấu hình log nâng cao (Windows)</h2>
+                
+                <div class="post-excerpt">
+                    <strong>Sysmon</strong> ghi nhận sự kiện chi tiết (tạo process, kết nối mạng, thay đổi registry …) vào Windows Event Log → Wazuh Agent sẽ thu thập về trung tâm.
+                </div>
+
+                <h3>Bước 8.1 — Cài Sysmon</h3>
+                <ol>
+                    <li>Tải file <strong>Sysmon</strong> (bản x64) và giải nén, ví dụ <code>C:\Tools\Sysmon\</code></li>
+                    <li>Tải file cấu hình mẫu phổ biến <code>sysmonconfig-export.xml</code> (đã lọc nhiễu tốt) và để cùng thư mục.</li>
+                </ol>
+
+                <h3>Bước 8.2 — Cài với cấu hình</h3>
+                <p>Mở <strong>PowerShell (Run as Administrator)</strong>:</p>
+                <pre><code class="language-powershell">Set-Location C:\Tools\Sysmon
+.\Sysmon64.exe -i .\sysmonconfig-export.xml -accepteula</code></pre>
+                
+                <p>Xác minh log đã xuất hiện: <strong>Event Viewer</strong> → <em>Applications and Services Logs</em> → <strong>Microsoft → Windows → Sysmon → Operational</strong>.</p>
+                
+                <div class="post-excerpt">
+                    <strong>Mẹo:</strong> Có thể cập nhật cấu hình Sysmon khi cần:
+                    <br><code>.\Sysmon64.exe -c .\sysmonconfig-export.xml</code>
+                </div>
+
+                <!-- Section 9: Cài Wazuh Agent -->
+                <h2 id="agent-win">9) Cài <strong>Wazuh Agent</strong> trên Windows & kết nối về Server</h2>
+
+                <h3>Cách 1 — Dùng lệnh im lặng (nhanh gọn)</h3>
+                <ol>
+                    <li>Tải file MSI phù hợp, ví dụ: <code>wazuh-agent-4.14.0-1.msi</code></li>
+                    <li>Mở <strong>PowerShell (Admin)</strong> trong thư mục chứa file và chạy:</li>
+                </ol>
+                <pre><code class="language-powershell">.\wazuh-agent-4.14.0-1.msi /q `
+  WAZUH_MANAGER="&lt;IP_WAZUH_SERVER&gt;" `
+  WAZUH_AGENT_NAME="win-agent"
+
+Start-Service wazuhsvc</code></pre>
+
+                <h3>Cách 2 — Làm từ <strong>Wazuh Dashboard</strong> (khuyên dùng cho người mới)</h3>
+                <ul>
+                    <li>Vào Dashboard → <strong>Agents</strong> → <strong>Deploy new agent</strong> → chọn <strong>Windows</strong></li>
+                    <li>Dashboard sẽ tạo sẵn <strong>lệnh cài</strong> (kèm tham số manager, agent name, group, secret…) → <strong>copy & chạy</strong> trên Windows</li>
+                    <li>Đợi vài chục giây, agent sẽ xuất hiện trạng thái <strong>Active</strong> trong Dashboard.</li>
+                </ul>
+
+                <h3>Nếu ghi danh (enroll) lỗi</h3>
+                <ul>
+                    <li>Kiểm tra firewall trên <code>wazuh-server</code> đã mở <strong>1515/TCP</strong> và/hoặc <strong>55000/TCP</strong></li>
+                    <li>Kiểm tra agent có <strong>ping</strong>/kết nối TCP tới server không: <code>Test-NetConnection &lt;IP&gt; -Port 1514</code></li>
+                    <li>Xem log trên Windows: <code>C:\Program Files (x86)\ossec-agent\ossec.log</code></li>
+                </ul>
+
+                <!-- Section 10: Kiểm thử -->
+                <h2 id="kiem-thu">10) Kiểm thử SOC mini: 3 bài test an toàn</h2>
+                
+                <div class="post-excerpt">
+                    <strong>Mục tiêu:</strong> thấy log/cảnh báo <strong>chảy về</strong> Wazuh và biết <strong>cách truy vấn</strong>.
+                </div>
+
+                <h3>Test A — Tạo process lạ (do Sysmon ghi nhận)</h3>
+                <p>Trên Windows (PowerShell):</p>
+                <pre><code class="language-powershell"># Tạo một script .bat đơn giản rồi chạy
+"start calc" | Out-File $env:TEMP\demo.bat -Encoding ascii
+Start-Process $env:TEMP\demo.bat</code></pre>
+                <p><strong>Kỳ vọng:</strong> Sysmon <strong>Event ID 1 (Process Create)</strong> xuất hiện, Wazuh nhận log và hiển thị trong Dashboard.</p>
+
+                <h3>Test B — Sự kiện đăng nhập thất bại (Windows Security 4625)</h3>
+                <ul>
+                    <li>Khoá màn hình và nhập <strong>sai mật khẩu</strong> 1–2 lần (an toàn).</li>
+                    <li>Mở Dashboard → <strong>Security events</strong> → lọc theo <code>agent.name: "win-agent"</code> và từ khoá <code>4625</code>.</li>
+                </ul>
+
+                <h3>Test C — Tạo file đáng ngờ (vô hại)</h3>
+                <pre><code class="language-powershell"># Tạo một file .ps1 ngắn và thực thi (chỉ in chuỗi)
+"Write-Output 'hello world'" | Out-File $env:TEMP\hello.ps1 -Encoding ascii
+powershell.exe -ExecutionPolicy Bypass -File $env:TEMP\hello.ps1</code></pre>
+                <p><strong>Kỳ vọng:</strong> Có sự kiện <strong>Process Create</strong> và <strong>CommandLine</strong> chứa <code>ExecutionPolicy Bypass</code> (mẫu hay dùng trong tấn công), dễ thấy trong log để minh hoạ <strong>hành vi</strong>.</p>
+                
+                <div class="post-excerpt">
+                    <strong>Lưu ý đạo đức:</strong> Các bài test trên <strong>vô hại</strong> và chỉ để học tập. Không chạy mã độc. Không thử nghiệm trên máy không thuộc quyền sở hữu của bạn.
+                </div>
+
+                <!-- Section 11: Best Practices -->
+                <h2 id="best-practices">11) Bảo mật & thực hành tốt</h2>
+                <ul>
+                    <li><strong>Cô lập lab</strong>: Dùng <strong>NAT+Host‑only</strong> nếu không cần truy cập từ LAN ngoài.</li>
+                    <li><strong>Snapshot</strong> sau mỗi mốc: Sau khi cài Ubuntu, sau khi cài Wazuh, sau khi thêm agent.</li>
+                    <li><strong>Đổi mật khẩu admin</strong> Dashboard ngay lần đầu.</li>
+                    <li><strong>UFW</strong>: Chỉ mở cổng cần thiết (443, 1514, 1515, 55000).</li>
+                    <li><strong>DNS</strong> nội bộ: Tạo bản ghi <code>wazuh.lab</code> trỏ tới VM để dễ nhớ.</li>
+                    <li><strong>Sao lưu</strong>: Giữ file <code>wazuh-install-files.tar</code> (chứa mật khẩu) ở nơi an toàn.</li>
+                    <li><strong>Cập nhật có kiểm soát</strong>: Với lab, tránh update lớn đột ngột.</li>
+                </ul>
+
+                <!-- Section 12: Troubleshooting -->
+                <h2 id="troubleshooting">12) Khắc phục sự cố thường gặp</h2>
+
+                <h3>1) Dashboard không truy cập được</h3>
+                <ul>
+                    <li><code>sudo systemctl status wazuh-dashboard</code> (Ubuntu)</li>
+                    <li>Kiểm tra cổng <strong>443</strong> lắng nghe: <code>ss -tulpn | grep :443</code></li>
+                    <li>Trình duyệt báo chứng chỉ: Chọn <em>Advanced → Continue</em> (lab); hoặc triển khai Let's Encrypt nếu cần truy cập từ ngoài.</li>
+                </ul>
+
+                <h3>2) Agent Windows không "Active"</h3>
+                <ul>
+                    <li>Kiểm tra port <strong>1514/TCP</strong> từ Windows: <code>Test-NetConnection &lt;IP_WAZUH&gt; -Port 1514</code></li>
+                    <li>Xem log: <code>C:\Program Files (x86)\ossec-agent\ossec.log</code></li>
+                    <li>Kiểm tra đồng hồ hệ thống (NTP) – lệch giờ lớn có thể gây rắc rối.</li>
+                </ul>
+
+                <h3>3) Enrollment thất bại</h3>
+                <ul>
+                    <li>Mở <strong>1515/TCP</strong> (auto-enrollment) hoặc <strong>55000/TCP</strong> (qua API).</li>
+                    <li>Thử cách triển khai từ Dashboard → Deploy new agent (điền đúng IP).</li>
+                </ul>
+
+                <h3>4) Chậm/treo</h3>
+                <ul>
+                    <li>Giảm <strong>Retention</strong> trên Dashboard, tăng RAM/CPU cho VM Wazuh.</li>
+                    <li>Dừng bớt dịch vụ Windows nền.</li>
+                </ul>
+
+                <!-- Section 13: Mở rộng -->
+                <h2 id="mo-rong">13) Mở rộng lab</h2>
+                <ul>
+                    <li>Thêm <strong>Linux agent</strong> (Ubuntu/Debian) và <strong>macOS agent</strong>.</li>
+                    <li>Tích hợp <strong>Windows Defender</strong> log, <strong>PowerShell logging</strong>, <strong>Audit Policy</strong> nâng cao.</li>
+                    <li>Xây <strong>dashboard tuỳ biến</strong> theo MITRE ATT&CK.</li>
+                    <li>Thêm công cụ mạng như <strong>Suricata</strong>/<strong>Zeek</strong> (IDS) để phong phú nguồn log.</li>
+                </ul>
+
+                <!-- Section 14: Phụ lục A -->
+                <h2 id="ports">14) Phụ lục A — Bảng cổng dịch vụ Wazuh (mặc định, lab)</h2>
+                
+                <div class="table-container">
+                    <table class="severity-table">
+                        <thead>
+                            <tr>
+                                <th>Thành phần</th>
+                                <th>Cổng</th>
+                                <th>Giao thức</th>
+                                <th>Mục đích</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Wazuh Server</td>
+                                <td>1514</td>
+                                <td>TCP</td>
+                                <td>Agent connection service</td>
+                            </tr>
+                            <tr>
+                                <td>Wazuh Server</td>
+                                <td>1515</td>
+                                <td>TCP</td>
+                                <td>Agent enrollment</td>
+                            </tr>
+                            <tr>
+                                <td>Wazuh Server</td>
+                                <td>1516</td>
+                                <td>TCP</td>
+                                <td>Cluster daemon (không dùng trong lab đơn)</td>
+                            </tr>
+                            <tr>
+                                <td>Wazuh Server</td>
+                                <td>55000</td>
+                                <td>TCP</td>
+                                <td>Wazuh RESTful API</td>
+                            </tr>
+                            <tr>
+                                <td>Wazuh Indexer</td>
+                                <td>9200</td>
+                                <td>TCP</td>
+                                <td>API/ingest (nội bộ)</td>
+                            </tr>
+                            <tr>
+                                <td>Wazuh Dashboard</td>
+                                <td>443</td>
+                                <td>TCP</td>
+                                <td>Giao diện web</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="post-excerpt">
+                    <strong>Ghi chú:</strong> Bạn không cần mở 9200 ra ngoài. Với lab, chỉ cần 443/1514/1515/55000.
+                </div>
+
+                <!-- Section 15: Phụ lục B -->
+                <h2 id="cheatsheet">15) Phụ lục B — Cheat sheet lệnh</h2>
+
+                <h3>Trên Ubuntu (Wazuh server):</h3>
+                <pre><code class="language-bash"># Cập nhật hệ thống
+sudo apt update && sudo apt -y upgrade
+
+# Cài Wazuh all-in-one
+curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a
+
+# In mật khẩu các thành phần
+sudo tar -O -xvf wazuh-install-files.tar \
+  wazuh-install-files/wazuh-passwords.txt
+
+# Mở cổng UFW
+sudo ufw allow 443/tcp
+sudo ufw allow 1514/tcp
+sudo ufw allow 1515/tcp
+sudo ufw allow 55000/tcp
+sudo ufw reload
+
+# Kiểm tra dịch vụ
+sudo systemctl status wazuh-manager wazuh-dashboard wazuh-indexer
+sudo ss -tulpn | egrep ':443|:1514|:1515|:55000|:9200'</code></pre>
+
+                <h3>Trên Windows (endpoint):</h3>
+                <pre><code class="language-powershell"># Cài Sysmon với cấu hình lọc sẵn
+Set-Location C:\Tools\Sysmon
+.\Sysmon64.exe -i .\sysmonconfig-export.xml -accepteula
+
+# Cài Wazuh Agent (im lặng)
+Set-Location C:\Users\Public\Downloads
+.\wazuh-agent-4.14.0-1.msi /q WAZUH_MANAGER="&lt;IP_WAZUH_SERVER&gt;" WAZUH_AGENT_NAME="win-agent"
+Start-Service wazuhsvc
+
+# Kiểm tra kết nối port 1514
+Test-NetConnection &lt;IP_WAZUH_SERVER&gt; -Port 1514</code></pre>
+
+                <!-- Conclusion -->
+                <div class="call-to-action">
+                    <h3>🎉 Kết luận</h3>
+                    <p>Vậy là bạn đã dựng xong <strong>SOC mini</strong>: một Wazuh all‑in‑one giám sát một Windows endpoint với Sysmon. Bài lab này đủ để bạn <strong>học cách thu thập log, viết truy vấn, đọc alert, và minh hoạ hành vi tấn công an toàn</strong>. Hãy snapshot lại trạng thái "đẹp" và thử thêm agent khác để nâng cấp năng lực SOC của bạn!</p>
+                </div>
+
+                <div class="post-excerpt">
+                    <strong>Gợi ý thêm:</strong> Nếu bạn muốn mình xuất bản bài viết này thành <strong>Markdown/HTML</strong> sẵn sàng đăng <strong>Medium/GitHub Pages</strong>, mình có thể tạo file xuất bản (kèm ảnh placeholder) theo phong cách bạn thích.
+                </div>
+            </div>
+
+            <!-- Post Footer -->
+            <div class="post-footer">
+                <div class="post-share">
+                    <h4>Chia sẻ bài viết</h4>
+                    <div class="share-buttons">
+                        <a href="#" class="share-btn facebook" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="share-btn twitter" onclick="shareOnTwitter()">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="share-btn linkedin" onclick="shareOnLinkedIn()">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="share-btn copy" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <div class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="../blue/incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </div>
+                
+                <div class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=200&fit=crop" alt="Red Blue Purple Teams">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="../blue/red-blue-purple-teams.html">🔴🔵🟣 Phân biệt Red Team – Blue Team – Purple Team</a></h4>
+                        <p>Hiểu rõ vai trò của từng "màu" trong bảo mật mạng từ góc nhìn của một sinh viên...</p>
+                    </div>
+                </div>
+                
+                <div class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=200&fit=crop" alt="AWS Misconfigurations">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="../cloud/aws-misconfigurations.html">☁️ 10 cấu hình sai phổ biến nhất trên AWS</a></h4>
+                        <p>Misconfiguration vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Đăng ký nhận tin</h2>
+                <p>Nhận thông báo về bài viết mới và cập nhật bảo mật</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Nhập email của bạn" required>
+                    <button type="submit">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven3.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    
+    <!-- Share Functions -->
+    <script>
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${title}`, '_blank', 'width=600,height=400');
+        }
+
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank', 'width=600,height=400');
+        }
+
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=400');
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Đã copy link vào clipboard!');
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
