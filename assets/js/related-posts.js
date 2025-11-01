@@ -87,6 +87,13 @@ class RelatedPosts {
                     excerpt: 'Phát hiện và xử lý ransomware outbreak'
                 },
                 {
+                    title: 'Network Foundation – Blog tóm tắt dễ hiểu (góc nhìn sinh viên)',
+                    url: 'posts/cloud/aws-network-foundation.html',
+                    tags: ['AWS', 'Networking', 'Cloud Security', 'VPC'],
+                    category: 'cloud',
+                    excerpt: 'Mình vừa hoàn thành Week 1 và tổng hợp lại nội dung theo cách ngắn gọn, đọc tới là áp dụng được. Bài này dành cho bạn mới bước vào AWS Networking'
+                },
+                {
                     title: '10 cấu hình sai phổ biến nhất trên AWS khiến hệ thống "lộ bụng"',
                     url: 'posts/cloud/aws-misconfigurations.html',
                     tags: ['AWS', 'Cloud Security', 'Misconfiguration'],

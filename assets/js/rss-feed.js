@@ -131,10 +131,17 @@ class RSSFeed {
                     category: 'blue'
                 },
                 {
+                    title: 'Network Foundation – Blog tóm tắt dễ hiểu (góc nhìn sinh viên)',
+                    link: this.baseUrl + '/posts/cloud/aws-network-foundation.html',
+                    description: 'Mình vừa hoàn thành Week 1 và tổng hợp lại nội dung theo cách ngắn gọn, đọc tới là áp dụng được. Bài này dành cho bạn mới bước vào AWS Networking',
+                    date: new Date('2025-01-26'),
+                    category: 'cloud'
+                },
+                {
                     title: '10 cấu hình sai phổ biến nhất trên AWS khiến hệ thống "lộ bụng"',
                     link: this.baseUrl + '/posts/cloud/aws-misconfigurations.html',
                     description: 'Misconfiguration là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây',
-                    date: new Date('2025-10-26'),
+                    date: new Date('2025-01-25'),
                     category: 'cloud'
                 },
                 {
