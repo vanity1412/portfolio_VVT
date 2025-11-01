@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Foundation – AWS Blog tóm tắt dễ hiểu - Vũ Văn Thông</title>
+    <meta name="description" content="Blog tóm tắt dễ hiểu về AWS Networking từ góc nhìn sinh viên. Tổng hợp Week 1 nội dung ngắn gọn, áp dụng được ngay">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Cloud Security</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        26 Tháng 1, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        25 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🌐 Network Foundation – Blog tóm tắt dễ hiểu (góc nhìn sinh viên)</h1>
+                <p class="post-subtitle">Mình vừa hoàn thành Week 1 và tổng hợp lại nội dung theo cách ngắn gọn, đọc tới là áp dụng được</p>
+                
+                <div class="post-tags">
+                    <span class="tag">AWS</span>
+                    <span class="tag">Networking</span>
+                    <span class="tag">Cloud Security</span>
+                    <span class="tag">VPC</span>
+                    <span class="tag">Week 1</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn về <strong>Network Foundation trên AWS</strong> – một chủ đề mình vừa hoàn thành trong Week 1. Bài viết này dành cho các bạn mới bước vào <strong>AWS Networking</strong>, muốn hiểu và áp dụng ngay được.</p>
+                </div>
+
+                <!-- Certification -->
+                <div class="cert-highlight">
+                    <img src="../../assets/img/Cert_AWS_Network.png" alt="AWS Network Certificate" style="max-width: 600px; width: 100%; margin: 20px auto; display: block; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                </div>
+
+                <h2>Tóm tắt nhanh (TL;DR)</h2>
+                
+                <p>Mình tóm gọn Week 1 vào 5 điểm chính:</p>
+                
+                <ul class="tldr-list">
+                    <li>✅ Hiểu <strong>hạ tầng AWS</strong> (Region/AZ/Edge) và cách nó ảnh hưởng <strong>latency & HA/DR</strong></li>
+                    <li>✅ Thiết kế <strong>VPC chuẩn</strong>: CIDR, subnet công khai/riêng tư, route table, IGW, NAT, SG, NACL</li>
+                    <li>✅ Kết nối <strong>giữa VPC</strong> và <strong>hybrid</strong>: VPC Peering, Transit Gateway, VPN (IPsec), Direct Connect</li>
+                    <li>✅ Tối ưu <strong>bảo mật – hiệu năng – chi phí</strong>; giám sát bằng CloudWatch/Flow Logs/CloudTrail</li>
+                    <li>✅ Áp dụng <strong>IaC</strong> (CloudFormation/Terraform) để triển khai nhanh, chuẩn và ít lỗi</li>
+                </ul>
+
+                <h2>Course Content</h2>
+
+                <h3>1) Introduce to AWS</h3>
+                <p>Hiểu mô hình <strong>shared responsibility</strong> và các lớp dịch vụ cơ bản (compute, storage, network). Đây là bức tranh tổng thể để biết "đặt" thành phần nào vào đâu.</p>
+
+                <h3>2) AWS Global Infrastructure</h3>
+                <p><strong>Region / Availability Zone (AZ) / Edge location</strong>. Lựa chọn khu vực gần người dùng để giảm <strong>độ trễ (latency)</strong>.</p>
+
+                <h3>3) Cost Management & Optimization</h3>
+                <p>Nắm <strong>pricing cơ bản</strong> và các "điểm ăn tiền": <strong>data transfer, NAT, CloudFront, Direct Connect</strong>. Tư duy thiết kế để đạt SLO mà vẫn không "đốt tiền".</p>
+
+                <h3>4) Region & Availability Zones (AZs)</h3>
+                <p><strong>High Availability (HA)</strong> với <strong>Multi-AZ</strong>. <strong>Disaster Recovery (DR)</strong> với <strong>Multi-Region</strong> (replication/backup/failover).</p>
+
+                <h3>5) VPC Overview</h3>
+                <p><strong>CIDR, Subnet, Route Table, Internet Gateway (IGW), NAT Gateway, Security Group (SG), Network ACL (NACL), VPC Endpoint</strong>. Nguyên tắc: <strong>public = điểm vào</strong>, <strong>private = app/data</strong>.</p>
+
+                <h3>6) Multi VPC Network</h3>
+                <p><strong>VPC Peering</strong> (đơn giản, point-to-point, không chuyển tiếp). <strong>Transit Gateway</strong> (hub-and-spoke, nhiều VPC/tài khoản/region). <strong>VPN (IPsec)</strong> & <strong>Direct Connect</strong> cho <strong>kết nối hybrid</strong>.</p>
+
+                <h2>What you'll learn (và vì sao quan trọng)</h2>
+
+                <h3>Enhanced Security & Compliance</h3>
+                <p><strong>VPC + SG (stateful) + NACL (stateless)</strong> đúng vai trò. <strong>Private subnet + NAT</strong> (outbound an toàn), <strong>Endpoint/PrivateLink</strong> truy cập dịch vụ AWS nội bộ. Bật <strong>VPC Flow Logs & CloudTrail</strong> để giám sát/kiểm toán.</p>
+
+                <h3>High Availability & Resilience</h3>
+                <p><strong>Multi-AZ</strong> chống lỗi cấp AZ; <strong>Multi-Region</strong> cho DR cấp vùng. <strong>Route 53 + health checks + failover policy</strong>: DNS tự chuyển hướng khi sự cố.</p>
+
+                <h3>Scalability & Flexibility</h3>
+                <p>Quy hoạch <strong>CIDR rộng</strong> (thường <strong>10.0.0.0/8</strong>) để dễ subnet/mở rộng. Chọn <strong>Transit Gateway</strong> hoặc <strong>VPC Peering</strong> theo quy mô.</p>
+
+                <h3>Performance Optimization</h3>
+                <p><strong>Latency-based routing (Route 53)</strong> + <strong>CloudFront</strong> cache gần người dùng. Chọn <strong>Region/AZ</strong> gần nhóm người dùng; tối ưu đường đi qua <strong>TGW</strong>.</p>
+
+                <h3>Cost Efficiency</h3>
+                <p>Dùng <strong>NAT Gateway</strong> đúng chỗ (gom lưu lượng, giảm số lượng nhưng vẫn HA). <strong>PrivateLink/Endpoints</strong> giảm <strong>egress cost</strong>; multi-region có chủ đích để cân bằng SLO & chi phí.</p>
+
+                <h3>Simplified Network Management & Monitoring</h3>
+                <p>Chuẩn hóa <strong>route table/SG/NACL</strong>, gắn <strong>tags</strong> để vận hành. <strong>CloudWatch + VPC Flow Logs + alarms</strong>: soi đường đi gói tin, bắt lỗi nhanh.</p>
+
+                <h3>Business Continuity & DR</h3>
+                <p><strong>Cross-Region replicas</strong>, <strong>backup/restore</strong> rõ RTO/RPO. <strong>Route 53 failover</strong> chuyển lưu lượng sang site dự phòng trong vài chục giây.</p>
+
+                <h3>Integration with Other AWS Services</h3>
+                <p>Phối hợp <strong>ALB/NLB</strong>, <strong>RDS/Aurora</strong>, <strong>S3/PrivateLink</strong>, <strong>EKS/ECS</strong>, <strong>Global Accelerator</strong> khi cần.</p>
+
+                <h3>Infrastructure as Code (IaC) & Automation</h3>
+                <p><strong>CloudFormation/Terraform</strong> hóa VPC/subnet/route/SG… (<strong>repeatable & reviewable</strong>). <strong>CI/CD pipelines</strong> để kiểm thử & triển khai "không lỗi tay".</p>
+
+                <h3>Future-Proofing & Innovation</h3>
+                <p>Sẵn sàng <strong>IPv6</strong>, <strong>BYOIP</strong>, <strong>hybrid</strong> với <strong>Direct Connect/VPN</strong>; dễ mở rộng đa khu vực/đa đám mây.</p>
+
+                <h2>Requirements (môi trường/lab nên có)</h2>
+                
+                <div class="requirements-grid">
+                    <div class="req-item">
+                        <h4>🌐 VPC Setup</h4>
+                        <p>Chọn CIDR <strong>RFC1918</strong> (10/8, 172.16/12, 192.168/16); tách <strong>public/private subnets</strong> theo AZ</p>
+                    </div>
+                    <div class="req-item">
+                        <h4>🔌 Internet Access</h4>
+                        <p><strong>IGW</strong> cho public; <strong>NAT Gateway</strong> cho private (<strong>outbound-only</strong>)</p>
+                    </div>
+                    <div class="req-item">
+                        <h4>🔒 Secure Access</h4>
+                        <p><strong>Security Groups</strong> "ít quyền nhất"; <strong>Site-to-Site VPN (IPsec)</strong> / <strong>Direct Connect</strong> cho hybrid</p>
+                    </div>
+                    <div class="req-item">
+                        <h4>🛣️ Routing</h4>
+                        <p>Route table rõ ràng; <strong>TGW/VPC Peering</strong> cho VPC-to-VPC</p>
+                    </div>
+                    <div class="req-item">
+                        <h4>🌍 DNS</h4>
+                        <p><strong>Route 53</strong> (simple/weighted/latency/geolocation/failover) + <strong>health checks</strong></p>
+                    </div>
+                    <div class="req-item">
+                        <h4>⚡ High Availability</h4>
+                        <p><strong>Multi-AZ/Region</strong>, <strong>DX</strong> dự phòng đa địa điểm, <strong>Route 53 failover</strong></p>
+                    </div>
+                    <div class="req-item">
+                        <h4>📊 Monitoring</h4>
+                        <p><strong>CloudWatch</strong>, <strong>VPC Flow Logs</strong>, <strong>CloudTrail</strong>, cảnh báo bất thường</p>
+                    </div>
+                    <div class="req-item">
+                        <h4>🔐 Security</h4>
+                        <p>Mã hóa, <strong>IAM least-privilege</strong>, SG/NACL đúng lớp</p>
+                    </div>
+                    <div class="req-item">
+                        <h4>🏗️ IaC</h4>
+                        <p><strong>CloudFormation/Terraform</strong> + <strong>code review/policy checks</strong></p>
+                    </div>
+                    <div class="req-item">
+                        <h4>💰 Cost Management</h4>
+                        <p>Theo dõi <strong>NAT/DX/data transfer</strong>, bật <strong>Cost Explorer & Budgets</strong></p>
+                    </div>
+                </div>
+
+                <h2>Ghi nhớ 30 giây (Cheat Sheet)</h2>
+                
+                <div class="cheatsheet">
+                    <div class="cheatsheet-item">
+                        <strong>IGW:</strong> Internet Gateway = vào/ra Internet (public)
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>NAT GW:</strong> NAT Gateway = chỉ ra Internet (private)
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>SG:</strong> Security Group @ Instance (stateful)
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>NACL:</strong> Network ACL @ Subnet (stateless)
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>Peering:</strong> Cho ít VPC; Transit Gateway khi mạng phức tạp/nhiều VPC
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>VPN:</strong> IPsec qua Internet; Direct Connect là kết nối riêng, ổn định băng thông
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>HA/DR:</strong> Multi-AZ + Multi-Region + Route 53 health checks/failover
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>Hiệu năng:</strong> CloudFront + Route 53 latency
+                    </div>
+                    <div class="cheatsheet-item">
+                        <strong>Tiết kiệm:</strong> Giảm NAT/egress, ưu tiên Endpoints/PrivateLink, gắn tags & theo dõi budgets
+                    </div>
+                </div>
+
+                <h2>Kiến trúc mẫu mình build trong lab</h2>
+                
+                <pre style="background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; overflow-x: auto;"><code>User ──DNS(Request)──► Route 53 (Latency/Failover)
+           │
+           └──► CloudFront (Cache)
+                    │
+               ALB (public)
+                    │
+          ┌─────────┴─────────┐
+          │                   │
+      EC2/EKS (private)   EC2/EKS (private)
+          │                   │
+        RDS (Multi-AZ)     Redis/MQ
+          │
+      VPC Endpoints (S3, STS, Logs...)
+          │
+  NAT GW (private → Internet)
+          │
+   Site-to-Site VPN / Direct Connect
+          │
+       On-Prem Network
+</code></pre>
+
+                <p><strong>Tư duy chính:</strong> public chỉ chứa entry points (ALB/IGW), còn app/database ở private; outbound ra Internet đi NAT, kết nối hybrid dùng VPN/DX, nhiều VPC gắn vào Transit Gateway.</p>
+
+                <h2>Quick Quiz – Luyện tập</h2>
+                
+                <div class="quiz-section">
+                    <div class="quiz-item">
+                        <p><strong>Q1:</strong> Kết nối an toàn on-prem ↔ VPC qua Internet?</p>
+                        <p class="quiz-answer">A. Direct Connect · B. Internet Gateway · <strong>C. Site-to-Site VPN</strong> · D. Client VPN</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q2:</strong> Subnet nào cho EC2 truy cập Internet trực tiếp?</p>
+                        <p class="quiz-answer"><strong>A. Public</strong> · B. Private · C. Isolated · D. VPN</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q3:</strong> Giao tiếp giữa VPC khác account/region?</p>
+                        <p class="quiz-answer"><strong>A. Transit Gateway</strong> · B. VPC Peering · C. Direct Connect · D. NAT GW</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q4:</strong> NAT Gateway dùng để…</p>
+                        <p class="quiz-answer">A. Inbound+Outbound · <strong>B. Outbound only cho private</strong> · C. Route nội bộ · D. Nối nhiều VPC</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q5:</strong> DNS failover + định tuyến địa lý?</p>
+                        <p class="quiz-answer">A. CloudFront · <strong>B. Route 53</strong> · C. ELB · D. VPC Peering</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q6:</strong> HA toàn cầu tốt nhất?</p>
+                        <p class="quiz-answer">A. Single-AZ · <strong>B. Multi-AZ & Multi-Region</strong> · C. Chỉ public subnet · D. DX một region</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q7:</strong> AWS Client VPN hỗ trợ giao thức?</p>
+                        <p class="quiz-answer">A. HTTP · <strong>B. TCP hoặc UDP</strong> · C. SMTP · D. FTP</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q8:</strong> Security Group áp dụng cấp nào?</p>
+                        <p class="quiz-answer">A. Subnet · B. VPC · <strong>C. Instance/ENI</strong> · D. Region</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q9:</strong> SG vs NACL khác nhau chính?</p>
+                        <p class="quiz-answer"><strong>A. SG stateful, NACL stateless</strong> · B. Ngược lại · C. Cả hai stateless · D. Cả hai stateful</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q10:</strong> Transit Gateway làm gì?</p>
+                        <p class="quiz-answer"><strong>A. Kết nối nhiều VPC (hub)</strong> · B. Route DNS · C. Nối on-prem duy nhất · D. Internet access</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q11:</strong> Phân phối nội dung cache toàn cầu?</p>
+                        <p class="quiz-answer">A. Route 53 · B. Direct Connect · <strong>C. CloudFront</strong> · D. TGW</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q12:</strong> Kết nối dedicated on-prem ↔ AWS?</p>
+                        <p class="quiz-answer">A. VPN · B. Peering · <strong>C. Direct Connect</strong> · D. NAT GW</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q13:</strong> Route 53 hỗ trợ HA bằng…</p>
+                        <p class="quiz-answer">A. CloudFront cache · B. Round-robin · <strong>C. Nhiều routing policy + health check</strong> · D. ELB</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q14:</strong> Giảm latency triển khai toàn cầu?</p>
+                        <p class="quiz-answer">A. Một region · <strong>B. Kiến trúc multi-region</strong> · C. Chỉ private subnet · D. DX một region</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q15:</strong> VPC Flow Logs dùng để…</p>
+                        <p class="quiz-answer">A. Monitor API · <strong>B. Ghi lưu lượng mạng để phân tích</strong> · C. Quản lý NACL · D. Điều khiển routing</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q16:</strong> Giao thức Site-to-Site VPN?</p>
+                        <p class="quiz-answer">A. HTTPS · <strong>B. IPsec</strong> · C. FTP · D. RDP</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q17:</strong> Dự phòng Direct Connect đạt được bằng…</p>
+                        <p class="quiz-answer">A. Một kết nối/region · B. Nhiều VPN · <strong>C. Kết nối dự phòng ở nhiều địa điểm</strong> · D. Route 53</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q18:</strong> Route 53 policy định tuyến theo độ trễ?</p>
+                        <p class="quiz-answer">A. Simple · B. Weighted · C. Geolocation · <strong>D. Latency</strong></p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q19:</strong> Truy cập on-prem đến private resources trong VPC?</p>
+                        <p class="quiz-answer"><strong>A. Client VPN</strong> · B. CloudFront · C. Direct Connect · D. IGW</p>
+                    </div>
+                    
+                    <div class="quiz-item">
+                        <p><strong>Q20:</strong> CIDR linh hoạt nhất cho VPC lớn?</p>
+                        <p class="quiz-answer">A. 192.168.0.0/16 · <strong>B. 10.0.0.0/8</strong> · C. 172.31.0.0/16 · D. 198.51.100.0/24</p>
+                    </div>
+                </div>
+
+                <h2>Kết luận</h2>
+                
+                <p>Tuần 1 giúp dựng nền tảng vững cho mọi bài toán cloud: <strong>đúng kiến trúc, đúng bảo mật, đúng chi phí</strong>. Nếu bạn muốn, mình có thể soạn <strong>bản PDF/cheat-sheet</strong> hoặc <strong>mẫu Terraform (VPC 2 AZ + NAT + Endpoint)</strong> để bạn thực hành ngay.</p>
+
+                <div class="call-to-action">
+                    <h3>👉 Hành động tiếp theo:</h3>
+                    <p>Thực hành ngay với lab của mình! Mình sẽ chia sẻ các bài viết tiếp theo về các chủ đề nâng cao hơn.</p>
+                </div>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&h=200&fit=crop" alt="AWS Misconfigurations">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-misconfigurations.html">☁️ 10 cấu hình sai phổ biến nhất trên AWS</a></h4>
+                        <p>Misconfiguration vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>
