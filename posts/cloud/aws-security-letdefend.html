@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cloud Security - Let's Defend Journey - Vũ Văn Thông</title>
+    <meta name="description" content="Hành trình học AWS Cloud Security qua Let's Defend - CloudWatch, WAF, GuardDuty, CloudTrail, VPC, S3, IAM, Shield">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Cloud Security</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        14 Tháng 11, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        45 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🛡️ AWS Cloud Security - Let's Defend: Hành trình của một sinh viên năm 3</h1>
+                <p class="post-subtitle">Tổng hợp đầy đủ 10 modules AWS Security từ Let's Defend - CloudWatch, WAF, GuardDuty, CloudTrail, Incident Management, VPC, S3, IAM, Shield</p>
+                
+                <div class="post-tags">
+                    <span class="tag">AWS</span>
+                    <span class="tag">Cloud Security</span>
+                    <span class="tag">Let's Defend</span>
+                    <span class="tag">CloudWatch</span>
+                    <span class="tag">GuardDuty</span>
+                    <span class="tag">WAF</span>
+                    <span class="tag">S3</span>
+                    <span class="tag">IAM</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Xin chào! Mình là Vũ Văn Thông, sinh viên năm 3 chuyên ngành An toàn thông tin. Sau khi hoàn thành khóa học AWS Cloud Security trên Let's Defend, mình muốn chia sẻ toàn bộ kiến thức đã học được qua 10 modules quan trọng. Đây là bài viết tổng hợp chi tiết nhất về AWS Security từ góc nhìn của một sinh viên đang học!</p>
+                </div>
+
+                <!-- Certificate Image -->
+                <div style="text-align: center; margin: 30px 0;">
+                    <img src="../../assets/img/Cert_AWS_Security_letdefend.png" alt="AWS Security Certificate" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 10px; font-style: italic; color: #666;">Certificate hoàn thành khóa học AWS Cloud Security</p>
+                </div>
+
+                <h2>📚 Tổng quan khóa học / Course Overview</h2>
+                
+                <p><strong>Tiếng Việt:</strong> Khóa học AWS Cloud Security trên Let's Defend bao gồm 10 modules chính, từ cơ bản đến nâng cao. Mỗi module đều có phần lý thuyết chi tiết và bài lab thực hành. Đây là lộ trình hoàn chỉnh để trở thành AWS Security Specialist!</p>
+
+                <p><strong>English:</strong> The AWS Cloud Security course on Let's Defend includes 10 main modules, from basic to advanced. Each module has detailed theory and hands-on labs. This is a complete roadmap to become an AWS Security Specialist!</p>
+
+                <div class="info-box">
+                    <h4>10 Modules chính / Main Modules:</h4>
+                    <ol>
+                        <li>Introduction to AWS</li>
+                        <li>AWS CloudWatch</li>
+                        <li>AWS WAF (Web Application Firewall)</li>
+                        <li>AWS GuardDuty</li>
+                        <li>AWS CloudTrail</li>
+                        <li>AWS Incident Management (Systems Manager & Incident Manager)</li>
+                        <li>Amazon VPC (Virtual Private Cloud)</li>
+                        <li>AWS S3 (Simple Storage Service)</li>
+                        <li>AWS IAM (Identity and Access Management)</li>
+                        <li>AWS Shield</li>
+                    </ol>
+                </div>
+
+                <h2>1️⃣ Introduction to AWS</h2>
+                
+                <h3>AWS là gì? / What is AWS?</h3>
+                <p><strong>VN:</strong> AWS (Amazon Web Services) là nền tảng điện toán đám mây toàn diện và được sử dụng rộng rãi nhất, cung cấp hơn 200 dịch vụ từ các trung tâm dữ liệu trên toàn cầu.</p>
+                
+                <p><strong>EN:</strong> AWS is a comprehensive and widely-used cloud computing platform provided by Amazon, offering over 200 services from data centers globally.</p>
+
+                <h3>Các dịch vụ chính / Key Services:</h3>
+                <ul>
+                    <li><strong>Compute:</strong> EC2 (Virtual Servers), Lambda (Serverless)</li>
+                    <li><strong>Storage:</strong> S3 (Object Storage), EBS (Block Storage)</li>
+                    <li><strong>Database:</strong> RDS (Relational), DynamoDB (NoSQL)</li>
+                    <li><strong>Networking:</strong> VPC, Route 53, CloudFront</li>
+                    <li><strong>Security:</strong> IAM, GuardDuty, WAF, Shield</li>
+                    <li><strong>Monitoring:</strong> CloudWatch, CloudTrail</li>
+                </ul>
+
+                <h3>Tạo AWS Account / Create AWS Account:</h3>
+                <ol>
+                    <li>Truy cập <code>aws.amazon.com</code></li>
+                    <li>Click "Create an AWS Account"</li>
+                    <li>Nhập email và tạo password</li>
+                    <li>Cung cấp thông tin thanh toán (cần thẻ tín dụng để xác minh)</li>
+                    <li>Xác minh số điện thoại</li>
+                    <li>Chọn Support Plan (Free tier cho người mới)</li>
+                    <li>Hoàn tất đăng ký và truy cập AWS Management Console</li>
+                </ol>
+
+                <div class="info-box">
+                    <h4>💡 Lưu ý quan trọng / Important Notes:</h4>
+                    <ul>
+                        <li>AWS Free Tier cung cấp nhiều dịch vụ miễn phí trong 12 tháng đầu</li>
+                        <li>Luôn bật MFA (Multi-Factor Authentication) cho Root Account</li>
+                        <li>Không chia sẻ Access Keys hoặc Secret Keys</li>
+                        <li>Thiết lập Billing Alerts để theo dõi chi phí</li>
+                    </ul>
+                </div>
+
+                <h2>2️⃣ AWS CloudWatch - Giám sát và Cảnh báo</h2>
+                
+                <h3>CloudWatch là gì? / What is CloudWatch?</h3>
+                <p><strong>VN:</strong> AWS CloudWatch là dịch vụ giám sát và quan sát cho các tài nguyên AWS và ứng dụng. Nó thu thập và theo dõi metrics, logs, và events.</p>
+                
+                <p><strong>EN:</strong> AWS CloudWatch is a monitoring and observability service for AWS resources and applications. It collects and tracks metrics, logs, and events.</p>
+
+                <h3>Các thành phần chính / Key Components:</h3>
+                
+                <h4>1. Metrics (Chỉ số)</h4>
+                <ul>
+                    <li>Dữ liệu time-series về hiệu suất tài nguyên (CPU, Memory, Network)</li>
+                    <li>AWS cung cấp metrics mặc định</li>
+                    <li>Có thể tạo <strong>Custom Metrics</strong> bằng CloudWatch API</li>
+                    <li>Thu thập mỗi phút (hoặc chi tiết hơn với Detailed Monitoring)</li>
+                </ul>
+
+                <h4>2. Alarms (Cảnh báo)</h4>
+                <ul>
+                    <li>Giám sát metrics và kích hoạt hành động tự động</li>
+                    <li>Thiết lập ngưỡng (threshold): VD: CPU > 90% trong 5 phút</li>
+                    <li>Actions: Gửi SNS, Stop/Terminate EC2, Invoke Lambda, Auto Scaling</li>
+                </ul>
+
+                <h4>3. Dashboards (Bảng điều khiển)</h4>
+                <ul>
+                    <li>Giao diện trực quan tùy chỉnh</li>
+                    <li>Thêm Widgets (metrics, alarms, text/Markdown)</li>
+                    <li>Tập trung giám sát nhiều tài nguyên</li>
+                </ul>
+
+                <h4>4. Logs (Nhật ký)</h4>
+                <ul>
+                    <li><strong>Log Groups:</strong> Nhóm logic (VD: application logs)</li>
+                    <li><strong>Log Streams:</strong> Nguồn riêng lẻ (VD: EC2 instance, Lambda)</li>
+                    <li><strong>Log Retention Policies:</strong> Định nghĩa thời gian lưu trữ</li>
+                    <li><strong>CloudWatch Logs Insights:</strong> Query và phân tích logs</li>
+                </ul>
+
+                <h3>CloudWatch Logs Insights - Query Examples:</h3>
+                
+                <pre><code class="language-sql">-- Tìm failed login attempts
+fields @timestamp, @message 
+| filter @message like 'Failed login attempt' 
+| sort @timestamp desc 
+| limit 10
+
+-- Phát hiện DDoS (nhiều requests từ 1 IP)
+fields @timestamp, @ipAddress 
+| stats count(*) as requestCount by @ipAddress 
+| filter requestCount > 100 
+| sort requestCount desc 
+| limit 10
+
+-- Tìm API requests chậm
+fields @timestamp, @requestDuration 
+| filter @requestType = 'API' and @requestDuration > 500 
+| sort @timestamp desc 
+| limit 20</code></pre>
+
+                <h3>Use Case: Phát hiện Brute-Force SSH Attack</h3>
+                <div class="info-box">
+                    <h4>Scenario thực tế:</h4>
+                    <ol>
+                        <li><strong>Configuration:</strong>
+                            <ul>
+                                <li>Custom Metric: Track failed SSH login attempts</li>
+                                <li>Alarm: Trigger nếu > 3 failed attempts trong 1 phút</li>
+                                <li>SNS Notification: Gửi alert đến SOC team</li>
+                            </ul>
+                        </li>
+                        <li><strong>Response:</strong>
+                            <ul>
+                                <li>SOC team nhận alert</li>
+                                <li>Dùng Logs Insights query SSH logs, xác định attacker IP</li>
+                                <li>Isolate EC2 instance (modify Security Group)</li>
+                                <li>Block attacker IP (Network ACLs)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Post-Incident:</strong>
+                            <ul>
+                                <li>Enforce strong password policies/MFA</li>
+                                <li>Automate IP blocking với Lambda</li>
+                                <li>Security training</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <h3>Best Practices cho CloudWatch:</h3>
+                <ul>
+                    <li>✅ Sử dụng IAM để kiểm soát truy cập (Principle of Least Privilege)</li>
+                    <li>✅ Enable MFA cho administrative users</li>
+                    <li>✅ Centralize logging với CloudWatch Logs</li>
+                    <li>✅ Enable Log Encryption (AWS KMS)</li>
+                    <li>✅ Set Retention Policies phù hợp</li>
+                    <li>✅ Monitor và alarm trên metrics quan trọng</li>
+                    <li>✅ Tạo Custom Dashboards cho KPIs</li>
+                    <li>✅ Optimize costs: Review usage, xóa alarms không cần thiết</li>
+                    <li>✅ Automate actions với CloudWatch Events/EventBridge</li>
+                </ul>
+
+                <h2>3️⃣ AWS WAF - Web Application Firewall</h2>
+                
+                <h3>WAF là gì? / What is WAF?</h3>
+                <p><strong>VN:</strong> AWS WAF là dịch vụ firewall bảo vệ ứng dụng web khỏi các cuộc tấn công phổ biến như SQL Injection, XSS, và DDoS.</p>
+                
+                <p><strong>EN:</strong> AWS WAF is a web application firewall that helps protect web applications from common web exploits like SQL injection, XSS, and DDoS attacks.</p>
+
+                <h3>Khái niệm cơ bản / Basic Concepts:</h3>
+                
+                <h4>1. Web ACLs (Access Control Lists)</h4>
+                <ul>
+                    <li>Định nghĩa rules và conditions để <strong>Allow</strong>, <strong>Block</strong>, hoặc <strong>Count</strong> traffic</li>
+                    <li>Gắn vào CloudFront, ALB, API Gateway, hoặc AppSync</li>
+                    <li>Components: Rules + Rule Actions</li>
+                </ul>
+
+                <h4>2. Managed Rule Groups</h4>
+                <ul>
+                    <li>Bộ rules được AWS security experts tạo và maintain</li>
+                    <li>VD: "SQL Injection", "XSS", "Known Bad Inputs"</li>
+                    <li>Dễ dàng áp dụng, không cần viết rules từ đầu</li>
+                </ul>
+
+                <h4>3. Custom Rules</h4>
+                <ul>
+                    <li>Tùy chỉnh theo vulnerabilities cụ thể của ứng dụng</li>
+                    <li>Dựa trên IP addresses, headers, query strings, body, etc.</li>
+                </ul>
+
+                <h3>Advanced Configurations:</h3>
+                
+                <h4>Rate-Based Rules (Chống Brute-Force & DDoS)</h4>
+                <pre><code class="language-yaml">Rule Type: Rate-based
+Rate Limit: 100 requests per 5 minutes
+Action: Block
+Response: 
+  Status Code: 500
+  Custom Header: "You: Blocked"</code></pre>
+
+                <h4>Regex Pattern Matching (Chống SQL Injection)</h4>
+                <pre><code class="language-regex">Pattern: .*(SELECT|INSERT|UPDATE|DELETE|UNION|DROP).*
+Match Type: Contains SQL Injection Attack
+Action: Block
+Response Code: 502
+Header: "Blocked: Possible SQL Injection"</code></pre>
+
+                <h4>IP Set Matching</h4>
+                <ul>
+                    <li>Tạo IP Sets chứa danh sách IP addresses/ranges</li>
+                    <li>Allow traffic từ trusted IPs (whitelist)</li>
+                    <li>Block traffic từ malicious IPs (blacklist)</li>
+                </ul>
+
+                <h3>Blocking SQL Injection - Step by Step:</h3>
+                <ol>
+                    <li>Access AWS WAF Console</li>
+                    <li>Create Web ACL → Attach to resources (CloudFront/ALB)</li>
+                    <li>Create Rule:
+                        <ul>
+                            <li>Rule Type: Regular rule</li>
+                            <li>Match Type: <strong>Contains SQL Injection Attack</strong></li>
+                            <li>Inspect: Query string, Body, Headers</li>
+                        </ul>
+                    </li>
+                    <li>Configure Action:
+                        <ul>
+                            <li>Action: <strong>Block</strong></li>
+                            <li>Custom Response: 502 status code</li>
+                            <li>Header: "Blocked: Possible SQL Injection"</li>
+                        </ul>
+                    </li>
+                    <li>Review and Activate</li>
+                </ol>
+
+                <h3>Best Practices cho WAF:</h3>
+                <ul>
+                    <li>✅ <strong>Rule Optimization:</strong> Regularly review rules, remove outdated ones</li>
+                    <li>✅ <strong>Use Whitelists:</strong> Cho known partners/internal services</li>
+                    <li>✅ <strong>Enable Logging:</strong> Store logs in S3, analyze với Athena/QuickSight</li>
+                    <li>✅ <strong>Set Up CloudWatch Alarms:</strong> Monitor blocked requests, rule matches</li>
+                    <li>✅ <strong>Test Rule Changes:</strong> Dùng staging environment hoặc Web ACL simulator</li>
+                    <li>✅ <strong>Stay Informed:</strong> Subscribe to AWS security bulletins</li>
+                    <li>✅ <strong>Schedule Regular Reviews:</strong> Ít nhất quarterly</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>💡 Tại sao WAF quan trọng? / Why WAF Matters?</h4>
+                    <ul>
+                        <li><strong>Protection:</strong> Chống common web exploits (OWASP Top 10)</li>
+                        <li><strong>DDoS Mitigation:</strong> Rate-based rules giới hạn requests</li>
+                        <li><strong>Compliance:</strong> Đáp ứng yêu cầu bảo mật (PCI DSS, HIPAA)</li>
+                        <li><strong>Flexible:</strong> Customizable rules cho từng ứng dụng</li>
+                        <li><strong>Real-time Monitoring:</strong> Insights và metrics qua CloudWatch</li>
+                        <li><strong>Cost-effective:</strong> Pay-as-you-go pricing</li>
+                    </ul>
+                </div>
+
+                <h2>4️⃣ AWS GuardDuty - Threat Detection Service</h2>
+                
+                <h3>GuardDuty là gì? / What is GuardDuty?</h3>
+                <p><strong>VN:</strong> AWS GuardDuty là dịch vụ phát hiện mối đe dọa được quản lý hoàn toàn, sử dụng Machine Learning và Threat Intelligence để bảo vệ AWS environment.</p>
+                
+                <p><strong>EN:</strong> AWS GuardDuty is a fully managed threat detection service that uses Machine Learning and Threat Intelligence to protect your AWS environment.</p>
+
+                <h3>Data Sources được phân tích:</h3>
+                <ul>
+                    <li><strong>AWS CloudTrail Logs:</strong> API calls và user activities</li>
+                    <li><strong>VPC Flow Logs:</strong> Network traffic patterns</li>
+                    <li><strong>DNS Logs:</strong> DNS queries (phát hiện phishing, malware)</li>
+                    <li><strong>External Threat Feeds:</strong> Global threat intelligence</li>
+                </ul>
+
+                <h3>Các loại threats được phát hiện:</h3>
+                <ul>
+                    <li>🔴 <strong>Unauthorized Access:</strong> Unusual logins, suspicious API calls</li>
+                    <li>🔴 <strong>Cryptocurrency Mining:</strong> Compromised instances mining crypto</li>
+                    <li>🔴 <strong>Data Exfiltration:</strong> Unusual data transfer patterns</li>
+                    <li>🔴 <strong>Malware & Trojan:</strong> Communication với C&C servers</li>
+                    <li>🔴 <strong>Brute Force Attacks:</strong> Repeated login attempts</li>
+                </ul>
+
+                <h3>Severity Levels:</h3>
+                <ul>
+                    <li><strong>Low:</strong> Potentially suspicious, nên investigate</li>
+                    <li><strong>Medium:</strong> More suspicious, cần prompt investigation</li>
+                    <li><strong>High:</strong> Critical threats, cần immediate attention</li>
+                </ul>
+
+                <h3>Setting Up GuardDuty:</h3>
+                <ol>
+                    <li><strong>Enable GuardDuty:</strong>
+                        <ul>
+                            <li>AWS Console → GuardDuty</li>
+                            <li>Click "Enable GuardDuty"</li>
+                            <li>Chọn AWS Regions để monitor</li>
+                        </ul>
+                    </li>
+                    <li><strong>Configure Data Sources:</strong>
+                        <ul>
+                            <li>GuardDuty tự động access CloudTrail, VPC Flow Logs, DNS Logs</li>
+                            <li>Optional: Enable Lambda Protection, EKS Protection</li>
+                        </ul>
+                    </li>
+                    <li><strong>Customize Settings:</strong>
+                        <ul>
+                            <li>Adjust Threat Intelligence Feeds</li>
+                            <li>Set Finding Thresholds</li>
+                            <li>Configure SNS notifications</li>
+                            <li>Specify S3 bucket để store findings</li>
+                        </ul>
+                    </li>
+                    <li><strong>Automated Responses:</strong>
+                        <ul>
+                            <li>Integrate với Lambda functions</li>
+                            <li>Auto-remediation workflows</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Interpreting GuardDuty Findings:</h3>
+                
+                <h4>Anatomy of a Finding:</h4>
+                <ul>
+                    <li><strong>Title:</strong> Summary của threat</li>
+                    <li><strong>Description:</strong> Chi tiết insights</li>
+                    <li><strong>Severity:</strong> Low/Medium/High</li>
+                    <li><strong>Resource Affected:</strong> EC2, S3, RDS, etc.</li>
+                    <li><strong>Additional Context:</strong> IP addresses, API calls, timestamps</li>
+                    <li><strong>Recommended Actions:</strong> Guidance cho incident response</li>
+                </ul>
+
+                <h3>Real-World Examples:</h3>
+                
+                <h4>Example 1: Suspicious File Activity (EICAR-Test-File)</h4>
+                <div class="info-box">
+                    <p><strong>Threat:</strong> GuardDuty detected <code>eicar.com</code> (Severity: MEDIUM)</p>
+                    <p><strong>Analysis:</strong> EICAR test file indicates capability to recognize malware patterns</p>
+                    <p><strong>Action:</strong></p>
+                    <ul>
+                        <li>Isolate system</li>
+                        <li>Remove file</li>
+                        <li>Conduct security audit</li>
+                        <li>Review antivirus configurations</li>
+                    </ul>
+                </div>
+
+                <h4>Example 2: Unauthorized RDS Access</h4>
+                <div class="info-box">
+                    <p><strong>Threat:</strong> IP <code>1.2.3.4</code> (known malicious) attempted unsuccessful login to RDS (Severity: MEDIUM)</p>
+                    <p><strong>Action:</strong></p>
+                    <ul>
+                        <li>Investigate RDS access logs</li>
+                        <li>Review IAM policies</li>
+                        <li>Implement MFA</li>
+                        <li>IP whitelisting</li>
+                        <li>Update Security Groups</li>
+                    </ul>
+                </div>
+
+                <h4>Example 3: Port Scan Detection</h4>
+                <div class="info-box">
+                    <p><strong>Threat:</strong> EC2 instance <code>i-99999999</code> attempted OUTBOUND port scan to <code>198.51.100.0:797</code> (Severity: MEDIUM)</p>
+                    <p><strong>Action:</strong></p>
+                    <ul>
+                        <li>Investigate instance for compromise</li>
+                        <li>Review outbound traffic rules</li>
+                        <li>Enhance Security Groups/NACLs</li>
+                        <li>Check for malware/backdoors</li>
+                    </ul>
+                </div>
+
+                <h3>Investigation Process:</h3>
+                <ol>
+                    <li><strong>Incident Context:</strong> Gather timeline, affected resources</li>
+                    <li><strong>Forensic Analysis:</strong> Deep dive vào logs, network traffic</li>
+                    <li><strong>Collaboration:</strong> Work với other teams (DevOps, Security)</li>
+                    <li><strong>Remediation:</strong> Isolate instance, revoke access, patch vulnerabilities</li>
+                    <li><strong>Documentation:</strong> Document process và lessons learned</li>
+                </ol>
+
+                <h3>Handling False Positives:</h3>
+                <ul>
+                    <li>✅ <strong>Tuning Findings:</strong> Adjust detection thresholds</li>
+                    <li>✅ <strong>Contextual Analysis:</strong> Differentiate genuine threats vs. legitimate use cases</li>
+                    <li>✅ <strong>Regular Review:</strong> Validate findings, identify recurring false positives</li>
+                    <li>✅ <strong>Feedback Loop:</strong> Report false positives để refine GuardDuty</li>
+                </ul>
+
+                <h2>5️⃣ AWS CloudTrail - Audit và Compliance</h2>
+                
+                <h3>CloudTrail là gì? / What is CloudTrail?</h3>
+                <p><strong>VN:</strong> AWS CloudTrail là dịch vụ ghi lại mọi API call được thực hiện trong AWS account, cung cấp audit trail cho compliance và security analysis.</p>
+                
+                <p><strong>EN:</strong> AWS CloudTrail is a service that records every API call made in your AWS account, providing an audit trail for compliance and security analysis.</p>
+
+                <h3>Tại sao CloudTrail quan trọng?</h3>
+                <ul>
+                    <li>🔍 <strong>Enhanced Security:</strong> Phát hiện unusual/unauthorized activities</li>
+                    <li>📋 <strong>Compliance & Governance:</strong> Detailed record cho audits</li>
+                    <li>🔧 <strong>Operational Insights:</strong> Troubleshoot và root cause analysis</li>
+                    <li>📊 <strong>Resource Tracking:</strong> Track changes (who created/modified/deleted)</li>
+                </ul>
+
+                <h3>Key Features:</h3>
+                <ul>
+                    <li><strong>Comprehensive Logging:</strong> Captures requester identity, API called, parameters, response</li>
+                    <li><strong>Universal Coverage:</strong> Records activity across all AWS services</li>
+                    <li><strong>Integration:</strong> CloudWatch Logs, Lambda, S3</li>
+                    <li><strong>Data Encryption:</strong> Encrypts log files at rest</li>
+                    <li><strong>Multi-Region Support:</strong> Deliver logs từ multiple regions vào single S3 bucket</li>
+                </ul>
+
+                <h3>CloudTrail Log Structure:</h3>
+                <pre><code class="language-json">{
+  "eventVersion": "1.08",
+  "eventTime": "2025-11-14T10:30:00Z",
+  "eventSource": "signin.amazonaws.com",
+  "eventName": "ConsoleLogin",
+  "userIdentity": {
+    "type": "Root",
+    "principalId": "123456789012",
+    "arn": "arn:aws:iam::123456789012:root"
+  },
+  "sourceIPAddress": "217.131.99.238",
+  "responseElements": {
+    "ConsoleLogin": "Success"
+  },
+  "additionalEventData": {
+    "MFAUsed": "No"
+  }
+}</code></pre>
+
+                <h3>Interpreting CloudTrail Events:</h3>
+                
+                <h4>Key Skills:</h4>
+                <ul>
+                    <li><strong>Deciphering Event Names:</strong> <code>CreateBucket</code>, <code>RunInstances</code>, <code>DeleteUser</code></li>
+                    <li><strong>Analyzing User Identity:</strong> Identify IAM user/role thực hiện action</li>
+                    <li><strong>Utilizing Timestamps:</strong> Establish timelines cho incidents</li>
+                    <li><strong>Resource-Level Logging:</strong> Log data events (S3 object uploads, Lambda invocations)</li>
+                </ul>
+
+                <h4>Example: Root User Login Without MFA</h4>
+                <div class="info-box">
+                    <p><strong>Event:</strong> Root User successfully logged in từ IP <code>217.131.99.238</code> WITHOUT MFA</p>
+                    <p><strong>Severity:</strong> 🔴 HIGH (Root account không nên dùng thường xuyên)</p>
+                    <p><strong>Recommended Actions:</strong></p>
+                    <ul>
+                        <li>Enable MFA cho Root Account ngay lập tức</li>
+                        <li>Investigate IP address (legitimate?)</li>
+                        <li>Review CloudTrail logs cho actions performed</li>
+                        <li>Rotate Root credentials nếu cần</li>
+                        <li>Educate team về Root account best practices</li>
+                    </ul>
+                </div>
+
+                <h3>Detecting Login Issues với CloudTrail:</h3>
+                
+                <h4>Key Fields:</h4>
+                <ul>
+                    <li><code>eventSource</code>: <code>signin.amazonaws.com</code></li>
+                    <li><code>eventName</code>: <code>ConsoleLogin</code></li>
+                    <li><code>responseElements.ConsoleLogin</code>: "Success" hoặc "Failure"</li>
+                    <li><code>additionalEventData.MFAUsed</code>: "Yes" hoặc "No"</li>
+                    <li><code>userIdentity.type</code>: "Root" hoặc "IAMUser"</li>
+                </ul>
+
+                <h4>SQL Query Example (Athena):</h4>
+                <pre><code class="language-sql">SELECT
+  eventTime,
+  userIdentity.arn AS user,
+  awsRegion,
+  userAgent,
+  sourceIPAddress,
+  eventName,
+  responseElements.ConsoleLogin AS loginStatus,
+  additionalEventData.MFAUsed AS mfaUsed
+FROM cloudtrail_logs
+WHERE
+  eventName = 'ConsoleLogin'
+  AND eventTime > '2025-11-01 00:00:00'
+ORDER BY eventTime DESC;</code></pre>
+
+                <h3>Threats có thể phát hiện:</h3>
+                <ul>
+                    <li>🔴 <strong>Brute-force login attempts:</strong> Multiple "Failure" từ same IP</li>
+                    <li>🔴 <strong>Users logging in without MFA:</strong> <code>MFAUsed: "No"</code></li>
+                    <li>🔴 <strong>Logins từ malicious IPs:</strong> Cross-reference với threat intelligence</li>
+                    <li>🔴 <strong>Unusual API calls:</strong> <code>DeleteBucket</code>, <code>TerminateInstances</code> ngoài giờ</li>
+                    <li>🔴 <strong>Privilege escalation:</strong> <code>AttachUserPolicy</code>, <code>CreateAccessKey</code></li>
+                </ul>
+
+                <h3>Integration với SIEM (Splunk):</h3>
+                <ol>
+                    <li>CloudTrail logs được lưu ở S3 (JSON format)</li>
+                    <li>Install <strong>Splunk Add-on for AWS</strong> (ingestion)</li>
+                    <li>Install <strong>Splunk App for AWS</strong> (dashboards)</li>
+                    <li>Configure S3 bucket access</li>
+                    <li>Create dashboards và alerts trong Splunk</li>
+                </ol>
+
+                <h3>Best Practices:</h3>
+                <ul>
+                    <li>✅ Enable CloudTrail trong tất cả regions</li>
+                    <li>✅ Enable <strong>Log File Validation</strong> (detect tampering)</li>
+                    <li>✅ Store logs trong dedicated S3 bucket với encryption</li>
+                    <li>✅ Enable <strong>Data Events</strong> cho critical S3 buckets</li>
+                    <li>✅ Integrate với CloudWatch Logs cho real-time monitoring</li>
+                    <li>✅ Set up CloudWatch Alarms cho suspicious activities</li>
+                    <li>✅ Regularly review logs (automated analysis với Athena/Lambda)</li>
+                    <li>✅ Implement S3 Lifecycle policies để manage log retention</li>
+                </ul>
+
+                <h2>6️⃣ AWS Incident Management</h2>
+                
+                <h3>AWS Incident Manager là gì?</h3>
+                <p><strong>VN:</strong> AWS Incident Manager là tính năng của Systems Manager, giúp giảm thời gian giải quyết incidents thông qua automated plans, runbooks, và collaboration tools.</p>
+                
+                <p><strong>EN:</strong> AWS Incident Manager is a feature of Systems Manager that helps decrease incident resolution time through automated plans, runbooks, and collaboration tools.</p>
+
+                <h3>Key Components:</h3>
+                <ul>
+                    <li><strong>Response Plan:</strong> Định nghĩa who responds, automation runbooks, communication tools</li>
+                    <li><strong>Incident Detection:</strong> CloudWatch alarms và EventBridge events tạo incidents</li>
+                    <li><strong>Runbook Automation:</strong> Tự động thực hiện remediation actions</li>
+                    <li><strong>Engagement Plans:</strong> Notify đúng người đúng lúc</li>
+                    <li><strong>On-call Schedules:</strong> Rotas (up to 30 people)</li>
+                    <li><strong>Collaboration:</strong> AWS Chatbot (Slack, MS Teams, Chime)</li>
+                    <li><strong>Post-Incident Analysis:</strong> Review và continuous improvement</li>
+                </ul>
+
+                <h3>Real-World Example: Brute-Force Attack Response</h3>
+                <div class="info-box">
+                    <h4>Situation:</h4>
+                    <p>CloudWatch Alarm phát hiện abnormal failed login attempts</p>
+                    
+                    <h4>Setup:</h4>
+                    <ul>
+                        <li>CloudWatch Alarm monitors access logs</li>
+                        <li>Response Plan:
+                            <ol>
+                                <li>Notify security team via SMS</li>
+                                <li>Execute Automation runbook to isolate resources</li>
+                            </ol>
+                        </li>
+                    </ul>
+                    
+                    <h4>Response Workflow:</h4>
+                    <ol>
+                        <li>Alarm triggers → Incident Manager activates Response Plan</li>
+                        <li>Security team notified via SMS</li>
+                        <li>AWS Chatbot connects team to chat channel</li>
+                        <li>Runbook executes automatically: Isolate compromised resources</li>
+                        <li>OpsCenter provides centralized tracking</li>
+                    </ol>
+                    
+                    <h4>Key Learnings:</h4>
+                    <ul>
+                        <li>✅ Automated response reduces manual intervention</li>
+                        <li>✅ Chatbot facilitates real-time collaboration</li>
+                        <li>✅ Predefined runbooks ensure consistency</li>
+                        <li>✅ OpsCenter provides centralized visibility</li>
+                    </ul>
+                </div>
+
+                <h2>7️⃣ Amazon VPC - Virtual Private Cloud</h2>
+                
+                <h3>VPC là gì?</h3>
+                <p><strong>VN:</strong> Amazon VPC cho phép bạn tạo một mạng ảo riêng biệt trong AWS cloud, với full control về IP addressing, subnets, route tables, và gateways.</p>
+                
+                <p><strong>EN:</strong> Amazon VPC allows you to create a logically isolated virtual network in AWS cloud, with complete control over IP addressing, subnets, route tables, and gateways.</p>
+
+                <h3>Key Components:</h3>
+                
+                <h4>1. Subnets</h4>
+                <ul>
+                    <li><strong>Public Subnets:</strong> Có route đến Internet Gateway (cho web servers)</li>
+                    <li><strong>Private Subnets:</strong> Không có direct internet access (cho databases)</li>
+                    <li>Mỗi subnet nằm trong 1 Availability Zone</li>
+                </ul>
+
+                <h4>2. Route Tables</h4>
+                <ul>
+                    <li>Control traffic routing giữa subnets</li>
+                    <li><code>0.0.0.0/0</code> route → Internet Gateway (public subnet)</li>
+                    <li>Routes evaluated based on most specific match</li>
+                </ul>
+
+                <h4>3. Security Groups (Stateful)</h4>
+                <ul>
+                    <li>Virtual firewalls ở instance level</li>
+                    <li>Tracks connection state (allows return traffic automatically)</li>
+                    <li>Default: Allow all outbound, block all inbound</li>
+                </ul>
+
+                <h4>4. Network ACLs (Stateless)</h4>
+                <ul>
+                    <li>Network-level security ở subnet level</li>
+                    <li>Rules processed in order (lowest to highest number)</li>
+                    <li>Specify Allow/Deny cho inbound và outbound</li>
+                </ul>
+
+                <h4>5. NAT Gateway</h4>
+                <ul>
+                    <li>Provide outbound internet connectivity cho private subnets</li>
+                    <li>Public NAT: Requires Elastic IP, routes to Internet Gateway</li>
+                    <li>Private NAT: Routes through transit/virtual private gateways</li>
+                </ul>
+
+                <h4>6. Internet Gateway</h4>
+                <ul>
+                    <li>Facilitates communication giữa VPC và internet</li>
+                    <li>Highly available, horizontally scaled</li>
+                    <li>Only 1 Internet Gateway per VPC</li>
+                </ul>
+
+                <h3>VPC Flow Logs:</h3>
+                <p>Gathers details về IP traffic giữa network interfaces trong VPC</p>
+                
+                <pre><code class="language-log">2 eni-0d14a8f66abcd1234 172.31.16.21 203.0.113.10 49234 443 6 10 3210 1637044452 1637044512 REJECT OK</code></pre>
+
+                <p><strong>Fields:</strong> Version, ENI, Src IP, Dst IP, Src Port, Dst Port, Protocol (6=TCP), Packets, Bytes, Start Time, End Time, Action (REJECT), Status</p>
+
+                <h4>Use Case: Detecting Port Scanning</h4>
+                <div class="info-box">
+                    <p><strong>Pattern:</strong> Multiple flows từ same source IP (<code>192.168.1.200</code>) đến various destination ports (22, 80, 443, 3389) với REJECT action</p>
+                    <p><strong>Indication:</strong> Potential port scanning attack</p>
+                    <p><strong>Action:</strong> Block source IP, investigate compromised systems</p>
+                </div>
+
+                <h2>8️⃣ AWS S3 Security</h2>
+                
+                <h3>S3 Security Best Practices:</h3>
+                
+                <h4>1. Restrict Public Access</h4>
+                <ul>
+                    <li>Activate <strong>S3 Block Public Access</strong> ở account/bucket level</li>
+                    <li>Use AWS Organizations SCPs để enforce</li>
+                </ul>
+
+                <h4>2. Enable S3 Protection in GuardDuty</h4>
+                <ul>
+                    <li>Analyze S3 data access events</li>
+                    <li>Detect suspicious activities (uncommon locations, deactivation of controls)</li>
+                </ul>
+
+                <h4>3. Use Amazon Macie</h4>
+                <ul>
+                    <li>Machine learning để detect sensitive data</li>
+                    <li>Notifies về public/unencrypted/externally shared buckets</li>
+                </ul>
+
+                <h4>4. Encryption</h4>
+                <ul>
+                    <li><strong>SSE-S3:</strong> S3-managed keys (simple)</li>
+                    <li><strong>SSE-KMS:</strong> KMS-managed keys (audit trail, enhanced protection)</li>
+                    <li><strong>SSE-C:</strong> Customer-provided keys</li>
+                    <li><strong>Client-side:</strong> Encrypt before sending to AWS</li>
+                </ul>
+
+                <h4>5. Versioning & Object Lock</h4>
+                <ul>
+                    <li><strong>S3 Versioning:</strong> Preserves every version</li>
+                    <li><strong>MFA Delete:</strong> Requires 2FA to delete versions</li>
+                    <li><strong>Object Lock:</strong> WORM model (write-once-read-many)</li>
+                </ul>
+
+                <h4>6. Logging</h4>
+                <ul>
+                    <li><strong>CloudTrail:</strong> API calls (enable Data Events)</li>
+                    <li><strong>Server Access Logging:</strong> Detailed request records</li>
+                </ul>
+
+                <h4>7. Cross-Region Replication</h4>
+                <ul>
+                    <li>Automatic copying across regions</li>
+                    <li>For compliance và disaster recovery</li>
+                </ul>
+
+                <h2>9️⃣ AWS IAM - Identity and Access Management</h2>
+                
+                <h3>IAM Components:</h3>
+                
+                <h4>1. Users</h4>
+                <ul>
+                    <li>Individual users với unique credentials</li>
+                    <li>Programmatic access: Access Key + Secret Key</li>
+                    <li>Console access: Username + Password</li>
+                </ul>
+
+                <h4>2. Groups</h4>
+                <ul>
+                    <li>Organize users để manage permissions collectively</li>
+                    <li>Users inherit group permissions</li>
+                    <li>Users có thể belong to multiple groups</li>
+                </ul>
+
+                <h4>3. Roles</h4>
+                <ul>
+                    <li>Set of permissions mà entities có thể assume</li>
+                    <li>Used for temporary access hoặc cross-account access</li>
+                    <li>Example: Lambda role để access S3</li>
+                </ul>
+
+                <h4>4. Policies</h4>
+                <ul>
+                    <li>JSON documents defining permissions</li>
+                    <li>Effect: "Allow" hoặc "Deny"</li>
+                    <li>Action: AWS service API actions</li>
+                    <li>Resource: AWS resources (ARNs)</li>
+                </ul>
+
+                <h3>Policy Example:</h3>
+                <pre><code class="language-json">{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-bucket/*"
+    }
+  ]
+}</code></pre>
+
+                <h3>Best Practices:</h3>
+                <ul>
+                    <li>✅ <strong>Principle of Least Privilege:</strong> Grant minimum permissions</li>
+                    <li>✅ <strong>Enable MFA:</strong> Especially cho Root và admin users</li>
+                    <li>✅ <strong>Rotate Access Keys:</strong> Regularly (every 90 days)</li>
+                    <li>✅ <strong>Use IAM Roles:</strong> Instead of access keys khi possible</li>
+                    <li>✅ <strong>Avoid Hardcoding Keys:</strong> Use Secrets Manager/Parameter Store</li>
+                    <li>✅ <strong>Monitor Key Usage:</strong> CloudTrail logs</li>
+                    <li>✅ <strong>Use Groups:</strong> Manage permissions collectively</li>
+                    <li>✅ <strong>Regular Audits:</strong> Review permissions và policies</li>
+                </ul>
+
+                <h2>🔟 AWS Shield - DDoS Protection</h2>
+                
+                <h3>AWS Shield Standard vs Advanced:</h3>
+                
+                <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Feature</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Shield Standard</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Shield Advanced</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cost</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Free (automatic)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">$3000/month + fees</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Protection Layer</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Layer 3 & 4</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Layer 3, 4, & 7</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Detection</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Static thresholds</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Personalized (traffic patterns)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>WAF Integration</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Manual</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Automatic L7 mitigation</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Support</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Standard AWS Support</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">24/7 Shield Response Team</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Cost Protection</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">No</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Yes (DDoS scaling charges)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>DDoS Attack Types:</h3>
+                <ul>
+                    <li><strong>Volume-based:</strong> Massive burst of requests (overwhelms bandwidth)</li>
+                    <li><strong>Protocol attacks:</strong> Malformed requests exploit network protocols</li>
+                    <li><strong>Application-layer (L7):</strong> Complex requests target app vulnerabilities</li>
+                </ul>
+
+                <h2>🎓 Kết luận / Conclusion</h2>
+                
+                <p><strong>VN:</strong> Sau khi hoàn thành 10 modules AWS Cloud Security trên Let's Defend, mình đã có cái nhìn toàn diện về cách bảo vệ infrastructure trên AWS. Từ monitoring với CloudWatch, phát hiện threats với GuardDuty, bảo vệ web apps với WAF, đến quản lý identities với IAM - mỗi service đều đóng vai trò quan trọng trong defense-in-depth strategy.</p>
+
+                <p><strong>EN:</strong> After completing 10 AWS Cloud Security modules on Let's Defend, I gained comprehensive understanding of how to protect infrastructure on AWS. From monitoring with CloudWatch, detecting threats with GuardDuty, protecting web apps with WAF, to managing identities with IAM - each service plays a crucial role in defense-in-depth strategy.</p>
+
+                <div class="info-box">
+                    <h4>💡 Key Takeaways:</h4>
+                    <ul>
+                        <li>✅ <strong>Defense in Depth:</strong> Sử dụng multiple layers of security</li>
+                        <li>✅ <strong>Automation:</strong> Automate detection và response với CloudWatch, GuardDuty, Incident Manager</li>
+                        <li>✅ <strong>Least Privilege:</strong> Grant minimum permissions cần thiết</li>
+                        <li>✅ <strong>Monitoring:</strong> Enable logging và monitoring cho all critical resources</li>
+                        <li>✅ <strong>Encryption:</strong> Encrypt data at rest và in transit</li>
+                        <li>✅ <strong>Regular Audits:</strong> Review permissions, policies, và configurations</li>
+                        <li>✅ <strong>Incident Response:</strong> Have plans và runbooks sẵn sàng</li>
+                    </ul>
+                </div>
+
+                <h3>Lộ trình tiếp theo / Next Steps:</h3>
+                <ol>
+                    <li>Practice hands-on labs trên AWS Free Tier</li>
+                    <li>Tham gia AWS Security challenges trên Let's Defend</li>
+                    <li>Học thêm về AWS Security Specialty Certification</li>
+                    <li>Build personal projects áp dụng security best practices</li>
+                    <li>Join AWS Security community và forums</li>
+                </ol>
+
+                <p>Hy vọng bài viết này hữu ích cho các bạn đang học AWS Security! Nếu có câu hỏi, hãy để lại comment nhé! 🚀</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_Network.png" alt="AWS Network Foundation">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-network-foundation.html">🌐 Network Foundation – Blog tóm tắt dễ hiểu</a></h4>
+                        <p>Tóm tắt về AWS Networking - VPC, Subnets, Route Tables...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_DB.png" alt="AWS Database & Storage">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-db-storage-foundation.html">💾 Database & Storage Foundation</a></h4>
+                        <p>Tóm tắt về RDS, DynamoDB, S3, EBS và các dịch vụ storage...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

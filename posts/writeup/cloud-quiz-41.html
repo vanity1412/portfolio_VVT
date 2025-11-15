@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luyện tập Cloud & Architecture – 41 câu hỏi - Vũ Văn Thông</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/blog.css">
+  
+  <style></style>
+    :root{
+      --bg:#0b1020;
+      --panel:#0f172a;
+      --panel-2:#0b1226;
+      --text:#e5e7eb;
+      --muted:#9aa4b2;
+      --brand:#7c3aed;
+      --brand-2:#22d3ee;
+      --ok:#22c55e;
+      --bad:#ef4444;
+      --card:#0f172a;
+      --border:#1f2a44;
+      --shadow:0 8px 24px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.02) inset;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, rgba(34,211,238,.08), transparent 60%),
+        radial-gradient(900px 400px at 90% 10%, rgba(124,58,237,.12), transparent 60%),
+        var(--bg);
+    }
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header.app{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:saturate(120%) blur(8px);
+      background:linear-gradient(180deg, rgba(11,16,32,.95), rgba(11,16,32,.6));
+      border-bottom:1px solid var(--border);
+    }
+    .brand-row{display:flex;align-items:center;gap:14px;padding:14px 24px}
+    .logo{
+      width:36px;height:36px;border-radius:10px;
+      background: conic-gradient(from 200deg, var(--brand), var(--brand-2));
+      box-shadow:0 0 0 2px rgba(255,255,255,.04) inset, 0 8px 24px rgba(124,58,237,.25);
+    }
+    .title h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .title p{margin:2px 0 0 0;color:var(--muted);font-size:13px}
+    .progress{
+      height:4px;background:#0a0f21;
+      border-top:1px solid var(--border);
+    }
+    .progress__bar{
+      height:100%;width:0%;
+      background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      transition:width .25s ease;
+    }
+
+    /* Panels */
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:20px;margin-top:18px}
+    @media (max-width: 960px){
+      .layout{grid-template-columns:1fr}
+    }
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .panel h3{margin:0 0 12px 0}
+    .panel .section{padding:18px 18px 0}
+    .panel .section:last-child{padding-bottom:18px}
+    .divider{height:1px;background:var(--border);margin:18px 0}
+
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;padding:6px 10px;border-radius:999px;
+      border:1px solid var(--border);background:var(--panel-2);color:var(--muted);
+    }
+    .switch{display:flex;align-items:center;justify-content:space-between;margin:10px 0}
+    .switch input[type="checkbox"]{appearance:none;width:42px;height:24px;border-radius:999px;background:#0b1226;border:1px solid var(--border);position:relative;outline:none;cursor:pointer}
+    .switch input[type="checkbox"]::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:all .2s}
+    .switch input[type="checkbox"]:checked{background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+    .switch input[type="checkbox"]:checked::after{left:22px}
+
+    .btn{
+      appearance:none;border:none;cursor:pointer;
+      padding:12px 14px;border-radius:12px;
+      background:linear-gradient(180deg,#1a2441,#0e1630);color:#fff;
+      border:1px solid var(--border);
+      font-weight:600;letter-spacing:.2px;
+      box-shadow:var(--shadow);
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .btn.secondary{background:#0b1226;color:var(--text)}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width: 520px){.grid-2{grid-template-columns:1fr}}
+
+    /* Question card */
+    .card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
+    }
+    .q-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px}
+    .q-title{font-size:18px;margin:0;letter-spacing:.2px}
+    .q-meta{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted)}
+
+    .options{display:grid;gap:10px;margin-top:10px}
+    .option{
+      display:flex;align-items:flex-start;gap:12px;cursor:pointer;
+      padding:12px;border:1px solid var(--border);border-radius:12px;background:#0b1226;
+      transition:transform .06s ease, border .15s ease, background .15s ease;
+    }
+    .option:hover{transform:translateY(-1px);border-color:#2d3a5e}
+    .option input{margin-top:3px;transform:scale(1.05)}
+    .option.correct{border-color:rgba(34,197,94,.6);background:rgba(34,197,94,.08)}
+    .option.incorrect{border-color:rgba(239,68,68,.6);background:rgba(239,68,68,.06)}
+
+    .explain{
+      margin-top:14px;padding:12px;border:1px dashed var(--border);border-left:4px solid var(--brand);
+      border-radius:12px;background:#0a1228;color:#cbd5e1
+    }
+    code{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#9AE6B4;background:#0d1a34;padding:2px 6px;border-radius:6px}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .kbd{font-family:"JetBrains Mono";font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:6px;background:#0b1226;color:#9aa4b2}
+
+    .footer{
+      margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .stat{font-size:13px;color:var(--muted)}
+    .result{
+      text-align:center;padding:28px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(180deg,#101a35,#0b1226);
+    }
+    .result h2{margin:0 0 8px 0;font-size:28px}
+    .result .score{font-size:40px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+    .review{
+      margin-top:20px;display:grid;gap:12px
+    }
+    .filter{
+      display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px 0
+    }
+    .filter .btn{padding:8px 10px;font-size:13px}
+    .tag-ok{color:#22c55e}
+    .tag-bad{color:#ef4444}
+
+    .toast{
+      position:fixed;right:16px;bottom:16px;padding:10px 14px;background:#0b1226;border:1px solid var(--border);border-radius:999px;color:#cbd5e1;box-shadow:var(--shadow)
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Placeholder -->
+  <div id="sidebar-placeholder"></div>
+  
+  <!-- Mobile Sidebar Toggle -->
+  <button class="sidebar-toggle" id="sidebar-toggle">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <!-- Header Placeholder -->
+  <div id="header-placeholder"></div>
+
+  <header class="app"></header>
+    <div class="brand-row">
+      <div class="post-breadcrumb" style="padding: 10px 0;">
+        <a href="../../blog.html" style="color: var(--text-dim);"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+      </div>
+      <div class="logo" aria-hidden="true"></div>
+      <div class="title">
+        <h1>Luyện tập Cloud & Architecture – 41 câu hỏi</h1>
+        <p>Chế độ Luyện tập/Thi thử, chấm điểm, giải thích chi tiết, lưu tiến độ.</p>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
+  </header>
+
+  <div class="container">
+    <div class="layout">
+      <aside class="panel" id="settings">
+        <div class="section">
+          <h3>Thiết lập</h3>
+          <div class="divider"></div>
+          <div class="switch">
+            <label for="mode">Chế độ <span class="chip" id="modeLabel">Luyện tập (hiện đáp án ngay)</span></label>
+            <input id="mode" type="checkbox" />
+          </div>
+          <div class="switch">
+            <label for="shuffle">Xáo trộn thứ tự</label>
+            <input id="shuffle" type="checkbox" checked />
+          </div>
+          <div class="switch">
+            <label for="persist">Lưu tiến độ (trình duyệt)</label>
+            <input id="persist" type="checkbox" checked />
+          </div>
+        </div>
+        <div class="section">
+          <label for="numQ">Số câu (1–41)</label>
+          <div class="grid-2">
+            <input id="numQ" type="number" min="1" max="41" value="41" class="btn" style="padding:10px" />
+            <button class="btn secondary" id="resetBtn" title="Đặt lại tiến độ">Đặt lại</button>
+          </div>
+          <div class="divider"></div>
+          <button class="btn" id="startBtn">Bắt đầu</button>
+        </div>
+        <div class="section">
+          <p class="chip">Mẹo: <span class="kbd">J/K</span> chuyển câu • <span class="kbd">Enter</span> nộp • Click đáp án để chọn</p>
+        </div>
+      </aside>
+
+      <main>
+        <div id="stage-intro" class="panel card">
+          <h2 style="margin-top:0">Chào bạn 👋</h2>
+          <p>Đây là web luyện tập bộ <strong>41 câu hỏi Cloud</strong> bạn đã cung cấp. Chọn <em>Chế độ</em>, <em>Xáo trộn</em> và nhấn <strong>Bắt đầu</strong>.</p>
+          <ul>
+            <li><strong>Luyện tập:</strong> hiện đúng/sai và <em>giải thích</em> ngay sau khi chọn.</li>
+            <li><strong>Thi thử:</strong> ẩn đáp án, chấm điểm cuối bài + <em>review</em> từng câu.</li>
+          </ul>
+        </div>
+
+        <div id="stage-quiz" style="display:none">
+          <div class="card">
+            <div class="q-header">
+              <h3 class="q-title" id="qTitle">Câu hỏi</h3>
+              <div class="q-meta">
+                <span class="pill" id="qIndex">1/41</span>
+                <span class="pill" id="qState">Chưa trả lời</span>
+              </div>
+            </div>
+            <p id="qText" style="margin:0 0 8px 0"></p>
+            <div class="options" id="qOptions"></div>
+            <div id="qExplain" class="explain" style="display:none"></div>
+
+            <div class="actions">
+              <button class="btn" id="checkBtn">Kiểm tra</button>
+              <button class="btn secondary" id="nextBtn">Câu tiếp</button>
+            </div>
+            <div class="footer">
+              <div class="stat" id="statText">Đã làm: 0/0 • Đúng: 0</div>
+              <div class="stat">Tiến độ được lưu tự động nếu bật.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="stage-result" style="display:none">
+          <div class="result">
+            <h2>Kết quả</h2>
+            <div class="score" id="scoreText">0%</div>
+            <p id="resultMeta" style="margin:6px 0 0 0;color:#cbd5e1"></p>
+            <div class="actions" style="justify-content:center;margin-top:16px">
+              <button class="btn" id="reviewBtn">Xem lại từng câu</button>
+              <button class="btn secondary" id="restartBtn">Làm lại</button>
+            </div>
+          </div>
+
+          <div class="panel" id="reviewPanel" style="margin-top:16px;display:none">
+            <div class="section">
+              <div class="filter">
+                <button class="btn secondary" data-filter="all">Tất cả</button>
+                <button class="btn secondary" data-filter="correct">Chỉ đúng</button>
+                <button class="btn secondary" data-filter="wrong">Chỉ sai</button>
+                <button class="btn secondary" data-filter="na">Chưa trả lời</button>
+              </div>
+              <div class="review" id="reviewList"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" style="display:none"></div>
+
+  <script>
+    const DATA = [
+      // 1
+      {
+        q: "Một đội phát triển đang xây dựng website trên Cloud. Họ sử dụng dịch vụ cung cấp máy ảo, tự cài hệ điều hành, phần mềm và bảo mật. Một thành viên thắc mắc: “Vậy dịch vụ này thuộc mô hình nào trong Cloud?”",
+        opts: ["SaaS (Software as a Service)", "PaaS (Platform as a Service)", "IaaS (Infrastructure as a Service)", "CaaS (Container as a Service)"],
+        a: 2,
+        exp: "Đặc điểm mấu chốt là tự cài hệ điều hành, phần mềm và bảo mật. IaaS chỉ cung cấp tài nguyên hạ tầng (VM, mạng, lưu trữ)."
+      },
+      // 2
+      {
+        q: "Một nhóm phát triển ứng dụng thời tiết nhỏ trên Cloud. Khi app bị lỗi, họ phải khởi động lại container và bị downtime 5 phút. Một người gợi ý: “Hãy nghĩ đến auto-healing và scaling.” Điều đó có ý nghĩa gì?",
+        opts: [
+          "Cloud có thể tự khởi động lại dịch vụ lỗi (auto-heal) và mở rộng container (scale) khi cần mà không cần thao tác tay.",
+          "Cloud cho phép backup container định kỳ.",
+          "Cloud tự lưu trạng thái ứng dụng.",
+          "Cloud đảm bảo không bao giờ có downtime."
+        ],
+        a: 0,
+        exp: "Auto-healing tự phát hiện và khởi động lại instance lỗi; Scaling mở rộng khi tải tăng. Cả hai giúp giảm downtime."
+      },
+      // 3
+      {
+        q: "Một tổ chức đang xem xét áp dụng quy tắc “Least Privilege” khi cấp quyền cho người dùng Cloud. Nhận định đúng về nguyên tắc này là gì?",
+        opts: [
+          "Cấp quyền tối thiểu cần thiết giúp giảm rủi ro bảo mật, và có thể mở rộng dần khi chứng minh được nhu cầu thực tế.",
+          "Không cần áp dụng với tài khoản kỹ thuật.",
+          "Cấp toàn quyền ban đầu để nhân viên chủ động, sau đó mới thu hẹp lại.",
+          "Nguyên tắc này chỉ cần thiết với môi trường sản xuất."
+        ],
+        a: 0,
+        exp: "PoLP giảm blast radius nếu tài khoản bị xâm nhập. Quyền nên tăng dần theo nhu cầu chính đáng."
+      },
+      // 4
+      {
+        q: "“Điểm khác biệt lớn nhất giữa Cloud và Data Center truyền thống là gì?”",
+        opts: [
+          "Cloud là dịch vụ cho phép người dùng tự cấp phát, tự mở rộng, được đo lường và trả tiền theo mức dùng thực tế.",
+          "Cloud là phần mềm quản lý tập trung.",
+          "Cloud là Data Center hiện đại hơn, có phần cứng mạnh hơn.",
+          "Cloud là nơi cung cấp không gian lưu trữ an toàn hơn."
+        ],
+        a: 0,
+        exp: "Khác biệt ở mô hình vận hành/kinh tế: self-service, elasticity, measured service, pay-as-you-go."
+      },
+      // 5
+      {
+        q: "Một doanh nghiệp vừa và nhỏ đang chọn giữa việc “tự mua server vật lý” hoặc “dùng Cloud”. Câu giải thích phù hợp nhất là gì?",
+        opts: [
+          "Cloud cho phép tự phục vụ (self-service), mở rộng nhanh (elasticity), trả tiền theo usage và không cần quản lý phần cứng vật lý.",
+          "Cloud là phần mềm cho phép điều khiển server từ xa.",
+          "Cloud hoạt động như trung tâm lưu trữ, chỉ khác ở việc sao lưu.",
+          "Cloud dùng phần cứng mạnh hơn Data Center."
+        ],
+        a: 0,
+        exp: "Không cần quản lý phần cứng; linh hoạt; tối ưu tài chính (OpEx theo usage)."
+      },
+      // 6
+      {
+        q: "Một công ty áp dụng “Cloud-first” nhưng vẫn thích mua server riêng để thử nghiệm vì cho rằng Cloud kém tin cậy. Vấn đề cốt lõi là gì?",
+        opts: [
+          "Họ chưa chuyển đổi mindset sang tư duy Cloud-native, vẫn xem Cloud là máy chủ ảo thay vì nền tảng dịch vụ linh hoạt.",
+          "Cloud không thể đảm bảo độ ổn định trong thử nghiệm.",
+          "Các hệ thống Cloud hiện nay vẫn còn hạn chế hiệu năng.",
+          "Họ chưa chọn đúng Cloud Provider."
+        ],
+        a: 0,
+        exp: "Tư duy Cloud-native xây độ tin cậy ở cấp ứng dụng (auto-heal/scale), không lệ thuộc phần cứng."
+      },
+      // 7
+      {
+        q: "Một nhóm triển khai chatbot trên Cloud. Họ dùng dịch vụ có sẵn công cụ AI, chỉ huấn luyện dữ liệu, không lo máy chủ/GPU. Dịch vụ thuộc loại nào?",
+        opts: ["IaaS", "SaaS", "PaaS", "DaaS"],
+        a: 2,
+        exp: "PaaS cung cấp nền tảng (runtime/middleware/công cụ) để tập trung vào code & dữ liệu."
+      },
+      // 8
+      {
+        q: "“Vì sao Cloud giúp startup phát triển nhanh hơn?”",
+        opts: [
+          "Vì Cloud giúp tiết kiệm điện năng và giảm chi phí nhân sự.",
+          "Vì Cloud có sẵn mọi ứng dụng văn phòng và công cụ marketing.",
+          "Vì Cloud giúp thử nghiệm ý tưởng nhanh, không cần mua server và chỉ trả tiền khi dùng thật.",
+          "Vì Cloud có giá rẻ hơn hạ tầng vật lý."
+        ],
+        a: 2,
+        exp: "Tốc độ + tài chính: thử nghiệm trong phút, không CapEx, pay-as-you-go."
+      },
+      // 9
+      {
+        q: "Một nhóm DevOps chia sẻ chung một tài khoản quản trị Cloud, khó truy vết thay đổi. Giải pháp đúng là gì?",
+        opts: [
+          "Sử dụng IAM để tạo người dùng riêng, phân quyền theo vai trò và ghi log chi tiết từng thao tác.",
+          "Chỉ cho phép một tài khoản quản trị duy nhất, bảo vệ bằng MFA.",
+          "Sử dụng API key thay vì tài khoản đăng nhập.",
+          "Duy trì tài khoản chung nhưng bật cảnh báo email."
+        ],
+        a: 0,
+        exp: "Accountability yêu cầu danh tính riêng, phân quyền (PoLP) và audit log."
+      },
+      // 10
+      {
+        q: "Khi cần tạo môi trường thử nghiệm mới, cài VM thủ công rất chậm. Cloud tạo trong vài phút. Điểm khác biệt quan trọng nhất là gì?",
+        opts: [
+          "Cloud giúp chia sẻ dữ liệu giữa các máy ảo tự động.",
+          "Cloud là công nghệ thay thế hoàn toàn máy ảo.",
+          "Cloud cho phép tự cấp phát tài nguyên qua giao diện self-service, không cần thao tác trên máy vật lý.",
+          "Cloud giúp giảm RAM/CPU trên máy cá nhân."
+        ],
+        a: 2,
+        exp: "Self-service là khác biệt lớn: cấp phát nhanh qua web/API."
+      },
+      // 11
+      {
+        q: "Một số hệ thống vẫn cần chạy on-premise do kết nối phần cứng. Mô hình triển khai phù hợp nhất?",
+        opts: ["Public Cloud", "Private Cloud", "Hybrid Cloud", "Multi-cloud"],
+        a: 2,
+        exp: "Hybrid Cloud kết hợp on-prem và public cloud."
+      },
+      // 12
+      {
+        q: "Dùng nhiều Cloud để tối ưu chi phí và sẵn sàng, nhưng quản trị & bảo mật đồng nhất rất khó. Vấn đề chính là gì?",
+        opts: [
+          "Cloud Provider không cho phép đồng bộ tài nguyên.",
+          "Không thể áp dụng chính sách bảo mật cho nhiều Cloud cùng lúc.",
+          "Multi-cloud luôn tốn kém hơn single-cloud.",
+          "Quản trị phức tạp, cần quản lý tập trung và chuẩn hoá cấu hình bảo mật."
+        ],
+        a: 3,
+        exp: "API/mô hình IAM khác nhau ⇒ tăng độ phức tạp. Cần policy & tooling tập trung."
+      },
+      // 13
+      {
+        q: "Hệ thống học trực tuyến cập nhật không gián đoạn lớp học. Đặc điểm nào thể hiện lợi ích đó?",
+        opts: ["Scalability", "Elasticity", "Multi-tenancy", "Availability"],
+        a: 3,
+        exp: "Triển khai cuốn chiếu, LB/HA giúp duy trì dịch vụ khi cập nhật."
+      },
+      // 14
+      {
+        q: "Dùng template hạ tầng định nghĩa sẵn và triển khai bằng vài lệnh automation. Đây là ví dụ của?",
+        opts: ["Infrastructure as Code", "Auto-scaling", "Resource Tagging", "Self-service"],
+        a: 0,
+        exp: "IaC = quản lý/cấp phát hạ tầng qua file cấu hình + tự động hoá."
+      },
+      // 15
+      {
+        q: "Lift-and-shift lên Cloud nhưng hiệu năng không tăng, chi phí cao. Nguyên nhân chính?",
+        opts: [
+          "Cloud không phù hợp cho ứng dụng legacy.",
+          "Chưa tối ưu kiến trúc cloud-native, vẫn tư duy vận hành truyền thống.",
+          "Cloud Provider giới hạn hiệu năng.",
+          "Chọn sai region."
+        ],
+        a: 1,
+        exp: "Không tận dụng auto-scale, serverless, dịch vụ managed ⇒ tốn kém như on-prem."
+      },
+      // 16
+      {
+        q: "RTO giảm mạnh sau khi chuyển sang Cloud. Điều gì giúp đạt được điều này?",
+        opts: [
+          "Cloud có phục hồi nhanh nhờ backup đa vùng, auto-restart và tính năng high availability tích hợp.",
+          "Cloud giảm RTO vì không cần nhân viên kỹ thuật.",
+          "Cloud dùng VM nên snapshot nhanh.",
+          "Cloud có phần cứng mạnh hơn."
+        ],
+        a: 0,
+        exp: "HA + auto-heal + snapshot/backup đa vùng giúp khôi phục nhanh."
+      },
+      // 17
+      {
+        q: "Chuyển toàn bộ ERP lên Cloud. Cách tiếp cận nào giảm rủi ro giai đoạn chuyển đổi?",
+        opts: [
+          "Chuyển toàn bộ cùng lúc (Big Bang).",
+          "Di chuyển theo từng giai đoạn nhỏ, vừa vận hành cũ vừa thử nghiệm Cloud.",
+          "Giữ nguyên on-prem và chỉ đồng bộ dữ liệu.",
+          "Dừng toàn bộ dịch vụ trong thời gian triển khai."
+        ],
+        a: 1,
+        exp: "Phased migration cho phép kiểm chứng, đào tạo, rollback an toàn."
+      },
+      // 18
+      {
+        q: "Mất dữ liệu do lỡ tay xoá, không có backup/snapshot. Sai sót lớn nhất là gì?",
+        opts: [
+          "Không triển khai chính sách backup định kỳ và kiểm tra khả năng khôi phục trước khi vận hành thực tế.",
+          "Sử dụng sai loại lưu trữ Cloud.",
+          "Không bật mã hóa dữ liệu.",
+          "Không giới hạn quyền truy cập IAM."
+        ],
+        a: 0,
+        exp: "Thiếu backup biến lỗi nhỏ thành thảm hoạ. Backup/restore phải được kiểm chứng."
+      },
+      // 19 (SaaS #1)
+      {
+        q: "Doanh nghiệp muốn dùng phần mềm kế toán qua trình duyệt, không cài đặt; dữ liệu xử lý trên Cloud của nhà cung cấp. Mô hình dịch vụ nào?",
+        opts: ["IaaS", "SaaS", "FaaS", "PaaS"],
+        a: 1,
+        exp: "SaaS: người dùng chỉ sử dụng ứng dụng hoàn chỉnh qua Internet (Gmail, Salesforce...)."
+      },
+      // 20 (SaaS #2 - duplicate intentionally to reach 41)
+      {
+        q: "Doanh nghiệp muốn dùng phần mềm kế toán qua trình duyệt, không cài đặt; dữ liệu xử lý trên Cloud của nhà cung cấp. Mô hình dịch vụ nào?",
+        opts: ["IaaS", "SaaS", "FaaS", "PaaS"],
+        a: 1,
+        exp: "SaaS: người dùng chỉ sử dụng ứng dụng hoàn chỉnh qua Internet (Gmail, Salesforce...)."
+      },
+      // 21
+      {
+        q: "“Thiết kế theo hướng scale-out thay vì scale-up” có nghĩa là gì?",
+        opts: [
+          "Thêm nhiều máy nhỏ để mở rộng linh hoạt, giảm chi phí và tăng tính chịu lỗi.",
+          "Nâng cấp CPU/RAM của máy chủ chính (scale-up).",
+          "Chuyển dữ liệu sang region khác.",
+          "Mua thêm dung lượng lưu trữ lớn hơn (scale-up)."
+        ],
+        a: 0,
+        exp: "Scale-out = mở rộng ngang bằng nhiều instance; cloud-native ưu tiên cách này."
+      },
+      // 22
+      {
+        q: "Muốn tập trung vào viết mã, deploy trực tiếp code, không cài hệ điều hành hay middleware. Dịch vụ nào?",
+        opts: ["FaaS", "IaaS", "PaaS", "SaaS"],
+        a: 2,
+        exp: "PaaS cung cấp runtime/middleware sẵn sàng để triển khai code."
+      },
+      // 23
+      {
+        q: "“Nghĩ đến từ khóa ‘distributed’ – phân tán” nghĩa là gì trong Cloud?",
+        opts: [
+          "Cloud luôn chạy ở nhiều khu vực địa lý.",
+          "Cloud lưu bản sao hệ thống ở thiết bị người dùng.",
+          "Cloud nhân bản dữ liệu ra nhiều nơi để tăng tốc độ xử lý.",
+          "Cloud phân tán tài nguyên/dữ liệu trên nhiều máy chủ giúp sẵn sàng & phục hồi khi lỗi."
+        ],
+        a: 3,
+        exp: "Bản chất cloud là phân tán để mở rộng và chịu lỗi tốt."
+      },
+      // 24
+      {
+        q: "Quản lý Cloud thủ công gây nhầm lẫn và trùng lặp tài nguyên. Giải pháp nào phù hợp?",
+        opts: [
+          "Sử dụng công cụ giám sát chi phí.",
+          "Dùng automation script nội bộ.",
+          "Tạo tài khoản Cloud riêng cho từng vùng.",
+          "Dùng Infrastructure as Code để định nghĩa hạ tầng bằng file cấu hình, đảm bảo đồng nhất và dễ mở rộng."
+        ],
+        a: 3,
+        exp: "IaC đưa cấu hình vào version control, review và tự động hoá tạo/sửa/hủy."
+      },
+      // 25
+      {
+        q: "Quên gắn tag chi phí khi tạo tài nguyên Cloud nên cuối tháng không truy vết được. Cần làm gì?",
+        opts: [
+          "Chia lại tài khoản theo nhóm.",
+          "Giảm bớt tài nguyên Cloud.",
+          "Dùng dashboard chi phí để lọc thủ công.",
+          "Thiết lập policy bắt buộc tagging khi khởi tạo và cảnh báo tài nguyên thiếu tag."
+        ],
+        a: 3,
+        exp: "FinOps cần policy bắt buộc + quét/cảnh báo tự động để kiểm soát chi phí."
+      },
+      // 26
+      {
+        q: "Theo mô hình trách nhiệm chia sẻ, ai chịu trách nhiệm chính về bảo vệ dữ liệu và quyền truy cập của khách hàng?",
+        opts: [
+          "Người dùng phải tự mã hóa dữ liệu trước khi tải lên.",
+          "Trách nhiệm bảo mật chỉ áp dụng với dịch vụ miễn phí.",
+          "Cloud Provider bảo mật hạ tầng vật lý; người dùng bảo vệ dữ liệu và quyền truy cập.",
+          "Cloud Provider chịu trách nhiệm hoàn toàn."
+        ],
+        a: 2,
+        exp: "Provider lo 'của Cloud'; khách hàng lo 'trong Cloud' (dữ liệu/IAM/cấu hình)."
+      },
+      // 27
+      {
+        q: "Website bán hàng tự động thêm server khi flash sale, và tự giảm khi hết đợt. Đặc tính nào?",
+        opts: ["Elasticity", "Redundancy", "Virtualization", "Automation"],
+        a: 0,
+        exp: "Elasticity = co/giãn tài nguyên tự động theo nhu cầu."
+      },
+      // 28
+      {
+        q: "Chuyển lưu trữ hình ảnh sang Object Storage thay vì gắn trực tiếp vào VM. Lợi ích chính là gì?",
+        opts: [
+          "Object Storage có thể chạy trực tiếp trên VM.",
+          "Object Storage chỉ phù hợp dữ liệu tĩnh.",
+          "Object Storage dễ mở rộng, bền vững cao và tách biệt compute giúp linh hoạt & tối ưu chi phí.",
+          "Object Storage nhanh hơn SSD."
+        ],
+        a: 2,
+        exp: "Object Storage scale-out gần như vô hạn, durability cao, rẻ hơn block storage gắn VM."
+      },
+      // 29
+      {
+        q: "Đã lên Cloud nhưng vẫn làm thủ công, chưa hiệu quả. Mô tả đúng nhất?",
+        opts: [
+          "Cần tăng cấu hình VM.",
+          "Đã chuyển hạ tầng nhưng chưa chuyển tư duy: mới 'Cloud adoption' chưa 'Cloud transformation'.",
+          "Đã hoàn tất chuyển đổi Cloud.",
+          "Chưa chọn đúng mô hình dịch vụ."
+        ],
+        a: 1,
+        exp: "Transformation = thay đổi quy trình/tư duy (automation, self-service, IaC)."
+      },
+      // 30
+      {
+        q: "Muốn quản lý chi phí Cloud hiệu quả, tránh tài nguyên idle. Hướng đi hiện đại là gì?",
+        opts: [
+          "Áp dụng FinOps: kết hợp tài chính & kỹ thuật để tối ưu chi phí theo usage của từng nhóm.",
+          "Chỉ dùng dịch vụ miễn phí.",
+          "Giới hạn số lượng tài nguyên.",
+          "Chỉ cho phép tạo tài nguyên qua quản trị viên."
+        ],
+        a: 0,
+        exp: "FinOps là quy trình liên tục để tối ưu giá trị/chi phí thay vì cắt giảm cứng nhắc."
+      },
+      // 31
+      {
+        q: "Trước đây mỗi bộ phận phải chờ IT; nay có thể tự tạo & quản lý qua web. Đặc tính Cloud nào?",
+        opts: ["Security", "Elasticity", "Self-service", "Multi-region"],
+        a: 2,
+        exp: "Người dùng tự cấp phát quản lý tài nguyên mà không cần IT can thiệp trực tiếp."
+      },
+      // 32
+      {
+        q: "“Đừng chỉ nghĩ Cloud là nơi lưu trữ, hãy xem Cloud là nền tảng đổi mới.” Ý nghĩa là gì?",
+        opts: [
+          "Cloud chỉ là nơi lưu trữ an toàn.",
+          "Cloud chỉ giúp tiết kiệm chi phí lưu trữ.",
+          "Cloud thay thế con người trong sáng tạo.",
+          "Cloud cung cấp công cụ/dịch vụ/mở rộng để tạo sản phẩm nhanh, linh hoạt và tiết kiệm."
+        ],
+        a: 3,
+        exp: "Sức mạnh ở PaaS/SaaS/Serverless/AI/Big Data giúp tăng tốc đổi mới."
+      },
+      // 33
+      {
+        q: "Cần khôi phục dịch vụ càng nhanh càng tốt để tránh mất khách hàng. Khả năng nào trong Cloud giúp đạt mục tiêu này?",
+        opts: ["Resilience", "Elasticity", "Redundancy", "Scalability"],
+        a: 0,
+        exp: "Resilience = chịu sự cố và phục hồi nhanh (giảm RTO)."
+      },
+      // 34
+      {
+        q: "Muốn tách ứng dụng nguyên khối thành các service độc lập để dễ bảo trì & mở rộng. Tư duy nào?",
+        opts: [
+          "Modernization – chuyển sang kiến trúc microservices để tối ưu hiệu năng & khả năng mở rộng.",
+          "Centralization – gom các dịch vụ về một nơi.",
+          "Virtualization – chạy từng dịch vụ trên các VM riêng.",
+          "Automation – tăng tự động hóa."
+        ],
+        a: 0,
+        exp: "Modernization theo hướng microservices là chiến lược phổ biến khi lên Cloud."
+      },
+      // 35
+      {
+        q: "Trong 'Shared Responsibility Model', ai chịu trách nhiệm về bảo mật dữ liệu người dùng cuối?",
+        opts: [
+          "Cloud Provider bảo mật hạ tầng vật lý, còn người dùng bảo vệ dữ liệu và truy cập.",
+          "Người dùng chịu trách nhiệm toàn bộ.",
+          "Cloud Provider chịu trách nhiệm toàn bộ.",
+          "Cả hai bên đều không chịu trách nhiệm trực tiếp."
+        ],
+        a: 0,
+        exp: "Định nghĩa chuẩn: Provider = 'của Cloud'; Khách hàng = 'trong Cloud'."
+      },
+      // 36
+      {
+        q: "Nhà cung cấp đưa ra 3 mức giá: on-demand, reserved, spot. Giai đoạn thử nghiệm & demo nên chọn gì?",
+        opts: [
+          "Chọn spot và on-demand song song.",
+          "Chọn spot để tiết kiệm tối đa.",
+          "Chọn on-demand để linh hoạt khởi tạo/dừng bất cứ lúc nào trong giai đoạn thử nghiệm.",
+          "Chọn reserved nếu chỉ cần dùng ngắn hạn."
+        ],
+        a: 2,
+        exp: "On-demand linh hoạt nhất cho thử nghiệm. Spot có thể bị thu hồi; Reserved phù hợp dài hạn."
+      },
+      // 37
+      {
+        q: "Tại sao Cloud giúp chuyển CapEx sang OpEx?",
+        opts: [
+          "Cloud không thay đổi mô hình chi phí.",
+          "Cloud giúp doanh nghiệp sở hữu phần cứng rẻ hơn.",
+          "Thay vì mua máy chủ (CapEx), người dùng trả tiền theo mức sử dụng hàng tháng (OpEx).",
+          "Cloud giúp tăng hiệu quả tài chính vì tài sản được khấu hao."
+        ],
+        a: 2,
+        exp: "Từ đầu tư tài sản sang chi phí vận hành theo usage (thuê/mua theo giờ/tháng)."
+      },
+      // 38
+      {
+        q: "Muốn giảm lỗi thủ công khi tạo VM, cấu hình mạng... Khái niệm mô tả đúng là gì?",
+        opts: ["Governance", "Automation", "Resiliency", "Elasticity"],
+        a: 1,
+        exp: "Automation tự động hoá quy trình triển khai để giảm lỗi người."
+      },
+      // 39
+      {
+        q: "“Tôi cài máy ảo trên laptop, vậy tôi đã có Cloud cá nhân?” Cách trả lời đúng?",
+        opts: [
+          "Cloud là phiên bản nâng cao của máy ảo.",
+          "Cloud là công cụ giúp truy cập từ xa.",
+          "Cloud không chỉ là ảo hóa mà còn là mô hình dịch vụ có self-service, đo usage và thanh toán theo nhu cầu thực.",
+          "Cloud là máy chủ có hiệu năng cao hơn."
+        ],
+        a: 2,
+        exp: "Ảo hóa chỉ là công nghệ. Cloud là mô hình dịch vụ đầy đủ."
+      },
+      // 40
+      {
+        q: "Lo ngại ứng dụng ảnh hưởng lẫn nhau khi chia sẻ tài nguyên. Cơ chế nào của Cloud giúp giải quyết?",
+        opts: ["Scaling", "Load Balancing", "Multi-tenancy", "Virtualization"],
+        a: 2,
+        exp: "Multi-tenancy + virtualization cô lập các tenant để không ảnh hưởng chéo."
+      },
+      // 41
+      {
+        q: "Hệ thống e-learning chạy 24/7 dù ban đêm hầu như không có người dùng. Giải pháp tối ưu chi phí phù hợp nhất?",
+        opts: [
+          "Giảm dung lượng lưu trữ xuống mức tối thiểu.",
+          "Sử dụng nhiều tài khoản Cloud khác nhau.",
+          "Chuyển toàn bộ dịch vụ sang loại máy cấu hình thấp hơn.",
+          "Thiết lập automation schedule để tắt/giảm tài nguyên vào giờ thấp điểm, bật lại khi nhu cầu tăng."
+        ],
+        a: 3,
+        exp: "Tắt/giảm quy mô tài nguyên theo lịch để tránh phí idle; bật lại khi cần."
+      }
+    ];
+
+    /* ---------- State ---------- */
+    const $ = (q, root=document) => root.querySelector(q);
+    const $$ = (q, root=document) => Array.from(root.querySelectorAll(q));
+    const STORAGE_KEY = "quiz_cloud_41_state_v1";
+
+    let state = {
+      mode: "practice",          // "practice" | "exam"
+      shuffle: true,
+      persist: true,
+      total: 41,
+      order: [],                 // shuffled indices
+      idx: 0,                    // pointer
+      answers: {},               // {qIndex: chosenIndex}
+      checked: {},               // {qIndex: true} (practice checked)
+      done: false
+    };
+
+    /* ---------- Helpers ---------- */
+    function shuffleArray(arr){
+      const a = arr.slice();
+      for(let i=a.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+    function save(){
+      if(!state.persist) return;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      toast("Đã lưu tiến độ");
+    }
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      try{
+        const s = JSON.parse(raw);
+        if(s && Array.isArray(s.order) && typeof s.idx === "number"){
+          state = s;
+        }
+      }catch(e){}
+    }
+    function resetProgress(){
+      localStorage.removeItem(STORAGE_KEY);
+      state.answers = {}; state.checked = {}; state.idx = 0; state.done=false;
+      updateProgress();
+    }
+    function setProgress(p){
+      $("#progressBar").style.width = p + "%";
+    }
+    function updateProgress(){
+      const answered = Object.keys(state.answers).length;
+      const total = state.total;
+      const p = Math.round((Math.min(state.idx, total-1) / (total-1)) * 100);
+      setProgress(total>1 ? p : 0);
+      $("#statText").textContent = `Đã làm: ${answered}/${total} • Đúng: ${scoreCount().correct}`;
+    }
+    function currentAbsoluteIndex(){
+      return state.order[state.idx];
+    }
+    function scoreCount(){
+      let correct = 0, wrong = 0, na = 0;
+      for(let i=0;i<state.total;i++){
+        const qi = state.order[i];
+        const chosen = state.answers[qi];
+        if(chosen == null) na++;
+        else if(chosen === DATA[qi].a) correct++;
+        else wrong++;
+      }
+      return {correct, wrong, na};
+    }
+
+    /* ---------- UI Flow ---------- */
+    function showIntro(){
+      $("#stage-intro").style.display = "";
+      $("#stage-quiz").style.display = "none";
+      $("#stage-result").style.display = "none";
+      setProgress(0);
+    }
+    function startQuiz(){
+      // read settings
+      state.mode = $("#mode").checked ? "exam" : "practice";
+      $("#modeLabel").textContent = state.mode === "exam" ? "Thi thử (chấm điểm cuối)" : "Luyện tập (hiện đáp án ngay)";
+      state.shuffle = $("#shuffle").checked;
+      state.persist = $("#persist").checked;
+      state.total = Math.max(1, Math.min(41, parseInt($("#numQ").value || "41", 10)));
+      const indices = Array.from({length: DATA.length}, (_,i)=>i);
+      state.order = state.shuffle ? shuffleArray(indices).slice(0, state.total) : indices.slice(0, state.total);
+      state.idx = 0; state.answers = {}; state.checked = {}; state.done=false;
+      $("#stage-intro").style.display = "none";
+      $("#stage-quiz").style.display = "";
+      $("#stage-result").style.display = "none";
+      renderQuestion();
+      updateProgress();
+      if(state.persist) save();
+    }
+    function renderQuestion(){
+      const qi = currentAbsoluteIndex();
+      const item = DATA[qi];
+      $("#qTitle").textContent = `Câu hỏi`;
+      $("#qIndex").textContent = `${state.idx+1}/${state.total}`;
+      const chosen = state.answers[qi];
+      $("#qState").textContent = chosen==null ? "Chưa trả lời" : (chosen===item.a ? "Đã chọn (ĐÚNG)" : "Đã chọn (SAI)");
+      $("#qText").textContent = item.q;
+      const optsEl = $("#qOptions");
+      optsEl.innerHTML = "";
+      item.opts.forEach((t, i)=>{
+        const wrap = document.createElement("label");
+        wrap.className = "option";
+        wrap.setAttribute("tabindex", "0");
+        const input = document.createElement("input");
+        input.type = "radio"; input.name = "opt"; input.value = i;
+        input.checked = chosen === i;
+        const span = document.createElement("div");
+        span.innerHTML = `<strong>${String.fromCharCode(97+i)}.</strong> ${t}`;
+        wrap.appendChild(input); wrap.appendChild(span);
+        if(state.mode==="practice" && state.checked[qi]){
+          wrap.classList.add(i===item.a ? "correct" : (i===chosen ? "incorrect" : ""));
+        }
+        wrap.addEventListener("click", (e)=>{
+          state.answers[qi] = i;
+          if(state.mode==="practice"){
+            // check immediately
+            state.checked[qi] = true;
+            const wasCorrect = i===item.a;
+            renderQuestion(); // re-render to show colors
+            showExplain(wasCorrect, item.exp);
+          }else{
+            // exam mode: no explain until end
+            $("#qExplain").style.display="none";
+            $("#qExplain").innerHTML = "";
+          }
+          updateProgress();
+          if(state.persist) save();
+        });
+        optsEl.appendChild(wrap);
+      });
+      // buttons
+      if(state.mode==="practice"){
+        $("#checkBtn").style.display = "inline-block";
+      }else{
+        $("#checkBtn").style.display = "none";
+      }
+      $("#nextBtn").textContent = state.idx === state.total-1 ? "Hoàn tất" : "Câu tiếp";
+      // explain
+      if(state.mode==="practice" && state.checked[qi]){
+        const chosenOk = (state.answers[qi]===item.a);
+        showExplain(chosenOk, item.exp);
+      }else{
+        $("#qExplain").style.display="none";
+        $("#qExplain").innerHTML="";
+      }
+      // keyboard shortcuts
+      document.onkeydown = (ev)=>{
+        if(ev.key==="Enter"){ ev.preventDefault(); checkOrNext(); }
+        if(ev.key==="j" || ev.key==="ArrowRight"){ ev.preventDefault(); goNext(); }
+        if(ev.key==="k" || ev.key==="ArrowLeft"){ ev.preventDefault(); goPrev(); }
+      };
+    }
+    function showExplain(ok, exp){
+      const box = $("#qExplain");
+      box.style.display = "";
+      box.innerHTML = `<strong>${ok?"Chính xác!":"Chưa đúng."}</strong> ${exp}`;
+    }
+    function checkOrNext(){
+      if(state.mode==="practice"){
+        const qi = currentAbsoluteIndex();
+        if(!state.checked[qi]){
+          // if not checked yet but answered, check now
+          const chosen = state.answers[qi];
+          if(chosen!=null){
+            state.checked[qi] = true;
+            renderQuestion();
+            if(state.persist) save();
+            return;
+          }
+        }
+      }
+      goNext();
+    }
+    function goNext(){
+      if(state.idx < state.total-1){
+        state.idx++;
+        renderQuestion();
+        updateProgress();
+        if(state.persist) save();
+      }else{
+        // finish
+        state.done = true;
+        showResult();
+        if(state.persist) save();
+      }
+    }
+    function goPrev(){
+      if(state.idx>0){
+        state.idx--;
+        renderQuestion();
+        updateProgress();
+      }
+    }
+    function showResult(){
+      $("#stage-quiz").style.display = "none";
+      $("#stage-result").style.display = "";
+      const s = scoreCount();
+      const pct = Math.round((s.correct / state.total)*100);
+      $("#scoreText").textContent = pct + "%";
+      $("#resultMeta").textContent = `Đúng ${s.correct} • Sai ${s.wrong} • Chưa trả lời ${s.na} trên tổng ${state.total} câu.`;
+      $("#reviewPanel").style.display = "none";
+      setProgress(100);
+    }
+    function buildReview(filter="all"){
+      const list = $("#reviewList");
+      list.innerHTML = "";
+      for(let i=0;i<state.total;i++){
+        const qi = state.order[i];
+        const item = DATA[qi];
+        const chosen = state.answers[qi];
+        const isCorrect = chosen===item.a;
+        const tag = chosen==null ? "na" : (isCorrect?"correct":"wrong");
+        if(filter!=="all" && tag!==filter) continue;
+
+        const el = document.createElement("div");
+        el.className = "card";
+        const title = document.createElement("div");
+        title.className = "q-header";
+        title.innerHTML = `<h3 class="q-title">Câu ${i+1}</h3>
+          <div class="q-meta">
+            <span class="pill">${tag==="correct"?"Đúng":tag==="wrong"?"Sai":"Chưa trả lời"}</span>
+          </div>`;
+        el.appendChild(title);
+
+        const txt = document.createElement("p");
+        txt.textContent = item.q;
+        el.appendChild(txt);
+
+        const ul = document.createElement("div");
+        ul.className = "options";
+        item.opts.forEach((t,idx)=>{
+          const row = document.createElement("div");
+          row.className = "option " + (idx===item.a?"correct": idx===chosen?"incorrect":"");
+          row.innerHTML = `<div><strong>${String.fromCharCode(97+idx)}.</strong> ${t}</div>`;
+          ul.appendChild(row);
+        });
+        el.appendChild(ul);
+
+        const ex = document.createElement("div");
+        ex.className="explain";
+        ex.innerHTML = `<strong>Giải thích:</strong> ${item.exp}`;
+        el.appendChild(ex);
+        list.appendChild(el);
+      }
+    }
+    function toast(msg){
+      const t = $("#toast");
+      t.textContent = msg;
+      t.style.display = "";
+      setTimeout(()=>{ t.style.display="none"; }, 1200);
+    }
+
+    /* ---------- Wire events ---------- */
+    $("#mode").addEventListener("change", (e)=>{
+      $("#modeLabel").textContent = e.target.checked ? "Thi thử (chấm điểm cuối)" : "Luyện tập (hiện đáp án ngay)";
+    });
+    $("#startBtn").addEventListener("click", startQuiz);
+    $("#checkBtn").addEventListener("click", checkOrNext);
+    $("#nextBtn").addEventListener("click", goNext);
+    $("#resetBtn").addEventListener("click", ()=>{ resetProgress(); toast("Đã đặt lại tiến độ"); });
+    $("#reviewBtn").addEventListener("click", ()=>{
+      $("#reviewPanel").style.display = "";
+      buildReview("all");
+    });
+    $("#restartBtn").addEventListener("click", ()=>{
+      showIntro();
+    });
+    $$("#reviewPanel .btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const f = btn.getAttribute("data-filter");
+        buildReview(f);
+      });
+    });
+
+    // Load saved session if any
+    load();
+    // If there is a saved flow that is 'done' show result; if mid-quiz, resume; else intro.
+    if(state.order.length && state.total){
+      if(state.done){
+        showResult();
+      }else if(state.order.length){
+        $("#stage-intro").style.display = "none";
+        $("#stage-quiz").style.display = "";
+        $("#stage-result").style.display = "none";
+        renderQuestion(); updateProgress();
+      }else{
+        showIntro();
+      }
+      // reflect switches
+      $("#mode").checked = state.mode==="exam";
+      $("#shuffle").checked = state.shuffle;
+      $("#persist").checked = state.persist;
+      $("#numQ").value = state.total;
+      $("#modeLabel").textContent = state.mode === "exam" ? "Thi thử (chấm điểm cuối)" : "Luyện tập (hiện đáp án ngay)";
+    }else{
+      showIntro();
+    }
+  </script>
+
+  <!-- Footer Placeholder -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load Components Script -->
+  <script src="../../assets/js/load-components.js"></script>
+  <script src="../../assets/js/script.js"></script>
+  <script src="../../assets/js/global-audio.js"></script>
+  <script src="../../assets/js/animations.js"></script>
+  <script src="../../assets/js/dark-mode.js"></script>
+</body>
+</html>

@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Security Packt - 3 Khóa học Bảo mật AWS - Vũ Văn Thông</title>
+    <meta name="description" content="Tổng hợp 3 khóa học AWS Security từ Packt - Host Security, Network Security, Data Protection, IAM, Incident Response">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Cloud Security</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        15 Tháng 11, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        50 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🛡️ AWS Security Packt: Tổng hợp 3 Khóa học Bảo mật AWS</h1>
+                <p class="post-subtitle">Hành trình chinh phục AWS Security qua 3 khóa học từ Packt - Host Security, Network Security, Data Protection, IAM & Incident Response</p>
+
+                
+                <div class="post-tags">
+                    <span class="tag">AWS</span>
+                    <span class="tag">Cloud Security</span>
+                    <span class="tag">Packt</span>
+                    <span class="tag">Host Security</span>
+                    <span class="tag">Network Security</span>
+                    <span class="tag">IAM</span>
+                    <span class="tag">Incident Response</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Xin chào! Mình là Vũ Văn Thông, sinh viên năm 3 chuyên ngành An toàn thông tin. Sau khi hoàn thành 3 khóa học AWS Security từ Packt, mình muốn chia sẻ toàn bộ kiến thức đã học được. Đây là bài viết tổng hợp chi tiết nhất về AWS Security từ góc nhìn của một sinh viên đang học!</p>
+                </div>
+
+                <!-- Certificate Images -->
+                <div class="certificate-image">
+                    <img src="../../assets/img/packt1.png" alt="AWS Security Packt Certificate 1" style="max-width: 100%; margin-bottom: 20px;">
+                    <img src="../../assets/img/packt2.png" alt="AWS Security Packt Certificate 2" style="max-width: 100%;">
+                    <p>Certificates hoàn thành 3 khóa học AWS Security từ Packt</p>
+                </div>
+
+                <h2>📚 Tổng quan 3 Khóa học / Course Overview</h2>
+                
+                <p>Chương trình AWS Security từ Packt bao gồm 3 khóa học chính, mỗi khóa tập trung vào một khía cạnh quan trọng của bảo mật AWS:</p>
+
+                <div class="module-nav">
+                    <h4>3 Khóa học chính:</h4>
+                    <ol>
+                        <li><strong>Securing Hosts, Network, and Edge in AWS</strong> - Bảo mật Host, Mạng và Edge</li>
+                        <li><strong>Protecting Data, Logging, and Monitoring in AWS</strong> - Bảo vệ Dữ liệu, Ghi log và Giám sát</li>
+                        <li><strong>Managing Incident Response, IAM, and AWS Service Security</strong> - Quản lý Phản hồi Sự cố, IAM & Bảo mật Dịch vụ</li>
+                    </ol>
+                </div>
+
+                <h2>🛡️ Khóa học 1: Securing Hosts, Network, and Edge in AWS</h2>
+                
+                <h3>1.1 Bảo mật Host (Host Security)</h3>
+                
+                <p><strong>Khái niệm:</strong> Bảo vệ các máy chủ (workloads) như EC2 và container khỏi các mối đe dọa.</p>
+
+                <h4>Cấu hình Bảo mật Host:</h4>
+                
+                <div class="aws-services-grid">
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔧</span>
+                        <h4>Cứng hóa AMI (Hardening)</h4>
+                        <p>Tắt các dịch vụ không cần thiết, cập nhật bản vá. Sử dụng <strong>Patch Manager</strong> để tự động vá lỗi.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔍</span>
+                        <h4>Amazon Inspector</h4>
+                        <p>Quét lỗ hổng tự động cho EC2 và container. Phát hiện các CVE và cấu hình không an toàn.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔒</span>
+                        <h4>Security Groups</h4>
+                        <p>Tường lửa <strong>stateful</strong> ở cấp độ EC2 instance. Chỉ có quy tắc Allow, không có Deny.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">⚖️</span>
+                        <h4>Auto Scaling & ELB</h4>
+                        <p>Sử dụng Auto Scaling Groups và Elastic Load Balancing để xử lý sự cố và duy trì tính sẵn sàng.</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Security Groups - Điểm quan trọng:</h4>
+                    <ul>
+                        <li><strong>Stateful:</strong> Tự động cho phép traffic trả về (return traffic)</li>
+                        <li><strong>Chỉ Allow:</strong> Không có quy tắc Deny</li>
+                        <li><strong>Gắn vào ENI:</strong> Elastic Network Interface của EC2</li>
+                        <li><strong>Default:</strong> Deny all inbound, Allow all outbound</li>
+                    </ul>
+                </div>
+
+                <h3>1.2 Bảo mật Mạng (Network Security)</h3>
+                
+                <p><strong>Nền tảng:</strong> VPC (Virtual Private Cloud) là mạng riêng ảo, bao gồm Subnets, Route Tables, và các thành phần bảo mật.</p>
+
+                <h4>Phân đoạn Mạng (Network Segmentation):</h4>
+                
+                <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Component</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Level</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Type</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Rules</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Security Groups</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Instance (ENI)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Stateful</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Allow only</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>NACLs</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Subnet</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Stateless</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Allow & Deny</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>VPC Endpoints - Truy cập Riêng tư:</h4>
+                
+                <div class="threat-cards">
+                    <div class="threat-card low">
+                        <div class="threat-header">
+                            <i class="fas fa-door-open"></i>
+                            Gateway Endpoint
+                        </div>
+                        <div class="threat-body">
+                            <h4>Đặc điểm:</h4>
+                            <ul>
+                                <li>✅ <strong>Miễn phí</strong></li>
+                                <li>Chỉ hỗ trợ S3 và DynamoDB</li>
+                                <li>Sử dụng Route Tables</li>
+                                <li>Không cần IP address</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="threat-card medium">
+                        <div class="threat-header">
+                            <i class="fas fa-network-wired"></i>
+                            Interface Endpoint
+                        </div>
+                        <div class="threat-body">
+                            <h4>Đặc điểm:</h4>
+                            <ul>
+                                <li>💰 <strong>Có phí</strong></li>
+                                <li>Sử dụng AWS PrivateLink</li>
+                                <li>Hỗ trợ nhiều dịch vụ AWS</li>
+                                <li>Có ENI với private IP</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Giám sát & Lọc Lưu lượng:</h4>
+                
+                <div class="best-practices-list">
+                    <div class="practice-item">
+                        <span class="practice-icon">📊</span>
+                        <div class="practice-content">
+                            <strong>VPC Flow Logs</strong>
+                            <p>Ghi lại metadata của lưu lượng IP (ai, cái gì, khi nào) đi vào/ra VPC. Lưu trữ vào CloudWatch Logs hoặc S3.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">🔍</span>
+                        <div class="practice-content">
+                            <strong>Traffic Mirroring</strong>
+                            <p>Sao chép lưu lượng mạng để phân tích sâu. Hữu ích cho threat detection và troubleshooting.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">🛡️</span>
+                        <div class="practice-content">
+                            <strong>AWS Network Firewall</strong>
+                            <p>Dịch vụ tường lửa mạng stateful, quản lý tập trung. Hỗ trợ IDS/IPS capabilities.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">⚙️</span>
+                        <div class="practice-content">
+                            <strong>Firewall Manager</strong>
+                            <p>Quản lý tập trung các quy tắc (WAF, Network Firewall, Security Group) trên nhiều tài khoản AWS.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Kết nối Hybrid (On-premises & Cloud):</h4>
+                
+                <div class="use-case-box">
+                    <h4>Hai phương pháp kết nối chính:</h4>
+                    <ol>
+                        <li><strong>AWS Site-to-Site VPN:</strong>
+                            <ul>
+                                <li>Kết nối mã hóa qua Internet</li>
+                                <li>Nhanh chóng triển khai</li>
+                                <li>Chi phí thấp</li>
+                                <li>Băng thông phụ thuộc vào Internet</li>
+                            </ul>
+                        </li>
+                        <li><strong>AWS Direct Connect:</strong>
+                            <ul>
+                                <li>Đường truyền vật lý riêng (dedicated)</li>
+                                <li>Băng thông cao, độ trễ thấp</li>
+                                <li>Không mã hóa mặc định (cần VPN hoặc MACsec)</li>
+                                <li>Chi phí cao hơn, thời gian triển khai lâu hơn</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <h4>Khắc phục Sự cố Mạng:</h4>
+                
+                <ul>
+                    <li><strong>Reachability Analyzer:</strong> Phân tích đường đi, kiểm tra xem hai tài nguyên có thể kết nối hay không</li>
+                    <li><strong>Network Access Analyzer:</strong> Phân tích cấu hình để tìm các truy cập mạng không mong muốn</li>
+                </ul>
+
+                <h3>1.3 Bảo mật Edge (Edge Security)</h3>
+                
+                <p><strong>Khái niệm:</strong> Bảo vệ các dịch vụ ở rìa mạng (gần người dùng cuối) khỏi các cuộc tấn công.</p>
+
+                <div class="aws-services-grid">
+                    <div class="aws-service-card">
+                        <span class="service-icon">🌐</span>
+                        <h4>Amazon CloudFront</h4>
+                        <p>Dịch vụ CDN (Content Delivery Network), giúp giảm tải và bảo vệ lớp ứng dụng. Cache content gần người dùng.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🛡️</span>
+                        <h4>AWS WAF</h4>
+                        <p>Web Application Firewall (Lớp 7), lọc các cuộc tấn công phổ biến (SQL Injection, XSS). Gắn vào CloudFront, ALB, API Gateway.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔰</span>
+                        <h4>AWS Shield</h4>
+                        <p><strong>Standard:</strong> Miễn phí, bảo vệ cơ bản Layer 3/4<br><strong>Advanced:</strong> $3000/tháng, bảo vệ nâng cao + 24/7 DDoS Response Team</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🌍</span>
+                        <h4>Route 53</h4>
+                        <p>Dịch vụ DNS có khả năng chống DDoS. Hỗ trợ health checks và routing policies.</p>
+                    </div>
+                </div>
+
+                <h2>🔐 Khóa học 2: Protecting Data, Logging, and Monitoring in AWS</h2>
+                
+                <h3>2.1 Bảo vệ Dữ liệu & Mã hóa (Data Protection & Encryption)</h3>
+                
+                <h4>Phân loại Dữ liệu (Data Classification):</h4>
+                
+                <div class="info-box">
+                    <h4>Amazon Macie - Tự động phát hiện dữ liệu nhạy cảm:</h4>
+                    <ul>
+                        <li>Sử dụng Machine Learning để phát hiện PII (Personally Identifiable Information)</li>
+                        <li>Quét S3 buckets tự động</li>
+                        <li>Tạo findings khi phát hiện dữ liệu nhạy cảm</li>
+                        <li>Hỗ trợ compliance (GDPR, HIPAA, PCI DSS)</li>
+                    </ul>
+                </div>
+
+                <h4>Mã hóa Dữ liệu:</h4>
+                
+                <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Loại Mã hóa</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Mô tả</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Use Cases</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Encryption at Rest</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Bảo vệ dữ liệu khi lưu trữ trên đĩa</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">S3, EBS, RDS, DynamoDB</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Encryption in Transit</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Bảo vệ dữ liệu khi di chuyển trên mạng</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">TLS/HTTPS, VPN, Direct Connect</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>AWS KMS (Key Management Service):</h4>
+                
+                <div class="use-case-box">
+                    <h4>Envelope Encryption (Mã hóa Bao bọc):</h4>
+                    <ol>
+                        <li><strong>Bước 1:</strong> KMS tạo một "Data Key" (Khóa dữ liệu)</li>
+                        <li><strong>Bước 2:</strong> Dữ liệu được mã hóa bằng "Data Key"</li>
+                        <li><strong>Bước 3:</strong> "Data Key" được mã hóa bằng khóa KMS (CMK)</li>
+                        <li><strong>Bước 4:</strong> Lưu trữ cả dữ liệu đã mã hóa và Data Key đã mã hóa</li>
+                    </ol>
+                    <p><strong>Lợi ích:</strong> Giảm số lượng API calls đến KMS, tăng hiệu suất, giảm chi phí.</p>
+                </div>
+
+                <pre><code class="language-python"># Example: Envelope Encryption với AWS SDK
+import boto3
+
+kms = boto3.client('kms')
+
+# 1. Generate Data Key
+response = kms.generate_data_key(
+    KeyId='arn:aws:kms:region:account:key/key-id',
+    KeySpec='AES_256'
+)
+
+plaintext_key = response['Plaintext']
+encrypted_key = response['CiphertextBlob']
+
+# 2. Encrypt data với plaintext_key
+# 3. Store encrypted_data + encrypted_key</code></pre>
+
+                <h4>AWS CloudHSM:</h4>
+                
+                <div class="info-box">
+                    <h4>Khi nào dùng CloudHSM thay vì KMS?</h4>
+                    <ul>
+                        <li>Cần tuân thủ <strong>FIPS 140-2 Level 3</strong></li>
+                        <li>Cần kiểm soát hoàn toàn HSM (Hardware Security Module)</li>
+                        <li>Cần single-tenant hardware</li>
+                        <li>Cần hỗ trợ các thuật toán mã hóa đặc biệt</li>
+                    </ul>
+                    <p><strong>Lưu ý:</strong> CloudHSM đắt hơn KMS và phức tạp hơn để quản lý.</p>
+                </div>
+
+                <h3>2.2 Ghi log, Giám sát & Cảnh báo (Logging, Monitoring & Alerting)</h3>
+                
+                <h4>Phân biệt Logging vs Monitoring:</h4>
+                
+                <div class="threat-cards">
+                    <div class="threat-card low">
+                        <div class="threat-header">
+                            <i class="fas fa-file-alt"></i>
+                            Logging (Ghi log)
+                        </div>
+                        <div class="threat-body">
+                            <p>Ghi lại các sự kiện đã xảy ra (historical data)</p>
+                            <h4>Ví dụ:</h4>
+                            <ul>
+                                <li>CloudTrail: API calls</li>
+                                <li>VPC Flow Logs: Network traffic</li>
+                                <li>Application Logs</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="threat-card medium">
+                        <div class="threat-header">
+                            <i class="fas fa-chart-line"></i>
+                            Monitoring (Giám sát)
+                        </div>
+                        <div class="threat-body">
+                            <p>Theo dõi hệ thống theo thời gian thực (real-time)</p>
+                            <h4>Ví dụ:</h4>
+                            <ul>
+                                <li>CloudWatch Metrics: CPU, Memory</li>
+                                <li>CloudWatch Alarms: Thresholds</li>
+                                <li>Real-time dashboards</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Dịch vụ Ghi log (Logging Services):</h4>
+                
+                <div class="best-practices-list">
+                    <div class="practice-item">
+                        <span class="practice-icon">📝</span>
+                        <div class="practice-content">
+                            <strong>AWS CloudTrail</strong>
+                            <p>Ghi lại MỌI cuộc gọi API trong tài khoản (Ai đã làm gì? Khi nào? Từ đâu?). Đây là dịch vụ then chốt cho kiểm toán và điều tra.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">📊</span>
+                        <div class="practice-content">
+                            <strong>CloudWatch Logs</strong>
+                            <p>Nơi tập trung lưu trữ log từ các ứng dụng, EC2 (qua CloudWatch Agent), Lambda, VPC Flow Logs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">🌐</span>
+                        <div class="practice-content">
+                            <strong>VPC Flow Logs</strong>
+                            <p>Ghi log lưu lượng IP. Hữu ích cho phát hiện port scanning, unusual traffic patterns.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Dịch vụ Giám sát & An ninh:</h4>
+                
+                <div class="aws-services-grid">
+                    <div class="aws-service-card">
+                        <span class="service-icon">📈</span>
+                        <h4>AWS CloudWatch</h4>
+                        <p>Dịch vụ giám sát trung tâm. Thu thập Metrics và Logs. Tạo Alarms khi chỉ số vượt ngưỡng.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔍</span>
+                        <h4>Amazon GuardDuty</h4>
+                        <p>Threat Detection service. Tự động phân tích CloudTrail, VPC Flow Logs để tìm hoạt động độc hại (crypto mining, malicious IPs).</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🛡️</span>
+                        <h4>AWS Security Hub</h4>
+                        <p>Dashboard trung tâm, tổng hợp findings từ GuardDuty, Inspector, Config, Macie. Cung cấp security score.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">⚙️</span>
+                        <h4>AWS Config</h4>
+                        <p>Theo dõi và ghi lại mọi thay đổi cấu hình tài nguyên. Kiểm tra compliance với Config Rules.</p>
+                    </div>
+                </div>
+
+                <h4>Phân tích & Phản hồi Tự động:</h4>
+                
+                <div class="use-case-box">
+                    <h4>Workflow tự động với EventBridge:</h4>
+                    <ol>
+                        <li><strong>GuardDuty</strong> phát hiện sự cố (VD: EC2 instance bị compromise)</li>
+                        <li>GuardDuty gửi <strong>Finding</strong> đến EventBridge</li>
+                        <li><strong>EventBridge</strong> match event với rule</li>
+                        <li>EventBridge kích hoạt <strong>Lambda function</strong></li>
+                        <li>Lambda tự động:
+                            <ul>
+                                <li>Cách ly EC2 instance (modify Security Group)</li>
+                                <li>Tạo snapshot cho forensics</li>
+                                <li>Gửi notification đến SNS</li>
+                                <li>Tạo ticket trong ServiceNow/Jira</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <pre><code class="language-python"># Example: Lambda function tự động cách ly EC2
+import boto3
+
+ec2 = boto3.client('ec2')
+sns = boto3.client('sns')
+
+def lambda_handler(event, context):
+    # Parse GuardDuty finding
+    instance_id = event['detail']['resource']['instanceDetails']['instanceId']
+    
+    # 1. Create snapshot
+    volumes = ec2.describe_volumes(
+        Filters=[{'Name': 'attachment.instance-id', 'Values': [instance_id]}]
+    )
+    for volume in volumes['Volumes']:
+        ec2.create_snapshot(VolumeId=volume['VolumeId'])
+    
+    # 2. Isolate instance (remove all Security Groups, add isolation SG)
+    ec2.modify_instance_attribute(
+        InstanceId=instance_id,
+        Groups=['sg-isolation']  # Security Group chặn all traffic
+    )
+    
+    # 3. Send notification
+    sns.publish(
+        TopicArn='arn:aws:sns:region:account:security-alerts',
+        Subject='EC2 Instance Isolated',
+        Message=f'Instance {instance_id} has been isolated due to security finding'
+    )
+    
+    return {'statusCode': 200}</code></pre>
+
+                <h4>Phân tích Log:</h4>
+                
+                <ul>
+                    <li><strong>Amazon Athena:</strong> Truy vấn dữ liệu (log) lưu trên S3 bằng SQL. Serverless, pay-per-query.</li>
+                    <li><strong>Amazon OpenSearch:</strong> Tìm kiếm, phân tích và trực quan hóa log real-time. Thay thế cho ELK stack.</li>
+                </ul>
+
+                <h4>Kiểm toán (Auditing):</h4>
+                
+                <div class="info-box">
+                    <h4>AWS Audit Manager:</h4>
+                    <ul>
+                        <li>Tự động thu thập bằng chứng (evidence) để chứng minh tuân thủ</li>
+                        <li>Hỗ trợ frameworks: PCI DSS, HIPAA, GDPR, SOC 2, ISO 27001</li>
+                        <li>Tạo audit reports tự động</li>
+                        <li>Continuous compliance monitoring</li>
+                    </ul>
+                </div>
+
+                <h2>💼 Khóa học 3: Managing Incident Response, IAM, and AWS Service Security</h2>
+                
+                <h3>3.1 Phản hồi Sự cố (Incident Response)</h3>
+                
+                <h4>Shared Responsibility Model:</h4>
+                
+                <div class="threat-cards">
+                    <div class="threat-card high">
+                        <div class="threat-header">
+                            <i class="fas fa-cloud"></i>
+                            AWS Responsibility
+                        </div>
+                        <div class="threat-body">
+                            <h4>Security OF the Cloud:</h4>
+                            <ul>
+                                <li>Physical infrastructure</li>
+                                <li>Hardware, software, networking</li>
+                                <li>Managed services (RDS, Lambda, S3)</li>
+                                <li>Global infrastructure</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="threat-card medium">
+                        <div class="threat-header">
+                            <i class="fas fa-user-shield"></i>
+                            Customer Responsibility
+                        </div>
+                        <div class="threat-body">
+                            <h4>Security IN the Cloud:</h4>
+                            <ul>
+                                <li>Data encryption</li>
+                                <li>IAM policies</li>
+                                <li>OS patching (EC2)</li>
+                                <li>Application security</li>
+                                <li>Network configuration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>AWS Artifact - Compliance Reports:</h4>
+                
+                <div class="info-box">
+                    <h4>Tải về báo cáo tuân thủ của AWS:</h4>
+                    <ul>
+                        <li>SOC 1, SOC 2, SOC 3 reports</li>
+                        <li>ISO 27001, ISO 27017, ISO 27018</li>
+                        <li>PCI DSS Attestation of Compliance (AOC)</li>
+                        <li>HIPAA Business Associate Addendum (BAA)</li>
+                    </ul>
+                    <p><strong>Truy cập:</strong> AWS Console → AWS Artifact → Reports</p>
+                </div>
+
+                <h4>Incident Response Metrics:</h4>
+                
+                <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Metric</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Mô tả</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Mục tiêu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>MTTD</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Mean Time to Detect - Thời gian trung bình để phát hiện</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">< 15 phút</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>MTTR</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Mean Time to Respond - Thời gian trung bình để phản ứng</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">< 1 giờ</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>3.2 Bảo mật IAM (IAM Security)</h3>
+                
+                <h4>IAM Fundamentals:</h4>
+                
+                <div class="use-case-box">
+                    <h4>IAM quản lý 2 khía cạnh:</h4>
+                    <ol>
+                        <li><strong>Authentication (Xác thực):</strong> Bạn là ai?
+                            <ul>
+                                <li>IAM Users (username/password)</li>
+                                <li>IAM Roles (temporary credentials)</li>
+                                <li>Federated users (SSO)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Authorization (Ủy quyền):</strong> Bạn được làm gì?
+                            <ul>
+                                <li>IAM Policies (JSON documents)</li>
+                                <li>Resource-based policies</li>
+                                <li>Service Control Policies (SCPs)</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <h4>AWS Organizations & SCPs:</h4>
+                
+                <div class="best-practices-list">
+                    <div class="practice-item">
+                        <span class="practice-icon">🏢</span>
+                        <div class="practice-content">
+                            <strong>AWS Organizations</strong>
+                            <p>Quản lý tập trung nhiều tài khoản AWS. Consolidated billing, centralized logging.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">📁</span>
+                        <div class="practice-content">
+                            <strong>OUs (Organizational Units)</strong>
+                            <p>Nhóm các tài khoản theo môi trường (Dev, Test, Prod) hoặc theo team.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">🔒</span>
+                        <div class="practice-content">
+                            <strong>SCPs (Service Control Policies)</strong>
+                            <p>"Vệ sĩ" ở cấp độ tổ chức. Giới hạn quyền tối đa mà các tài khoản thành viên có thể có.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <pre><code class="language-json">// Example SCP: Cấm sử dụng regions ngoài us-east-1 và eu-west-1
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "eu-west-1"
+          ]
+        }
+      }
+    }
+  ]
+}</code></pre>
+
+                <h4>Policy Types & Evaluation:</h4>
+                
+                <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Policy Type</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Attached To</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Identity-based</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">User, Group, Role</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">"User A được quyền Đọc S3"</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Resource-based</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Resource (S3, KMS, Lambda)</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">"Bucket này cho phép Account 123 Ghi"</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <h4>⚠️ Quy tắc đánh giá Policy:</h4>
+                    <ul>
+                        <li><strong>Explicit Deny</strong> (Từ chối rõ ràng) luôn luôn thắng mọi Allow</li>
+                        <li>Nếu không có Allow → Default Deny</li>
+                        <li>Nếu có Allow và không có Deny → Allow</li>
+                        <li>Nếu có Allow và có Explicit Deny → Deny</li>
+                    </ul>
+                </div>
+
+                <h4>AWS Identity Center (SSO):</h4>
+                
+                <div class="use-case-box">
+                    <h4>Single Sign-On Workflow:</h4>
+                    <ol>
+                        <li>User đăng nhập vào Identity Center (một lần)</li>
+                        <li>Identity Center xác thực với Identity Provider (Active Directory, Okta, Google Workspace)</li>
+                        <li>User chọn AWS account và role muốn truy cập</li>
+                        <li>Identity Center gọi <strong>STS (Security Token Service)</strong> để lấy temporary credentials</li>
+                        <li>User được truy cập vào AWS account với permissions của role đã chọn</li>
+                    </ol>
+                    <p><strong>Lợi ích:</strong> Không cần tạo IAM users, centralized access management, MFA enforcement.</p>
+                </div>
+
+                <h4>Secrets Management:</h4>
+                
+                <div class="threat-cards">
+                    <div class="threat-card low">
+                        <div class="threat-header">
+                            <i class="fas fa-key"></i>
+                            AWS Secrets Manager
+                        </div>
+                        <div class="threat-body">
+                            <h4>Features:</h4>
+                            <ul>
+                                <li>✅ Automatic rotation</li>
+                                <li>✅ Integration với RDS, Redshift</li>
+                                <li>✅ Fine-grained access control</li>
+                                <li>💰 Có phí ($0.40/secret/month)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="threat-card medium">
+                        <div class="threat-header">
+                            <i class="fas fa-cog"></i>
+                            Parameter Store
+                        </div>
+                        <div class="threat-body">
+                            <h4>Features:</h4>
+                            <ul>
+                                <li>✅ Free tier available</li>
+                                <li>✅ Hierarchical storage</li>
+                                <li>⚠️ Manual rotation</li>
+                                <li>⚠️ Limited to 10,000 parameters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>IAM Analysis Tools:</h4>
+                
+                <div class="best-practices-list">
+                    <div class="practice-item">
+                        <span class="practice-icon">🔍</span>
+                        <div class="practice-content">
+                            <strong>IAM Access Analyzer</strong>
+                            <p>Phân tích policies để tìm tài nguyên đang được chia sẻ với external entities. Phát hiện unintended access.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-item">
+                        <span class="practice-icon">🧪</span>
+                        <div class="practice-content">
+                            <strong>IAM Policy Simulator</strong>
+                            <p>Test policies trước khi apply. Kiểm tra xem một policy có cho phép/từ chối một action cụ thể hay không.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>3.3 Bảo mật Dịch vụ AWS (Securing AWS Services)</h3>
+                
+                <h4>Bảo mật S3 (S3 Security):</h4>
+                
+                <div class="aws-services-grid">
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔒</span>
+                        <h4>Object Lock</h4>
+                        <p>Ngăn chặn việc sửa đổi hoặc xóa đối tượng. WORM (Write Once Read Many) model. Compliance mode vs Governance mode.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">📚</span>
+                        <h4>Versioning</h4>
+                        <p>Giữ lại các phiên bản cũ của đối tượng khi bị ghi đè hoặc xóa. Bảo vệ khỏi accidental deletion.</p>
+                    </div>
+                    
+                    <div class="aws-service-card">
+                        <span class="service-icon">🔐</span>
+                        <h4>MFA Delete</h4>
+                        <p>Yêu cầu MFA khi muốn xóa vĩnh viễn một object version hoặc suspend versioning.</p>
+                    </div>
+                </div>
+
+                <h4>Bảo mật Database (RDS Security):</h4>
+                
+                <div class="use-case-box">
+                    <h4>RDS Proxy - IAM Authentication:</h4>
+                    <p><strong>Problem:</strong> Hardcoding database passwords trong application code là không an toàn.</p>
+                    <p><strong>Solution:</strong> RDS Proxy cho phép sử dụng IAM authentication thay vì passwords.</p>
+                    <h4>Benefits:</h4>
+                    <ul>
+                        <li>✅ Không cần lưu passwords trong code</li>
+                        <li>✅ Centralized credential management</li>
+                        <li>✅ Connection pooling (giảm database connections)</li>
+                        <li>✅ Automatic failover (< 30 seconds)</li>
+                        <li>✅ Enhanced security với IAM policies</li>
+                    </ul>
+                </div>
+
+                <pre><code class="language-python"># Example: Connect to RDS via RDS Proxy với IAM Auth
+import boto3
+import pymysql
+
+# Generate auth token
+rds = boto3.client('rds')
+token = rds.generate_db_auth_token(
+    DBHostname='proxy-endpoint.proxy-xxx.region.rds.amazonaws.com',
+    Port=3306,
+    DBUsername='db_user',
+    Region='us-east-1'
+)
+
+# Connect using token as password
+connection = pymysql.connect(
+    host='proxy-endpoint.proxy-xxx.region.rds.amazonaws.com',
+    user='db_user',
+    password=token,
+    database='mydb',
+    ssl={'ssl': True}
+)</code></pre>
+
+                <h2>🎓 Tổng kết & Key Takeaways</h2>
+                
+                <div class="key-takeaways">
+                    <h4>💡 Những điểm quan trọng nhất:</h4>
+                    <ul>
+                        <li>✅ <strong>Defense in Depth:</strong> Sử dụng multiple layers of security (Network, Host, Application, Data)</li>
+                        <li>✅ <strong>Least Privilege:</strong> Grant minimum permissions cần thiết cho users và services</li>
+                        <li>✅ <strong>Encryption Everywhere:</strong> Encrypt data at rest và in transit</li>
+                        <li>✅ <strong>Logging & Monitoring:</strong> Enable CloudTrail, VPC Flow Logs, CloudWatch cho all critical resources</li>
+                        <li>✅ <strong>Automation:</strong> Automate security responses với EventBridge + Lambda</li>
+                        <li>✅ <strong>IAM Best Practices:</strong> Use roles instead of users, enable MFA, rotate credentials</li>
+                        <li>✅ <strong>Shared Responsibility:</strong> Hiểu rõ trách nhiệm của AWS vs Customer</li>
+                        <li>✅ <strong>Incident Response:</strong> Have playbooks và automated responses sẵn sàng</li>
+                    </ul>
+                </div>
+
+                <h3>So sánh 3 Khóa học:</h3>
+                
+                <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Khóa học</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Focus Area</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Key Services</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Course 1</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Host, Network, Edge Security</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">VPC, Security Groups, NACLs, WAF, Shield, CloudFront</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Course 2</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">Data Protection, Logging, Monitoring</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">KMS, CloudHSM, CloudTrail, CloudWatch, GuardDuty, Macie</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Course 3</strong></td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">IAM, Incident Response, Service Security</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">IAM, Organizations, SCPs, Secrets Manager, RDS Proxy</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Lộ trình tiếp theo:</h3>
+                
+                <div class="next-steps">
+                    <h3>📖 Recommended Next Steps:</h3>
+                    <ol>
+                        <li>Practice hands-on labs trên AWS Free Tier</li>
+                        <li>Tham gia AWS Security challenges</li>
+                        <li>Học AWS Security Specialty Certification</li>
+                        <li>Build personal projects áp dụng security best practices</li>
+                        <li>Đọc AWS Security Best Practices whitepaper</li>
+                        <li>Join AWS Security community (Reddit, Discord)</li>
+                        <li>Follow AWS Security Blog</li>
+                    </ol>
+                </div>
+
+                <p>Hy vọng bài viết này hữu ích cho các bạn đang học AWS Security! Nếu có câu hỏi, hãy để lại comment nhé! 🚀</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_Security_letdefend.png" alt="AWS Security Let's Defend">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-security-letdefend.html">🛡️ AWS Cloud Security - Let's Defend</a></h4>
+                        <p>Tổng hợp 10 modules AWS Security từ Let's Defend...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_Network.png" alt="AWS Network Foundation">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-network-foundation.html">🌐 Network Foundation</a></h4>
+                        <p>Tóm tắt về AWS Networking - VPC, Subnets, Route Tables...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brute-force Windows Login: Nhật ký SOC của sinh viên năm 3 - Vũ Văn Thông</title>
+    <meta name="description" content="Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý brute-force RDP trong lab SOC mini. Hướng dẫn chi tiết quy trình IR từ góc nhìn sinh viên">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Blue Team</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        30 Tháng 10, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        15 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🔐 Brute-force Windows Login: Nhật ký SOC của sinh viên năm 3</h1>
+                <p class="post-subtitle">Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý brute-force RDP trong lab SOC mini</p>
+                
+                <div class="post-tags">
+                    <span class="tag">SOC</span>
+                    <span class="tag">Incident Response</span>
+                    <span class="tag">Windows Security</span>
+                    <span class="tag">RDP</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn một trải nghiệm thực tế rất thú vị - mình đã "bắt sống" một vụ brute-force RDP trong lab SOC mini mà mình tự dựng. Đây là bài viết mô phỏng 100% phục vụ học tập, mọi dữ kiện/IP/tổ chức đều được ẩn/giả định.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h4>⚠️ Lưu ý quan trọng</h4>
+                    <p>Bài viết này là <strong>mô phỏng 100%</strong> phục vụ học tập. Mọi dữ kiện, IP, tổ chức đều được <strong>ẩn/giả định</strong> theo chuẩn RFC 5737. Mục đích là chia sẻ kiến thức và kinh nghiệm học tập.</p>
+                </div>
+
+                <h2>Bối cảnh & mục tiêu học tập</h2>
+                
+                <p>Khi mình mới học về SOC và Incident Response, mình luôn thắc mắc: "Làm sao để phát hiện và xử lý một vụ tấn công thực tế?". Để trả lời câu hỏi này, mình đã dựng một lab SOC mini và thực hiện một bài tập mô phỏng brute-force RDP.</p>
+
+                <div class="lab-setup">
+                    <h3>Môi trường lab của mình:</h3>
+                    <ul>
+                        <li><strong>Attacker</strong>: VPS giả lập (đặt tên <code>ATTACKER-01</code>) – dùng để thử brute-force</li>
+                        <li><strong>Client (người dùng)</strong>: Máy Windows 10 của nhóm lab <code>CLIENT-WIN10-01</code> (Hostname: <code>THONG-LAB-WIN01</code>, IP nội bộ: <code>10.10.20.15</code>)</li>
+                        <li><strong>Mình (Thông)</strong>: đóng vai <strong>SOC L1</strong> (triage), kiêm luôn <strong>SOC L2</strong> (điều tra sâu). Mentor trong lab đóng vai <strong>SOC L3</strong> (duyệt xử lý)</li>
+                    </ul>
+                </div>
+
+                <div class="learning-goals">
+                    <h3>Mục tiêu học tập:</h3>
+                    <ol>
+                        <li>Nhận diện brute-force vào Windows qua log <strong>4625/4624</strong></li>
+                        <li>Thống kê theo <strong>LogonType / source IP / username</strong></li>
+                        <li>Giả lập <strong>IR playbook</strong>: cô lập máy, khóa tài khoản, block IP, phân tích nguyên nhân</li>
+                    </ol>
+                </div>
+
+                <div class="info-box">
+                    <h4>Mẹo nhỏ cho người mới:</h4>
+                    <p>Mới biết đến SOC/IR? Hãy nhớ 3 chữ: <strong>Phát hiện – Phản ứng – Phục hồi</strong>. Và log Windows Security là "vàng" của điều tra.</p>
+                </div>
+
+                <h2>01:47 – Còi báo động trong đêm</h2>
+                
+                <p><strong>Ngày 23/10/2025, 01:47 (UTC+7)</strong>, dashboard cảnh báo trong lab nhảy đỏ:</p>
+
+                <div class="alert-details">
+                    <h3>🚨 Multiple Failed Logons — Brute Force Attempt Detected</h3>
+                    <div class="alert-info">
+                        <div class="info-item">
+                            <strong>TARGET</strong>
+                            <ul>
+                                <li>Hostname: <code>THONG-LAB-WIN01</code></li>
+                                <li>Host IP: <code>10.10.20.15</code></li>
+                            </ul>
+                        </div>
+                        <div class="info-item">
+                            <strong>THREAT INDICATORS (sample)</strong>
+                            <ul>
+                                <li>Failure Count: <strong>786</strong></li>
+                                <li>Top Username: <code>administrator</code></li>
+                                <li>Top Suspicious IP: <code>203.0.113.45</code> <em>(IP ví dụ theo RFC 5737)</em></li>
+                                <li>Alert ID: <code>LAB-SOC-2025-573</code></li>
+                                <li>Generated: <strong>01:47:27</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Mình tự hỏi: "Máy client nội bộ sao lại ăn đòn từ <strong>IP public</strong>? Có mở RDP ra Internet à?"</p>
+
+                <h2>Truy vấn & thống kê (KQL trên Elastic)</h2>
+                
+                <p>Là một SOC L1, việc đầu tiên mình làm là truy vấn log để hiểu rõ tình hình. Mình sử dụng KQL (Kibana Query Language) để lọc các đăng nhập thất bại:</p>
+
+                <pre><code class="language-kql">event.code: 4625 AND host.name: "THONG-LAB-WIN01"</code></pre>
+
+                <div class="query-explanation">
+                    <h3>Giải thích truy vấn:</h3>
+                    <ul>
+                        <li><code>event.code: 4625</code> = Event ID 4625 (Failed Logon)</li>
+                        <li><code>host.name: "THONG-LAB-WIN01"</code> = Chỉ lấy log từ máy bị tấn công</li>
+                    </ul>
+                </div>
+
+                <div class="lens-breakdown">
+                    <h3>Lens breakdown mình dựng:</h3>
+                    <ul>
+                        <li><strong>Rows</strong>: <code>winlog.event_data.LogonType</code> (kiểu đăng nhập)</li>
+                        <li><strong>Columns</strong>: <code>source.ip</code> (IP nguồn)</li>
+                        <li><strong>Split by</strong>: <code>user.name</code> (tài khoản bị thử)</li>
+                        <li><strong>Metric</strong>: <code>Count()</code> → Sort <strong>Desc</strong></li>
+                    </ul>
+                </div>
+
+                <div class="logon-types">
+                    <h3>Ý nghĩa LogonType:</h3>
+                    <ul>
+                        <li><strong>10</strong> = RDP (Remote Desktop)</li>
+                        <li><strong>3</strong> = Network (SMB, file sharing)</li>
+                        <li><strong>2</strong> = Local (đăng nhập trực tiếp)</li>
+                        <li><strong>5</strong> = Service (dịch vụ hệ thống)</li>
+                    </ul>
+                </div>
+
+                <div class="results-summary">
+                    <h3>Kết quả nổi bật (sample):</h3>
+                    <ul>
+                        <li>Tổng thất bại: <strong>786</strong></li>
+                        <li>Số IP khác nhau: <strong>41</strong></li>
+                        <li><strong>Top IP</strong>: <code>203.0.113.45</code> → <strong>512</strong> lần</li>
+                        <li><strong>Top user</strong>: <code>administrator</code>, <code>thong</code>, <code>guest</code></li>
+                        <li><strong>LogonType</strong> trội: <strong>10 (RDP)</strong></li>
+                    </ul>
+                </div>
+
+                <h2>Kiểm tra Threat Intelligence (giả lập)</h2>
+                
+                <p>Để hiểu rõ hơn về IP tấn công, mình thực hiện lookup trên AbuseIPDB (giả lập):</p>
+
+                <div class="threat-intel">
+                    <h3>🔍 Kết quả lookup IP <code>203.0.113.45</code>:</h3>
+                    <div class="ti-result">
+                        <p><strong>Found in database. Reported: 12,542 times — Confidence: 100% (simulated)</strong></p>
+                        <p>=> Dấu hiệu xấu rành rành (dù trong lab, mình vẫn theo đúng quy trình như thật).</p>
+                    </div>
+                </div>
+
+                <h2>Tìm 4624 – Có ai đã đăng nhập thành công?</h2>
+                
+                <p>Đây là bước quan trọng nhất! Mình cần kiểm tra xem có đăng nhập thành công nào từ IP lạ không:</p>
+
+                <pre><code class="language-kql">event.code: 4624 AND host.name: "THONG-LAB-WIN01" 
+AND winlog.event_data.LogonType: "10" AND source.ip: *</code></pre>
+
+                <div class="success-login-results">
+                    <h3>Kết quả tìm thấy (sample):</h3>
+                    <ul>
+                        <li><strong>01:59:12</strong>: 4624 (success) từ <code>198.51.100.29</code> <em>(IP ví dụ RFC 5737)</em></li>
+                        <li><strong>Username</strong>: <code>client.huy</code> (tài khoản lab giả lập)</li>
+                        <li>Trước đó, <strong>01:50–01:58</strong>: dồn dập 4625 từ cùng IP này với nhiều mật khẩu khác</li>
+                    </ul>
+                </div>
+
+                <div class="conclusion-l2">
+                    <h3>Kết luận L2 (mình):</h3>
+                    <p>Brute-force <strong>ĐÃ THÀNH CÔNG</strong> với user <code>client.huy</code>. Đây là <strong>INCIDENT</strong> chứ không còn là alert "nhá hàng".</p>
+                </div>
+
+                <h2>Nâng cấp trạng thái & chạy playbook IR</h2>
+                
+                <div class="incident-escalation">
+                    <ul>
+                        <li><strong>Trước</strong>: Alert – Multiple Failed Logons</li>
+                        <li><strong>Sau</strong>: <strong>INCIDENT – Compromised Account (Critical)</strong></li>
+                        <li><strong>Case ID</strong>: <code>INC-2025-0892</code></li>
+                    </ul>
+                </div>
+
+                <div class="ir-playbook">
+                    <h3>Playbook mình thực thi trong lab:</h3>
+                    <div class="playbook-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Cách ly</h4>
+                                <p><code>THONG-LAB-WIN01</code> khỏi mạng (EDR/NGFW quarantine). ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Block IP xấu</h4>
+                                <p>trên firewall: ví dụ <code>203.0.113.45</code>, <code>198.51.100.29</code>, … ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Reset/disable</h4>
+                                <p>tài khoản <code>client.huy</code>. ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Thu thập forensics</h4>
+                                <p>timeline 4625/4624, Prefetch, RDP cache, bộ nhớ, autoruns… ✅</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>Hunt lateral movement</h4>
+                                <p>trong subnet lab: SMB, PsExec, WinRM, task schedule bất thường… ✅</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Vì sao bị thủng? (Root Cause Analysis)</h2>
+                
+                <p>Sau khi điều tra, mình tìm ra các nguyên nhân chính:</p>
+
+                <div class="root-causes">
+                    <div class="cause-item">
+                        <h3>🔓 RDP bị NAT ra Internet</h3>
+                        <p>"cho tiện thực hành", quên <strong>đóng lại</strong> sau khi xong.</p>
+                    </div>
+                    
+                    <div class="cause-item">
+                        <h3>🔐 Thiếu chính sách bảo mật</h3>
+                        <p>không có <strong>Account Lockout</strong>, <strong>no MFA</strong> cho RDP.</p>
+                    </div>
+                    
+                    <div class="cause-item">
+                        <h3>🔑 Mật khẩu yếu/đã lộ</h3>
+                        <p>user <code>client.huy</code> dùng pass dễ đoán.</p>
+                    </div>
+                    
+                    <div class="cause-item">
+                        <h3>👁️ Giám sát chưa chặt</h3>
+                        <p>chưa có rule "bursty 4625 → block/throttle" theo ngưỡng.</p>
+                    </div>
+                </div>
+
+                <h2>Mẫu email "Executive Summary" (giả lập)</h2>
+                
+                <div class="email-template">
+                    <div class="email-header">
+                        <strong>Subject</strong>: [Executive Summary] RDP Brute-force on Windows Client — <strong>Critical</strong> (Lab)
+                    </div>
+                    
+                    <div class="email-body">
+                        <p>Kính gửi thầy/cô & mentor,</p>
+                        
+                        <p>Rạng sáng <strong>23/10/2025 (UTC+7)</strong>, SOC lab ghi nhận brute-force <strong>RDP (TCP/3389)</strong> vào <code>THONG-LAB-WIN01</code>. Tấn công từ ><strong>40</strong> IP public; một IP đã <strong>đăng nhập thành công</strong> vào tài khoản <code>client.huy</code>.</p>
+                        
+                        <h4>Đã thực hiện:</h4>
+                        <ul>
+                            <li>Cách ly host bị ảnh hưởng</li>
+                            <li>Disable/reset tài khoản liên quan</li>
+                            <li>Block IP tấn công trên firewall</li>
+                            <li>Thu thập chứng cứ forensics</li>
+                        </ul>
+                        
+                        <h4>Đánh giá:</h4>
+                        <p><strong>Critical</strong> (tài khoản user bị compromise).</p>
+                        <p><strong>Nguyên nhân chính</strong>: RDP <strong>NAT ra Internet</strong> + <strong>không MFA/lockout</strong>.</p>
+                        <p>Đề xuất họp <strong>Post-Incident Review 10:00, 23/10/2025</strong> để chốt khắc phục dài hạn.</p>
+                        
+                        <p>Trân trọng,<br>
+                        <strong>Thông</strong> – SOC Lab (Sinh viên năm 3)</p>
+                    </div>
+                </div>
+
+                <h2>Checklist triage "siêu nhanh" mình dùng</h2>
+                
+                <div class="triage-checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="multiple-4625" checked>
+                        <label for="multiple-4625">Nhiều <strong>4625</strong> từ cùng IP với nhiều username khác nhau</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="multiple-ips" checked>
+                        <label for="multiple-ips">Nhiều <strong>source IP</strong> cùng tấn công</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="sensitive-users" checked>
+                        <label for="sensitive-users">Username "nhạy cảm" bị nhắm (<code>administrator</code>, <code>svc_*</code>, <code>backup</code>)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="ti-bad" checked>
+                        <label for="ti-bad"><strong>TI</strong> báo xấu (giả lập AbuseIPDB 100% confidence)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="internal-scanner">
+                        <label for="internal-scanner">Nội bộ scanner? (không, đây là IP ngoài)</label>
+                    </div>
+                </div>
+
+                <div class="triage-conclusion">
+                    <p>=> <strong>True Positive</strong>.</p>
+                </div>
+
+                <h2>Khuyến nghị hardening (áp dụng được ngay trong lab)</h2>
+                
+                <div class="hardening-recommendations">
+                    <div class="recommendation-category">
+                        <h3>🔒 Network Security</h3>
+                        <ul>
+                            <li><strong>Đóng RDP Internet</strong>; chỉ <strong>VPN/ZTNA</strong></li>
+                            <li><strong>Firewall geo/IP reputation</strong>; <code>fail2ban</code>-style cho RDP gateway</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>🔐 Authentication & Access</h3>
+                        <ul>
+                            <li><strong>MFA</strong> cho mọi đăng nhập từ xa</li>
+                            <li><strong>Account lockout</strong>: 5–10 lần sai → khóa tạm</li>
+                            <li><strong>LAPS</strong> & bỏ <code>administrator</code> mặc định; rename + randomize</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>👁️ Monitoring & Detection</h3>
+                        <ul>
+                            <li><strong>EDR + Alerting</strong> cho burst 4625 & 4624(LogonType=10)</li>
+                            <li><strong>SecOps hygiene</strong>: change control, review NAT, định kỳ vuln scan & password audit</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Bài học mình rút ra</h2>
+                
+                <div class="lesson-learned">
+                    <blockquote>
+                        <p>"Không có công cụ nào cứu nổi một cổng dịch vụ <strong>mở thẳng ra Internet</strong> và <strong>mật khẩu yếu</strong>. An toàn bắt đầu từ <strong>kỷ luật vận hành</strong> và <strong>nhận thức người dùng</strong>."</p>
+                    </blockquote>
+                </div>
+
+                <h2>Phụ lục: Snippet truy vấn mình thấy hữu ích</h2>
+                
+                <div class="useful-queries">
+                    <h3>Tổng hợp thất bại theo giao thức/IP/user</h3>
+                    <pre><code class="language-kql">event.code: 4625 AND host.name: "THONG-LAB-WIN01"</code></pre>
+                    
+                    <h3>Tìm đăng nhập RDP thành công từ IP lạ</h3>
+                    <pre><code class="language-kql">event.code: 4624 AND host.name: "THONG-LAB-WIN01" 
+AND winlog.event_data.LogonType: "10" AND source.ip: *</code></pre>
+                    
+                    <h3>Gợi ý ngưỡng rule (mô phỏng ý tưởng):</h3>
+                    <ul>
+                        <li><code>>= 20</code> lần <strong>4625</strong>/IP/5 phút → <strong>High</strong></li>
+                        <li>4625 burst theo nhiều username + 4624(LogonType=10) gần kề → <strong>Critical</strong></li>
+                    </ul>
+                </div>
+
+                <h2>Kết luận</h2>
+                
+                <p>Qua bài tập này, mình đã học được rất nhiều điều về quy trình SOC và Incident Response. Từ việc phát hiện cảnh báo, phân tích log, đến việc thực thi playbook IR - mỗi bước đều có ý nghĩa riêng.</p>
+                
+                <p>Điều quan trọng nhất mình nhận ra là: <strong>Security không chỉ là công cụ, mà còn là quy trình và con người</strong>. Một hệ thống được cấu hình đúng và có người vận hành có ý thức sẽ an toàn hơn nhiều so với việc chỉ dựa vào công cụ đắt tiền.</p>
+                
+                <p>Mình hy vọng bài viết này sẽ giúp các bạn có cái nhìn thực tế về công việc của SOC Analyst. Nếu các bạn có câu hỏi hoặc muốn chia sẻ kinh nghiệm, hãy liên hệ với mình nhé!</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300&h=200&fit=crop" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=200&fit=crop" alt="SOC Introduction">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="soc-introduction.html">🛡️ SOC là gì? Giới thiệu đơn giản về Security Operations Center</a></h4>
+                        <p>Hướng dẫn cơ bản về trung tâm trực an ninh mạng cho người mới bắt đầu...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự án - Vũ Văn Thông</title>
+    <meta name="description" content="Portfolio dự án của Vũ Văn Thông - Frontend Developer">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Dự án của tôi</h1>
+            <p>Những dự án tôi đã thực hiện và đóng góp</p>
+        </div>
+    </section>
+
+    <!-- Projects Filter -->
+    <section class="projects-filter">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Tất cả</button>
+                <button class="filter-btn" data-filter="security">Bảo mật</button>
+                <button class="filter-btn" data-filter="forensics">Điều tra số</button>
+                <button class="filter-btn" data-filter="crypto">Mã hóa</button>
+                <button class="filter-btn" data-filter="web">Web Development</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <div class="projects-grid">
+                <div class="project-card" data-category="security">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=400&fit=crop" alt="Network Security Assessment">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Network Security Assessment</h3>
+                        <p>Đánh giá bảo mật mạng doanh nghiệp, phát hiện lỗ hổng và đề xuất giải pháp khắc phục. Sử dụng các công cụ chuyên nghiệp để quét và phân tích.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Nmap</span>
+                            <span class="tech-tag">Nessus</span>
+                            <span class="tech-tag">Wireshark</span>
+                            <span class="tech-tag">OWASP</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">Vulnerability Scanning</span>
+                            <span class="feature">Risk Assessment</span>
+                            <span class="feature">Security Report</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="security">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop" alt="Web Application Penetration Testing">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Web Application Penetration Testing</h3>
+                        <p>Kiểm thử xâm nhập ứng dụng web, tìm kiếm lỗ hổng bảo mật và báo cáo chi tiết. Sử dụng các kỹ thuật OWASP Top 10.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Burp Suite</span>
+                            <span class="tech-tag">SQLMap</span>
+                            <span class="tech-tag">OWASP ZAP</span>
+                            <span class="tech-tag">Nmap</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">SQL Injection</span>
+                            <span class="feature">XSS Testing</span>
+                            <span class="feature">Security Report</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="security">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop" alt="Malware Analysis Lab">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Malware Analysis Lab</h3>
+                        <p>Phân tích mẫu malware, xác định hành vi độc hại và tạo signature phát hiện. Sử dụng môi trường sandbox an toàn.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">IDA Pro</span>
+                            <span class="tech-tag">Wireshark</span>
+                            <span class="tech-tag">VMware</span>
+                            <span class="tech-tag">YARA</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">Static Analysis</span>
+                            <span class="feature">Dynamic Analysis</span>
+                            <span class="feature">Signature Creation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="security">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop" alt="Digital Forensics">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Digital Forensics Investigation</h3>
+                        <p>Điều tra pháp lý số, thu thập và phân tích bằng chứng từ các thiết bị điện tử. Báo cáo chi tiết cho cơ quan pháp luật.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Autopsy</span>
+                            <span class="tech-tag">FTK Imager</span>
+                            <span class="tech-tag">Volatility</span>
+                            <span class="tech-tag">Wireshark</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">Evidence Collection</span>
+                            <span class="feature">Data Recovery</span>
+                            <span class="feature">Legal Report</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="security">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&h=400&fit=crop" alt="Social Engineering Awareness">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Social Engineering Awareness</h3>
+                        <p>Nghiên cứu và phát triển chương trình nâng cao nhận thức về tấn công social engineering. Tạo tài liệu hướng dẫn và bài kiểm tra.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Phishing Simulation</span>
+                            <span class="tech-tag">Training Materials</span>
+                            <span class="tech-tag">Assessment Tools</span>
+                            <span class="tech-tag">Awareness Campaign</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">Phishing Tests</span>
+                            <span class="feature">Training Modules</span>
+                            <span class="feature">Risk Assessment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="security">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop" alt="Cryptography Implementation">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Cryptography Implementation</h3>
+                        <p>Triển khai các thuật toán mã hóa và giải mã dữ liệu. Phát triển hệ thống bảo mật end-to-end cho ứng dụng.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">AES Encryption</span>
+                            <span class="tech-tag">RSA Algorithm</span>
+                            <span class="tech-tag">Hash Functions</span>
+                            <span class="tech-tag">Digital Signatures</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">Data Encryption</span>
+                            <span class="feature">Key Management</span>
+                            <span class="feature">Secure Communication</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assignment Index Project -->
+                <div class="project-card" data-category="web">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop" alt="Assignment Index">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="../posts/projects/web_homework.html" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/vanity1412" class="project-link"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Assignment Index - Lập trình Web</h3>
+                        <p>Trang web quản lý danh sách bài tập môn Lập trình Web với tính năng tìm kiếm thông minh. Hiển thị 14 assignments với giao diện responsive và hiện đại.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Responsive Design</span>
+                        </div>
+                        <div class="project-features">
+                            <span class="feature">Search Functionality</span>
+                            <span class="feature">Card Layout</span>
+                            <span class="feature">Mobile Friendly</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Stats -->
+    <section class="project-stats">
+        <div class="container">
+            <h2 class="section-title">Thống kê dự án</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Dự án hoàn thành</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Khách hàng hài lòng</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">GitHub repositories</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Dự án đúng hạn</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../assets/Music/Beethoven2_Virus.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/global-audio.js"></script>
+    <script src="../assets/js/audio-player.js"></script>
+    <script src="../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../assets/js/dark-mode.js"></script>
+    <script src="../assets/js/i18n.js"></script>
+    <script src="../assets/js/performance-optimizer.js"></script>
+</body>
+</html>

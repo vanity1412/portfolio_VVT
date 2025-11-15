@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database & Storage Foundation – Blog tóm tắt dễ hiểu - Vũ Văn Thông</title>
+    <meta name="description" content="Tóm tắt dễ hiểu về Database & Storage Foundation (Week 2). Hướng dẫn về RDS, DynamoDB, S3, EBS và các dịch vụ storage trên AWS">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Cloud Security</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        28 Tháng 1, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        22 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">💾 Database & Storage Foundation – Blog tóm tắt dễ hiểu (góc nhìn sinh viên)</h1>
+                <p class="post-subtitle">Tóm tắt Week 2 về Database & Storage trên AWS - RDS, DynamoDB, S3, EBS</p>
+                
+                <div class="post-tags">
+                    <span class="tag">AWS</span>
+                    <span class="tag">Database</span>
+                    <span class="tag">Storage</span>
+                    <span class="tag">RDS</span>
+                    <span class="tag">S3</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn những gì mình đã học được về Database & Storage Foundation trên AWS (Week 2). Đây là tổng hợp kiến thức về các dịch vụ database và storage quan trọng trên AWS!</p>
+                </div>
+
+                <h2>1) Giới thiệu về Database & Storage trên AWS</h2>
+                
+                <p>AWS cung cấp nhiều dịch vụ database và storage khác nhau, mỗi loại phù hợp với một use case cụ thể. Mình sẽ tóm tắt các dịch vụ chính:</p>
+
+                <div class="info-box">
+                    <h4>Các dịch vụ chính:</h4>
+                    <ul>
+                        <li><strong>RDS</strong> - Relational Database Service (SQL databases)</li>
+                        <li><strong>DynamoDB</strong> - NoSQL database service</li>
+                        <li><strong>S3</strong> - Simple Storage Service (object storage)</li>
+                        <li><strong>EBS</strong> - Elastic Block Store (block storage)</li>
+                        <li><strong>EFS</strong> - Elastic File System (file storage)</li>
+                    </ul>
+                </div>
+
+                <h2>2) Amazon RDS (Relational Database Service)</h2>
+                
+                <p><strong>RDS</strong> là dịch vụ quản lý database quan hệ (SQL) trên AWS. Nó hỗ trợ nhiều database engines như MySQL, PostgreSQL, Oracle, SQL Server, và MariaDB.</p>
+
+                <h3>Ưu điểm của RDS:</h3>
+                <ul>
+                    <li>Tự động backup và restore</li>
+                    <li>Multi-AZ deployment cho high availability</li>
+                    <li>Read replicas để scale read operations</li>
+                    <li>Automatic patching và updates</li>
+                    <li>Monitoring với CloudWatch</li>
+                </ul>
+
+                <h3>Use cases:</h3>
+                <ul>
+                    <li>Web applications cần SQL database</li>
+                    <li>E-commerce platforms</li>
+                    <li>CRM systems</li>
+                    <li>ERP applications</li>
+                </ul>
+
+                <h2>3) Amazon DynamoDB</h2>
+                
+                <p><strong>DynamoDB</strong> là dịch vụ NoSQL database được quản lý hoàn toàn, cung cấp hiệu suất cao và khả năng scale tự động.</p>
+
+                <h3>Đặc điểm chính:</h3>
+                <ul>
+                    <li>Fully managed NoSQL database</li>
+                    <li>Single-digit millisecond latency</li>
+                    <li>Automatic scaling</li>
+                    <li>Built-in security và backup</li>
+                    <li>Global tables cho multi-region</li>
+                </ul>
+
+                <h3>Use cases:</h3>
+                <ul>
+                    <li>Mobile và web applications</li>
+                    <li>Gaming applications</li>
+                    <li>IoT applications</li>
+                    <li>Real-time bidding</li>
+                </ul>
+
+                <h2>4) Amazon S3 (Simple Storage Service)</h2>
+                
+                <p><strong>S3</strong> là dịch vụ object storage với khả năng scale không giới hạn, được thiết kế để lưu trữ và truy xuất bất kỳ lượng dữ liệu nào.</p>
+
+                <h3>Storage Classes:</h3>
+                <ul>
+                    <li><strong>S3 Standard</strong> - Frequently accessed data</li>
+                    <li><strong>S3 Intelligent-Tiering</strong> - Automatic cost optimization</li>
+                    <li><strong>S3 Standard-IA</strong> - Infrequently accessed data</li>
+                    <li><strong>S3 Glacier</strong> - Long-term archive</li>
+                    <li><strong>S3 Glacier Deep Archive</strong> - Lowest cost archive</li>
+                </ul>
+
+                <h3>Use cases:</h3>
+                <ul>
+                    <li>Backup và archive</li>
+                    <li>Data lakes</li>
+                    <li>Static website hosting</li>
+                    <li>Media storage và distribution</li>
+                </ul>
+
+                <h2>5) Amazon EBS (Elastic Block Store)</h2>
+                
+                <p><strong>EBS</strong> cung cấp block storage volumes cho EC2 instances. Nó giống như một hard drive ảo gắn vào EC2 instance.</p>
+
+                <h3>Volume Types:</h3>
+                <ul>
+                    <li><strong>gp3/gp2</strong> - General Purpose SSD</li>
+                    <li><strong>io2/io1</strong> - Provisioned IOPS SSD</li>
+                    <li><strong>st1</strong> - Throughput Optimized HDD</li>
+                    <li><strong>sc1</strong> - Cold HDD</li>
+                </ul>
+
+                <h3>Use cases:</h3>
+                <ul>
+                    <li>Boot volumes cho EC2</li>
+                    <li>Databases</li>
+                    <li>Enterprise applications</li>
+                    <li>Big data analytics</li>
+                </ul>
+
+                <h2>6) Amazon EFS (Elastic File System)</h2>
+                
+                <p><strong>EFS</strong> là dịch vụ file storage có thể scale tự động, được thiết kế cho Linux workloads.</p>
+
+                <h3>Đặc điểm:</h3>
+                <ul>
+                    <li>Fully managed NFS file system</li>
+                    <li>Automatic scaling</li>
+                    <li>Multi-AZ availability</li>
+                    <li>Concurrent access từ nhiều EC2</li>
+                </ul>
+
+                <h2>7) So sánh các dịch vụ Storage</h2>
+
+                <div class="info-box">
+                    <h4>Khi nào dùng gì?</h4>
+                    <ul>
+                        <li><strong>S3</strong> - Object storage, static files, backups</li>
+                        <li><strong>EBS</strong> - Block storage cho EC2, databases</li>
+                        <li><strong>EFS</strong> - Shared file storage cho nhiều EC2</li>
+                        <li><strong>RDS</strong> - SQL databases được quản lý</li>
+                        <li><strong>DynamoDB</strong> - NoSQL với low latency</li>
+                    </ul>
+                </div>
+
+                <h2>8) Best Practices</h2>
+
+                <h3>Security:</h3>
+                <ul>
+                    <li>Enable encryption at rest và in transit</li>
+                    <li>Sử dụng IAM policies để control access</li>
+                    <li>Enable versioning cho S3</li>
+                    <li>Regular backups và snapshots</li>
+                </ul>
+
+                <h3>Cost Optimization:</h3>
+                <ul>
+                    <li>Chọn đúng storage class cho use case</li>
+                    <li>Sử dụng lifecycle policies</li>
+                    <li>Delete unused volumes và snapshots</li>
+                    <li>Monitor usage với CloudWatch</li>
+                </ul>
+
+                <h2>Kết luận</h2>
+                
+                <p>Database và Storage là hai thành phần quan trọng trong bất kỳ ứng dụng nào trên AWS. Việc hiểu rõ các dịch vụ và biết khi nào nên dùng dịch vụ nào sẽ giúp bạn thiết kế hệ thống tốt hơn và tối ưu chi phí.</p>
+                
+                <p>Mình hy vọng bài viết này giúp các bạn có cái nhìn tổng quan về Database & Storage trên AWS. Nếu có câu hỏi, hãy để lại comment nhé!</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_DB.png" alt="AWS Network Foundation">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-network-foundation.html">🌐 Network Foundation – Blog tóm tắt dễ hiểu</a></h4>
+                        <p>Tóm tắt về AWS Networking - VPC, Subnets, Route Tables...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_DB.png" alt="AWS Misconfigurations">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="aws-misconfigurations.html">☁️ 10 cấu hình sai phổ biến nhất trên AWS</a></h4>
+                        <p>Misconfiguration vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

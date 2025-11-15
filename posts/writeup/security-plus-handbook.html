@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sổ tay Security+ (phiên bản “đầy đặn”) · Writeup</title>
+    <meta name="description" content="Sổ tay Security+ viết lại mạch lạc, dễ tra cứu: CIA, DoS/DDoS, MITM, Wi‑Fi, Cloud/Mobile, IAM, Risk, IR/Forensics, Pentest, OWASP, Crypto/PKI, Ports.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Use site-wide css if present -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="blog.css">
+    <script src="https://kit.fontawesome.com/a2e0e6ad59.js" crossorigin="anonymous"></script>
+    <style>
+      :root{
+        --bg: #0a0e1a;
+        --panel: #0f1629;
+        --panel-2: #0c1224;
+        --text: #e5ecff;
+        --text-dim: #a9b7d3;
+        --brand: #8ab4ff;
+        --brand-2: #6ee7ff;
+        --accent: #22c55e;
+        --muted: #1c2540;
+        --line: #1c2848;
+        --shadow: 0 10px 30px rgba(0,0,0,.35);
+        --radius-lg: 18px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+        --maxw: 1120px;
+      }
+      html, body{ background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      a{ color: var(--brand); text-decoration: none; }
+      a:hover{ text-decoration: underline; }
+      .container{ max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
+      .post-hero{
+        position: relative;
+        border-bottom: 1px solid var(--line);
+        background:
+          radial-gradient(1100px 400px at 15% -10%, rgba(102,126,234,.18), transparent 60%),
+          radial-gradient(900px 320px at 90% -10%, rgba(110,231,255,.15), transparent 60%);
+        overflow: clip;
+      }
+      .post-hero .container{ padding: 4.5rem 1.25rem 2.25rem; }
+      .breadcrumbs a{ color: var(--text-dim); }
+      .breadcrumbs i{ margin-right: .4rem; }
+      .title{
+        display: grid; grid-template-columns: 1fr; gap: .75rem; margin-top: 1rem;
+      }
+      h1{ font-weight: 800; letter-spacing: -0.02em; font-size: clamp(1.75rem, 2.8vw, 2.6rem); margin: 0; }
+      .subtitle{ color: var(--text-dim); max-width: 70ch; margin: .25rem 0 0; }
+      .metas{ display: flex; flex-wrap: wrap; gap: .5rem .6rem; margin-top: .75rem; align-items: center; }
+      .pill{ display: inline-flex; align-items: center; gap: .4rem; padding: .25rem .6rem; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); color: var(--text-dim); font-size: .85rem; }
+      .pill i{ opacity: .8; }
+      .reading-progress{ position: sticky; top: 0; height: 4px; width: 100%; background: transparent; z-index: 50; }
+      .reading-progress .bar{ height: 100%; width: 0%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); box-shadow: var(--shadow); }
+      /* layout */
+      .layout{ display: grid; grid-template-columns: 280px 1fr; gap: 2rem; max-width: var(--maxw); margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+      @media (max-width: 1024px){ .layout{ grid-template-columns: 1fr; } .toc{ position: relative; top: auto; } }
+      /* TOC */
+      .toc{ position: sticky; top: 5.25rem; height: fit-content; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.1rem 1rem; box-shadow: var(--shadow); }
+      .toc h3{ margin: 0 0 .6rem; font-size: 1rem; letter-spacing: .02em; color: var(--text-dim); }
+      .toc ol{ margin: 0; padding-left: 1.25rem; }
+      .toc a{ color: var(--text-dim); }
+      .toc a.active{ color: var(--text); }
+      /* content */
+      .content{ background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.25rem 1.25rem; box-shadow: var(--shadow); }
+      .content section.anchor{ padding-top: 1rem; margin-top: 2.25rem; }
+      .content h2{ font-size: clamp(1.25rem, 2.3vw, 1.6rem); border-bottom: 1px dashed var(--line); padding-bottom: .4rem; margin-bottom: 1rem; }
+      .content h3{ font-size: 1.05rem; margin-top: 1.2rem; }
+      .content p, .content li{ line-height: 1.7; }
+      .content code{ font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: .92em; background: #0b1224; border: 1px solid #1b2340; padding: .1rem .32rem; border-radius: 6px; }
+      pre{ background: #0b1224; border: 1px solid #1b2340; padding: 1rem; border-radius: 10px; overflow: auto; }
+      /* callouts */
+      .callout{ background: #0b1326; border: 1px solid #203052; border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: var(--radius-md); }
+      .note{ }
+      /* table */
+      .responsive-table{ overflow: auto; border-radius: var(--radius-md); border: 1px solid var(--line); }
+      .port-table{ width: 100%; border-collapse: collapse; }
+      .port-table th, .port-table td{ padding: .65rem .75rem; border-bottom: 1px solid var(--line); }
+      .port-table thead th{ position: sticky; top: 0; background: #0f1732; text-align: left; }
+      .port-table tbody tr:hover{ background: rgba(138,180,255,.05); }
+      /* footer nav */
+      .footer-nav{ display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
+      .footer-nav a{ display: inline-flex; align-items: center; gap: .5rem; background: var(--panel); border: 1px solid var(--line); padding: .6rem .8rem; border-radius: 12px; }
+      /* back-to-top */
+      .back-top{ position: fixed; right: 1rem; bottom: 1rem; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: .6rem .8rem; text-decoration: none; box-shadow: var(--shadow); }
+      .back-top:hover{ transform: translateY(-1px); }
+      /* anchors */
+      .anchor:target h2{ color: var(--brand-2); }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <div class="reading-progress" aria-hidden="true"><div class="bar"></div></div>
+
+    <header class="post-hero">
+      <div class="container">
+        <nav class="breadcrumbs">
+          <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+        </nav>
+        <div class="title">
+          <h1>📘 Sổ tay Security+ (phiên bản “đầy đặn”)</h1>
+          <p class="subtitle">Gần như toàn bộ nội dung bạn đã gửi — viết lại cho mạch lạc, dễ tra cứu, trình bày đẹp, cập nhật thuật ngữ.</p>
+          <div class="metas">
+            <span class="pill"><i class="fas fa-feather-alt"></i> Writeup</span>
+            <span class="pill"><i class="fas fa-shield-alt"></i> Security+</span>
+            <span class="pill"><i class="far fa-clock"></i> ~45 phút đọc</span>
+            <span class="pill"><i class="far fa-calendar"></i> 2 Tháng 11, 2025</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="toc" aria-label="Mục lục">
+        <h3>Mục lục</h3>
+        <ol>
+          <li><a href="#gioi-thieu">Giới thiệu &amp; phạm vi kỳ thi</a></li>
+          <li><a href="#cia">Nguyên lý an ninh: CIA &amp; “các C mở rộng”</a></li>
+          <li><a href="#attacks">Đe doạ &amp; tấn công</a></li>
+          <li><a href="#resiliency">Tính sẵn sàng &amp; gia cố hệ thống</a></li>
+          <li><a href="#host-data">Bảo vệ máy chủ &amp; dữ liệu</a></li>
+          <li><a href="#tools">Công cụ &amp; quan sát</a></li>
+          <li><a href="#network">Hạ tầng mạng &amp; kiểm soát biên</a></li>
+          <li><a href="#wifi">Wi‑Fi/802.11 &amp; hardening không dây</a></li>
+          <li><a href="#cloud-mobile">Ảo hoá, Cloud, Mobile/MDM</a></li>
+          <li><a href="#iam">Kiểm soát truy cập (IAM) &amp; AAA</a></li>
+          <li><a href="#risk">Quản trị rủi ro, BIA/DR/BCP</a></li>
+          <li><a href="#ir">Ứng cứu sự cố &amp; Forensics</a></li>
+          <li><a href="#testing">Kiểm thử hạ tầng: Scan &amp; Pentest</a></li>
+          <li><a href="#se-web">Social Engineering &amp; tấn công Web</a></li>
+          <li><a href="#crypto">Mật mã &amp; PKI</a></li>
+          <li><a href="#ports">Danh mục cổng dịch vụ “sống còn”</a></li>
+        </ol>
+      </aside>
+
+      <article class="content">
+        <div class="callout note">
+          <strong>Lưu ý nhanh:</strong>
+          <ul>
+            <li>Tài liệu gốc nhắm <strong>SY0-501</strong> (đã retire 07/2021). Kiến thức nền vẫn hữu dụng cho bản thi mới.</li>
+            <li>Mình <strong>không tóm tắt</strong>; bên dưới là <strong>bản viết lại gần đầy đủ</strong>, chia mục rõ ràng, kèm bảng tổng hợp, checklist và mẹo lab.</li>
+          </ul>
+        </div>
+
+        <!-- === BEGIN CONTENT (kept from your version, only layout/styling changed) === -->
+        <section id="gioi-thieu" class="anchor">
+          <h2>1) Giới thiệu &amp; phạm vi kỳ thi</h2>
+          <ul>
+            <li><strong>Mục tiêu của giáo trình</strong>: gom và hệ thống hoá kiến thức trọng tâm giúp ôn thi Security+ và áp dụng thực tế.</li>
+            <li><strong>Trọng số domain (SY0-501)</strong>:
+              <ul>
+                <li>Threats, Attacks &amp; Vulnerabilities – <strong>21%</strong></li>
+                <li>Technologies &amp; Tools – <strong>22%</strong></li>
+                <li>Architecture &amp; Design – <strong>15%</strong></li>
+                <li>Identity &amp; Access Management – <strong>16%</strong></li>
+                <li>Risk Management – <strong>14%</strong></li>
+                <li>Cryptography &amp; PKI – <strong>12%</strong></li>
+              </ul>
+            </li>
+            <li><strong>Tài nguyên mở khuyên dùng</strong>: video Professor Messer, bộ câu hỏi luyện tập, kho đề GitHub, Lynda/LinkedIn Learning.</li>
+          </ul>
+        </section>
+
+        <section id="cia" class="anchor">
+          <h2>2) Nguyên lý an ninh: CIA &amp; “các C mở rộng”</h2>
+          <ul>
+            <li><strong>Confidentiality</strong> (Bí mật): chỉ người có quyền mới xem/nhận.</li>
+            <li><strong>Integrity</strong> (Toàn vẹn): ngăn sửa/xoá trái phép; có thể khôi phục khi sửa nhầm.</li>
+            <li><strong>Availability</strong> (Sẵn sàng): hệ thống/kênh truy cập/cơ chế auth phải hoạt động đúng lúc.</li>
+            <li><strong>Mở rộng thường gặp</strong>: <strong>Authenticity</strong> (xác thực), <strong>Accountability/Auditing</strong> (truy vết), <strong>Non‑repudiation</strong> (không chối bỏ).</li>
+          </ul>
+        </section>
+
+        <section id="attacks" class="anchor">
+          <h2>3) Đe doạ &amp; tấn công</h2>
+          <h3>3.1 DoS/DDoS</h3>
+          <ul>
+            <li><strong>Volumetric</strong>: Ping/UDP flood.</li>
+            <li><strong>Protocol</strong>: <strong>SYN flood</strong> làm cạn backlog TCP.</li>
+            <li><strong>Application</strong>: <strong>Slowloris</strong> giữ nhiều kết nối HTTP nửa chừng.</li>
+            <li><strong>Amplification</strong>: lợi dụng phản hồi “to” từ truy vấn “nhỏ” (ICMP/UDP dịch vụ công khai).</li>
+            <li><strong>Smurf</strong>: icmp echo tới broadcast + spoof IP nạn nhân.</li>
+          </ul>
+          <h3>3.2 MITM &amp; giả mạo</h3>
+          <ul>
+            <li><strong>MITM</strong> (có dây/không dây), <strong>ARP/DNS/IP/MAC spoof</strong>.</li>
+            <li><strong>Replay</strong>: chụp gói rồi phát lại.</li>
+            <li><strong>Downgrade</strong>: ép rơi về mật mã cũ/yếu, thậm chí clear‑text.</li>
+            <li><strong>Session hijacking</strong>: đánh cắp phiên (cookie, token).</li>
+          </ul>
+          <h3>3.3 Lừa đảo &amp; chiếm đoạt</h3>
+          <ul>
+            <li><strong>Phishing/Spear/Whaling</strong>, <strong>vishing</strong>, <strong>spim</strong> (IM), <strong>typosquatting</strong> (facebook.corn), <strong>domain hijacking</strong>.</li>
+            <li><strong>Privilege escalation</strong>: khai thác bug/config để leo quyền.</li>
+          </ul>
+        </section>
+
+        <section id="resiliency" class="anchor">
+          <h2>4) Tính sẵn sàng &amp; gia cố hệ thống</h2>
+          <h3>4.1 Khả năng mở rộng &amp; đàn hồi</h3>
+          <p><strong>Scalability</strong> (thêm tài nguyên thủ công) vs <strong>Elasticity</strong> (co giãn tự động theo tải).</p>
+          <h3>4.2 Dự phòng &amp; chịu lỗi</h3>
+          <ul>
+            <li><strong>RAID</strong>:
+              <ul>
+                <li><strong>0</strong> (striping, nhanh, <em>không</em> an toàn dữ liệu)</li>
+                <li><strong>1</strong> (mirror, an toàn, chậm/hao dung lượng)</li>
+                <li><strong>5</strong> (striping + parity; mất được 1 đĩa)</li>
+                <li><strong>6</strong> (2 parity; mất được 2 đĩa)</li>
+                <li><strong>10/01</strong> (kết hợp hiệu năng + an toàn)</li>
+              </ul>
+            </li>
+            <li><strong>Clustering</strong>, <strong>load balancing</strong>, <strong>UPS</strong>.</li>
+            <li><strong>NAS</strong> (file‑level) vs <strong>SAN</strong> (block‑level, FC/iSCSI).</li>
+          </ul>
+          <h3>4.3 Host hardening</h3>
+          <ul>
+            <li>Vô hiệu dịch vụ dư, bỏ <strong>default password</strong>, khoá tài khoản thừa.</li>
+            <li><strong>Patch management</strong>: theo chu trình <em>giám sát → thử nghiệm → đánh giá → triển khai → ghi chép</em>.</li>
+            <li><strong>DEP/Executable Space Protection</strong>, <strong>Secure Boot/UEFI</strong>, <strong>TPM</strong> (niềm tin phần cứng), <strong>Remote Attestation</strong>.</li>
+          </ul>
+        </section>
+
+        <section id="host-data" class="anchor">
+          <h2>5) Bảo vệ máy chủ &amp; dữ liệu</h2>
+          <ul>
+            <li><strong>Web server hardening</strong>: ẩn banner, bật HTTPS, least privilege, log đủ access/error.</li>
+            <li><strong>Antimalware</strong>, <strong>WAF</strong> (lọc đầu vào HTTP), <strong>FIM</strong> (File Integrity Monitoring), <strong>whitelist/blacklist</strong> ứng dụng.</li>
+            <li><strong>Mã hoá đĩa</strong>: <strong>FDE</strong> (BitLocker/SED), <strong>FileVault</strong>; <strong>HSM</strong> (xử lý khoá chuyên dụng).</li>
+            <li><strong>Hệ điều hành</strong>: server/workstation/kiosk/embedded/mobile → chọn <strong>ít chức năng nhất</strong> đáp mục tiêu.</li>
+            <li><strong>Thiết bị ngoại vi</strong>:
+              <ul>
+                <li><strong>Bluetooth</strong> (Class 1/2/3; tấn công bluejacking/bluesnarfing/bluebugging)</li>
+                <li><strong>RFID/NFC</strong> (thu/cướp/relay, jam), <strong>máy in/MFP</strong> (spool/địa chỉ), <strong>camera</strong>, <strong>thẻ nhớ Wi‑Fi</strong>.</li>
+              </ul>
+            </li>
+          </ul>
+          <h3>5.1 Xử lý dữ liệu &amp; tiêu huỷ</h3>
+          <ul>
+            <li><strong>Clear</strong> (lệnh erase/format), <strong>Purge</strong> (vd degauss), <strong>Destroy</strong> (shred/incinerate/pulverize).</li>
+            <li><strong>Chứng nhận tiêu huỷ</strong>, ghi nhận chuỗi xử lý.</li>
+          </ul>
+        </section>
+
+        <section id="tools" class="anchor">
+          <h2>6) Công cụ &amp; quan sát</h2>
+          <ul>
+            <li><strong>Sniffer/Analyzer</strong>: <strong>Wireshark</strong>, <strong>tcpdump</strong>.</li>
+            <li><strong>Scanner</strong>: <strong>Nmap/Zenmap</strong>, <strong>Angry IP</strong>, <strong>Nikto</strong>.</li>
+            <li><strong>Tiện ích hệ điều hành</strong>: <code>ping</code>, <code>netstat -ano</code>, <code>traceroute/tracert</code>, <code>arp -a</code>, <code>ipconfig/ifconfig</code>, <code>nslookup/dig</code>, <code>nc</code> (netcat).</li>
+            <li><strong>Log &amp; SIEM</strong>:
+              <ul>
+                <li>Chuẩn <strong>CLF</strong> (web), syslog.</li>
+                <li><strong>SIEM</strong>: <em>aggregation</em>, <em>correlation</em>, <em>alerting</em>, <em>normalization</em>, <em>WORM</em>, <em>time sync (NTP)</em>, <em>de‑dup</em>, <em>triggers</em>.</li>
+                <li>Công cụ: Splunk, ELK, ArcSight.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section id="network" class="anchor">
+          <h2>7) Hạ tầng mạng &amp; kiểm soát biên</h2>
+          <h3>7.1 Thành phần</h3>
+          <ul>
+            <li><strong>Switch (L2)</strong>: VLAN, <strong>STP</strong> chống loop.</li>
+            <li><strong>Router (L3)</strong>: định tuyến, NAT (chỉ là chuyển địa chỉ, <strong>không</strong> là cơ chế bảo mật).</li>
+            <li><strong>Khu vực</strong>: LAN/DMZ/WLAN/Guest/Extranet/Air‑gap.</li>
+            <li><strong>Phân đoạn</strong>: vật lý–logic–ảo; tách <strong>web ↔ DB</strong>, firewall giữa các zone.</li>
+          </ul>
+          <h3>7.2 NAC (Network Access Control)</h3>
+          <ul>
+            <li>Kiểm tra sức khoẻ thiết bị (AV, phiên bản, mã hoá, app cấm…).</li>
+            <li>Agent thường trú/dùng‑xong‑tự‑huỷ/agentless AD; <strong>quarantine VLAN</strong> nếu không đạt.</li>
+          </ul>
+          <h3>7.3 Firewall &amp; Proxy</h3>
+          <ul>
+            <li><strong>Stateless</strong> (ACL), <strong>Stateful</strong> (theo dõi phiên), <strong>Application/Proxy</strong> (L7).</li>
+            <li>Quy tắc <strong>implicit deny</strong> ở cuối.</li>
+            <li><strong>Forward proxy</strong> (ẩn client), <strong>Reverse proxy</strong> (ẩn server, chống DoS, cache, SSL offload).</li>
+            <li><strong>Honeypot/Honeynet</strong>, <strong>UTM</strong> (all‑in‑one).</li>
+          </ul>
+          <h3>7.4 VPN &amp; IPsec</h3>
+          <ul>
+            <li><strong>Remote access</strong> vs <strong>Site‑to‑site</strong>.</li>
+            <li><strong>IPsec</strong>: <strong>AH/ESP</strong>, <strong>Transport</strong> (host‑to‑host) vs <strong>Tunnel</strong> (gateway); <strong>IKE/ISAKMP</strong> thương lượng khoá.</li>
+            <li><strong>L2TP/IPsec</strong>, <strong>OpenVPN (TLS)</strong>, SSL/TLS VPN.</li>
+          </ul>
+          <h3>7.5 IDS/IPS &amp; cảm biến</h3>
+          <ul>
+            <li><strong>IDS</strong> (phát hiện, out‑of‑band qua <strong>SPAN/TAP</strong>), <strong>IPS</strong> (ngăn chặn, in‑line).</li>
+            <li>Phương pháp: <strong>signature</strong>, <strong>anomaly/behavioral</strong>, <strong>heuristic</strong>.</li>
+            <li><strong>Mail gateway</strong>: anti‑spam/phish, DLP, rDNS, chuẩn SMTP, bắt buộc TLS.</li>
+          </ul>
+        </section>
+
+        <section id="wifi" class="anchor">
+          <h2>8) Wi‑Fi/802.11 &amp; hardening không dây</h2>
+          <ul>
+            <li><strong>WAP = bridge L2</strong>, SSID/BSSID/ESSID; controller‑based vs fat/thin AP.</li>
+            <li>Tấn công: <strong>rogue AP</strong>, <strong>evil twin</strong>, <strong>jamming</strong>, <strong>deauth/disassoc</strong>, <strong>WEP/WPA handshake capture</strong>, <strong>WPS brute‑force</strong>.</li>
+            <li><strong>Kênh 2.4 GHz</strong> tránh chồng lấn: <strong>1‑6‑11</strong>; <strong>5 GHz</strong> nhiều kênh rộng hơn.</li>
+            <li><strong>Anten</strong>: omni, dipole, yagi, parabolic, patch (chọn theo địa hình).</li>
+            <li><strong>Bảo vệ</strong>:
+              <ul>
+                <li>Tắt <strong>WPS</strong> nếu có; cập nhật firmware.</li>
+                <li><strong>WPA2‑PSK (AES‑CCMP)</strong> tối thiểu; doanh nghiệp: <strong>802.1X/EAP‑TLS/TTLS/PEAP</strong>.</li>
+                <li><strong>WIDS</strong>, <strong>AP isolation</strong>, heatmap &amp; site survey.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section id="cloud-mobile" class="anchor">
+          <h2>9) Ảo hoá, Cloud, Mobile/MDM</h2>
+          <ul>
+            <li><strong>Hypervisor</strong> Type 1/2, snapshot, chống <strong>VM sprawl</strong>/<strong>VM escape</strong>.</li>
+            <li><strong>Container</strong>, <strong>CASB</strong>, mô hình <strong>IaaS/PaaS/SaaS</strong>; triển khai <strong>Private/Public/Hybrid/Community</strong>.</li>
+            <li><strong>SECaaS</strong>: AV/IDS/DLP trên đám mây, cập nhật liên tục.</li>
+            <li><strong>Embedded/ICS/SCADA/HVAC</strong>: phân đoạn chặt, VPN, 802.1X, cập nhật khó → tăng bảo vệ biên.</li>
+            <li><strong>SDN</strong>: tách control plane &amp; data plane, lập trình được, quản trị tập trung.</li>
+          </ul>
+          <h3>9.1 Mobile &amp; MDM/MAM</h3>
+          <ul>
+            <li>Rủi ro: sideloading, unlock, root/jailbreak, OTA, camera/GPS, hotspot/USB‑OTG.</li>
+            <li><strong>MDM</strong>: chính sách PIN/biometric, remote wipe, geofencing, hạn chế ngoại vi.</li>
+            <li>Mô hình triển khai: <strong>COBO</strong>, <strong>COPE</strong>, <strong>CYOD</strong>, <strong>BYOD</strong>, <strong>VDI/VMI</strong>.</li>
+          </ul>
+        </section>
+
+        <section id="iam" class="anchor">
+          <h2>10) Kiểm soát truy cập (IAM) &amp; AAA</h2>
+          <ul>
+            <li><strong>Mô hình</strong>:
+              <ul>
+                <li><strong>MAC</strong> (nhãn bảo mật), <strong>DAC</strong> (chủ sở hữu quyết), <strong>RBAC</strong> (theo vai trò), <strong>ABAC</strong> (theo thuộc tính), <strong>Rule‑based</strong>.</li>
+              </ul>
+            </li>
+            <li><strong>Nguyên tắc</strong>: least privilege, separation of duties, job rotation, mandatory vacation.</li>
+          </ul>
+          <h3>10.1 AAA &amp; giao thức</h3>
+          <ul>
+            <li><strong>RADIUS</strong> (UDP 1812/1813; 1645/1646 lịch sử): tập trung authN/authZ/accounting.</li>
+            <li><strong>TACACS+</strong> (TCP/49): tách bạch authZ, mã hoá toàn bộ payload.</li>
+            <li><strong>Kerberos</strong> (TCP/UDP 88), <strong>SAML</strong> (SSO web).</li>
+            <li><strong>802.1X/EAP</strong>: EAP‑TLS (chứng chỉ 2 chiều), EAP‑TTLS/PEAP (TLS bọc phương thức khác), EAP‑PSK…</li>
+            <li><strong>Token</strong>: HOTP/TOTP; <strong>biometric</strong> (FAR/FRR/CER).</li>
+            <li><strong>Chứng chỉ</strong>: smart card/PIV/CAC; certificate‑based auth.</li>
+          </ul>
+          <h3>10.2 Chính sách hệ thống</h3>
+          <ul>
+            <li><strong>Password</strong>: độ dài/độ phức tạp/tuổi thọ/history/lockout.</li>
+            <li><strong>NTFS</strong>/<strong>Linux</strong>: ACL, <code>chmod</code>/<code>chown</code>; quy tắc “<strong>deny mạnh hơn allow</strong>”.</li>
+          </ul>
+        </section>
+
+        <section id="risk" class="anchor">
+          <h2>11) Quản trị rủi ro, BIA/DR/BCP</h2>
+          <ul>
+            <li><strong>Risk = Threat × Vulnerability</strong> → còn lại là <strong>residual risk</strong> sau kiểm soát.</li>
+            <li><strong>Tác nhân</strong>: script kiddies, hacktivist, tội phạm có tổ chức, <strong>APT/nation‑state</strong>, insider, đối thủ.</li>
+            <li><strong>Phản ứng rủi ro</strong>: <strong>mitigate</strong>, <strong>transfer</strong> (bảo hiểm), <strong>accept</strong>, <strong>avoid</strong>.</li>
+            <li><strong>Control</strong>: administrative/technical/physical × deterrent/preventive/detective/corrective/compensating.</li>
+          </ul>
+          <h3>11.1 BIA &amp; chỉ số</h3>
+          <ul>
+            <li><strong>RTO</strong> (thời gian phục hồi), <strong>RPO</strong> (mất dữ liệu chấp nhận), <strong>MTD</strong> (downtime tối đa).</li>
+            <li><strong>Uptime “4 nines”</strong> = 99.99% ≈ 52m56s/năm.</li>
+            <li>Tránh <strong>single point of failure</strong>: đa nguồn điện/làm mát/đường mạng/thiết bị.</li>
+          </ul>
+          <h3>11.2 Phân loại dữ liệu &amp; vai trò</h3>
+          <ul>
+            <li>Nhãn: Public/Confidential/Private/Proprietary/PII/PHI.</li>
+            <li>Vai trò: <strong>Data Owner</strong>, <strong>Steward</strong>, <strong>Custodian</strong>, <strong>Privacy Officer</strong>, <strong>User/Privileged/Admin</strong>.</li>
+            <li><strong>DLP</strong>: chặn rò rỉ (email/web/endpoint).</li>
+          </ul>
+          <h3>11.3 Hợp đồng/thoả thuận</h3>
+          <ul>
+            <li><strong>BPA</strong>, <strong>SLA</strong>, <strong>ISA</strong>, <strong>MOU/MOA</strong>.</li>
+          </ul>
+        </section>
+
+        <section id="ir" class="anchor">
+          <h2>12) Ứng cứu sự cố &amp; Forensics</h2>
+          <ul>
+            <li><strong>NIST SP 800‑61</strong>: Prepare → Detect/Analyze → Contain/Eradicate/Recover → Lessons learned.</li>
+            <li><strong>Indicators/Precursors</strong>; nhiều nguồn log/cảm biến → cần correlation.</li>
+          </ul>
+          <h3>12.1 Forensics cốt lõi</h3>
+          <ul>
+            <li><strong>Order of Volatility</strong>: RAM → bảng định tuyến/ARP → disk → log từ xa → backup.</li>
+            <li><strong>Chain of Custody</strong>: nhãn, bọc, lưu, người xử lý, mốc thời gian; <strong>hash</strong> (MD5/CRC) để kiểm chứng.</li>
+            <li>Thu thập: ảnh đĩa (bit‑by‑bit), traffic/log, video, screenshot, phỏng vấn, theo dõi công.</li>
+          </ul>
+        </section>
+
+        <section id="testing" class="anchor">
+          <h2>13) Kiểm thử hạ tầng: Scan &amp; Pentest</h2>
+          <ul>
+            <li><strong>Vulnerability scan</strong>: intrusive/non‑intrusive, credentialed/non‑credentialed; xử <strong>false pos/neg</strong>.</li>
+            <li><strong>Pentest</strong>: recon → scan → gain → maintain → pivot → evade; mô hình <strong>black/gray/white box</strong>.</li>
+            <li>Bộ công cụ: Nessus/Nexpose/OpenVAS, Nmap, Nikto, <strong>Metasploit</strong>, <strong>BeEF</strong>, <strong>RouterSploit</strong>.</li>
+          </ul>
+        </section>
+
+        <section id="se-web" class="anchor">
+          <h2>14) Social Engineering &amp; tấn công Web</h2>
+          <ul>
+            <li><strong>7 đòn tâm lý</strong>: Authority, Intimidation, Consensus, Scarcity, Urgency, Familiarity, Trust.</li>
+            <li>Kỹ thuật: phishing/spear/whaling, vishing, watering‑hole, tailgating, shoulder surfing, impersonation, dumpster diving.</li>
+          </ul>
+          <h3>14.1 Web/Common OWASP</h3>
+          <ul>
+            <li><strong>XSS</strong> (reflected/stored), <strong>CSRF</strong>, <strong>clickjacking</strong>, <strong>SQL/XML/LDAP injection</strong>, <strong>session hijack</strong>.</li>
+            <li><strong>Sai sót code</strong>: input validation, error handling lộ thông tin, race condition, buffer/integer overflow, resource exhaustion.</li>
+            <li><strong>Phòng thủ</strong>: xác thực đầu vào, encode output, CSP, CSRF token, parameterized query/stored procedures, WAF rule.</li>
+          </ul>
+        </section>
+
+        <section id="crypto" class="anchor">
+          <h2>15) Mật mã &amp; PKI</h2>
+          <h3>15.1 Khái niệm</h3>
+          <ul>
+            <li><strong>Dữ liệu</strong>: in‑transit, at‑rest, in‑use (trên RAM/CPU).</li>
+            <li><strong>Đối xứng</strong> (AES/ChaCha20/3DES): nhanh, dùng <strong>session key</strong> (thường phát sinh/trao đổi qua bất đối xứng).</li>
+            <li><strong>Bất đối xứng</strong> (RSA/DSA/ECC): cặp <strong>public/private</strong>; <strong>DH/ECDHE</strong> trao đổi khoá (tạo PFS).</li>
+          </ul>
+          <h3>15.2 Chế độ khối &amp; xác thực</h3>
+          <ul>
+            <li>Tránh <strong>ECB</strong>; dùng <strong>CBC/CTR/GCM</strong> (<strong>GCM</strong> = mã hoá + xác thực).</li>
+            <li><strong>Hash</strong>: SHA‑256/384/512, <strong>HMAC</strong> (toàn vẹn + xác thực), <strong>salt/IV/nonce</strong>, <strong>PBKDF2/bcrypt</strong> (key‑stretching).</li>
+          </ul>
+          <h3>15.3 Wi‑Fi &amp; mã hoá</h3>
+          <ul>
+            <li><strong>WEP</strong> (RC4+IV 24‑bit) lỗi thời → <strong>không dùng</strong>.</li>
+            <li><strong>WPA</strong> (TKIP/RC4) → đã yếu.</li>
+            <li><strong>WPA2</strong> (<strong>AES‑CCMP</strong>) là chuẩn tối thiểu hiện nay cho PSK/Enterprise (802.1X).</li>
+            <li><strong>WPS</strong> dùng PIN chia đôi, dễ brute‑force nếu AP không rate‑limit → <strong>tắt</strong>.</li>
+          </ul>
+          <h3>15.4 PKI &amp; chứng chỉ</h3>
+          <ul>
+            <li><strong>CA/Intermediate/Chain</strong>, <strong>CRL/OCSP</strong> (OCSP stapling để tối ưu).</li>
+            <li>Loại cert: <strong>DV</strong>, <strong>OV/EV</strong>, <strong>SAN/wildcard</strong>; <strong>self‑signed</strong> (nội bộ), <strong>code‑signing</strong>, <strong>email (S/MIME)</strong>, <strong>machine/user cert</strong>.</li>
+          </ul>
+        </section>
+
+        <section id="ports" class="anchor">
+          <h2>16) Danh mục cổng dịch vụ “sống còn”</h2>
+          <div class="responsive-table">
+            <table class="port-table">
+              <thead>
+                <tr><th>Port</th><th>Dịch vụ</th><th>Ghi chú</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>20/21</td><td>FTP (data/control)</td><td>Dùng <strong>FTPS</strong> (989/990) hoặc <strong>SFTP/SSH 22</strong></td></tr>
+                <tr><td>22</td><td>SSH / SFTP / SCP</td><td>Remote an toàn</td></tr>
+                <tr><td>23</td><td>Telnet</td><td>Tránh, dùng SSH</td></tr>
+                <tr><td>25</td><td>SMTP</td><td>Ưu tiên 587 (submission) + STARTTLS</td></tr>
+                <tr><td>53</td><td>DNS</td><td>DNSSEC xác thực</td></tr>
+                <tr><td>67/68</td><td>DHCP</td><td>UDP</td></tr>
+                <tr><td>69</td><td>TFTP</td><td>UDP, không bảo mật</td></tr>
+                <tr><td>80</td><td>HTTP</td><td>Dùng 443</td></tr>
+                <tr><td><strong>443</strong></td><td>HTTPS</td><td>TLS</td></tr>
+                <tr><td><strong>88</strong></td><td>Kerberos</td><td>Auth domain</td></tr>
+                <tr><td>110</td><td>POP3</td><td>POP3S 995</td></tr>
+                <tr><td>143</td><td>IMAP4</td><td>IMAPS 993</td></tr>
+                <tr><td>161/162</td><td>SNMP</td><td><strong>SNMPv3</strong> có auth/privacy</td></tr>
+                <tr><td>389</td><td>LDAP</td><td>Dùng <strong>LDAPS 636</strong></td></tr>
+                <tr><td>445</td><td>SMB</td><td>Chia sẻ tệp</td></tr>
+                <tr><td>465</td><td>SMTPS</td><td>Implicit TLS (nhiều hệ thống vẫn dùng)</td></tr>
+                <tr><td><strong>587</strong></td><td>SMTP Submission</td><td>STARTTLS</td></tr>
+                <tr><td>993/995</td><td>IMAPS/POP3S</td><td>TLS</td></tr>
+                <tr><td>1194</td><td>OpenVPN</td><td>TLS</td></tr>
+                <tr><td>1701</td><td>L2TP</td><td>Kèm IPsec</td></tr>
+                <tr><td>1723</td><td>PPTP</td><td>Cũ, không khuyến nghị</td></tr>
+                <tr><td><strong>1812/1813</strong></td><td>RADIUS</td><td>Auth/Accounting</td></tr>
+                <tr><td><strong>49/tcp</strong></td><td>TACACS+</td><td>Thiết bị mạng</td></tr>
+                <tr><td>3389</td><td>RDP</td><td>Bọc VPN/TLS</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <nav class="footer-nav">
+          <a href="blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+          <a href="#top"><i class="fas fa-chevron-up"></i> Lên đầu trang</a>
+        </nav>
+      </article>
+    </main>
+
+    <a class="back-top" href="#top" title="Lên đầu trang"><i class="fas fa-chevron-up"></i></a>
+
+    <script>
+      // Reading progress
+      (function(){
+        const bar = document.querySelector('.reading-progress .bar');
+        const article = document.querySelector('article.content');
+        function setProgress(){
+          if(!article) return;
+          const rect = article.getBoundingClientRect();
+          const total = article.scrollHeight - window.innerHeight;
+          const scrolled = window.scrollY - article.offsetTop + 10;
+          const pct = Math.max(0, Math.min(1, scrolled / total));
+          bar.style.width = (pct * 100).toFixed(2) + '%';
+        }
+        window.addEventListener('scroll', setProgress, { passive: true });
+        window.addEventListener('resize', setProgress);
+        setProgress();
+      })();
+
+      // TOC active link highlight
+      (function() {
+        const links = Array.from(document.querySelectorAll('.toc a'));
+        const map = links.map(a => {
+          const id = a.getAttribute('href').replace('#','');
+          const el = document.getElementById(id);
+          return { a, el };
+        });
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            const item = map.find(m => m.el === e.target);
+            if(!item) return;
+            if(e.isIntersecting){
+              links.forEach(l => l.classList.remove('active'));
+              item.a.classList.add('active');
+            }
+          });
+        }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+        map.forEach(m => m.el && obs.observe(m.el));
+      })();
+    </script>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <script src="../../assets/js/dark-mode.js"></script>
+  </body>
+</html>

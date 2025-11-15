@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Vũ Văn Thông</title>
+    <meta name="description" content="Blog cá nhân của Vũ Văn Thông về An toàn thông tin, Blue Team, Cloud Security và các chủ đề liên quan">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <div class="blog-hero-content">
+                <h1>Blog An toàn thông tin</h1>
+                <h2>Bảo mật : zoom nhỏ màn hình để có thể truy cập nếu không thấy</h2>
+                <p>Chia sẻ kiến thức về bảo mật mạng, Blue Team, Cloud Security và các chủ đề liên quan </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Content -->
+    <section class="blog-content">
+        <div class="container">
+            <!-- Category Filter -->
+            <div class="blog-filters">
+                <button class="filter-btn active" data-category="all">Tất cả</button>
+                <button class="filter-btn" data-category="blue">Blue Team</button>
+                <button class="filter-btn" data-category="cloud">Cloud Security</button>
+                <button class="filter-btn" data-category="projects">Projects</button>
+                <button class="filter-btn" data-category="writeup">Writeup</button>
+            </div>
+
+            <!-- Blog Posts Grid -->
+            <div class="blog-posts-grid">
+                <!-- Ransomware Response Challenge Post -->
+                <article class="blog-post-card" data-category="blue">
+                    <div class="post-image">
+                        <img src="assets/img/blue/Lab_SOC/setup1.png" alt="Ransomware Response Challenge">
+                        <div class="post-category">Blue Team</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                1 Tháng 11, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                20 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/blue/ransomware-response-challenge.html">🔒 Ransomware Response Challenge: Nhật ký SOC của sinh viên năm 3</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý ransomware trong lab SOC mini. Hướng dẫn chi tiết quy trình IR từ góc nhìn sinh viên
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">SOC</span>
+                            <span class="tag">Incident Response</span>
+                            <span class="tag">Ransomware</span>
+                            <span class="tag">Threat Hunting</span>
+                        </div>
+                        <a href="posts/blue/ransomware-response-challenge.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Beacon Detection Challenge Post -->
+                <article class="blog-post-card" data-category="blue">
+                    <div class="post-image">
+                        <img src="assets/img/Blueteam.png" alt="Beacon Detection Challenge">
+                        <div class="post-category">Blue Team</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                31 Tháng 10, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                18 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/blue/beacon-detection-challenge.html">📡 Beacon Detection Challenge: Nhật ký SOC của sinh viên năm 3</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý C2 beacon trong lab SOC mini. Hướng dẫn chi tiết quy trình IR từ góc nhìn sinh viên
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">SOC</span>
+                            <span class="tag">Threat Hunting</span>
+                            <span class="tag">C2 Detection</span>
+                            <span class="tag">Network Security</span>
+                        </div>
+                        <a href="posts/blue/beacon-detection-challenge.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Brute Force Windows Login Post -->
+                <article class="blog-post-card" data-category="blue">
+                    <div class="post-image">
+                        <img src="assets/img/Blueteam.png" alt="Brute Force Windows Login">
+                        <div class="post-category">Blue Team</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                30 Tháng 10, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                15 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/blue/brute-force-windows-login.html">🔐 Brute-force Windows Login: Nhật ký SOC của sinh viên năm 3</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Chia sẻ kinh nghiệm thực tế về việc phát hiện và xử lý brute-force RDP trong lab SOC mini. Hướng dẫn chi tiết quy trình IR từ góc nhìn sinh viên
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">SOC</span>
+                            <span class="tag">Incident Response</span>
+                            <span class="tag">Windows Security</span>
+                            <span class="tag">RDP</span>
+                        </div>
+                        <a href="posts/blue/brute-force-windows-login.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- SOC Introduction Post -->
+                <article class="blog-post-card" data-category="blue">
+                    <div class="post-image">
+                        <img src="assets/img/Blueteam.png" alt="SOC Security Operations Center">
+                        <div class="post-category">Blue Team</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                29 Tháng 10, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                8 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/blue/soc-introduction.html">🛡️ SOC là gì? Giới thiệu đơn giản về Security Operations Center</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            SOC (Security Operations Center) là gì? Hướng dẫn đơn giản về trung tâm trực an ninh mạng, vai trò, công cụ và lộ trình nghề nghiệp cho người mới bắt đầu
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">SOC</span>
+                            <span class="tag">Blue Team</span>
+                            <span class="tag">Security</span>
+                        </div>
+                        <a href="posts/blue/soc-introduction.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Incident Response Post -->
+                <article class="blog-post-card" data-category="blue">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=300&fit=crop" alt="Incident Response">
+                        <div class="post-category">Blue Team</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                15 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                8 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/blue/incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng. Hướng dẫn từng bước: Preparation → Detection → Containment → Eradication → Recovery → Lessons Learned
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">Incident Response</span>
+                            <span class="tag">Blue Team</span>
+                            <span class="tag">Security</span>
+                        </div>
+                        <a href="posts/blue/incident-response.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Red-Blue-Purple Teams Post -->
+                <article class="blog-post-card" data-category="blue">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=300&fit=crop" alt="Red Blue Purple Teams">
+                        <div class="post-category">Blue Team</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                20 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                12 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/blue/red-blue-purple-teams.html">🔴🔵🟣 Phân biệt Red Team – Blue Team – Purple Team</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Hiểu rõ vai trò của từng "màu" trong bảo mật mạng từ góc nhìn của một sinh viên đang học bảo mật. Hướng dẫn chi tiết về Red Team, Blue Team và Purple Team...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">Red Team</span>
+                            <span class="tag">Blue Team</span>
+                            <span class="tag">Purple Team</span>
+                        </div>
+                        <a href="posts/blue/red-blue-purple-teams.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- SOC Lab with Wazuh Post -->
+                <article class="blog-post-card" data-category="projects">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=300&fit=crop" alt="SOC Lab with Wazuh">
+                        <div class="post-category">Projects</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                28 Tháng 10, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                25 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/projects/soc-lab-wazuh.html">🚀 Tự xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Hướng dẫn chi tiết từng bước để xây dựng lab SOC mini tại nhà với Wazuh và VirtualBox. Phù hợp cho người mới bắt đầu học an ninh mạng với các lệnh copy-paste và bài test an toàn...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">SOC</span>
+                            <span class="tag">Wazuh</span>
+                            <span class="tag">VirtualBox</span>
+                            <span class="tag">SIEM</span>
+                        </div>
+                        <a href="posts/projects/soc-lab-wazuh.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- AWS Security Packt Post -->
+                <article class="blog-post-card" data-category="cloud">
+                    <div class="post-image">
+                        <img src="assets/img/packt1.png" alt="AWS Security Packt">
+                        <div class="post-category">Cloud Security</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                15 Tháng 11, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                50 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/cloud/aws-security-packt.html">🛡️ AWS Security Packt: Tổng hợp 3 Khóa học Bảo mật AWS</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Hành trình chinh phục AWS Security qua 3 khóa học từ Packt - Host Security, Network Security, Data Protection, IAM & Incident Response. Tổng hợp đầy đủ kiến thức từ góc nhìn sinh viên...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">AWS</span>
+                            <span class="tag">Cloud Security</span>
+                            <span class="tag">Packt</span>
+                            <span class="tag">IAM</span>
+                            <span class="tag">KMS</span>
+                        </div>
+                        <a href="posts/cloud/aws-security-packt.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- AWS Security Let's Defend Post -->
+                <article class="blog-post-card" data-category="cloud">
+                    <div class="post-image">
+                        <img src="assets/img/Cert_AWS_Security_letdefend.png" alt="AWS Cloud Security Let's Defend">
+                        <div class="post-category">Cloud Security</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                14 Tháng 11, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                45 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/cloud/aws-security-letdefend.html">🛡️ AWS Cloud Security - Let's Defend: Hành trình của một sinh viên năm 3</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Tổng hợp đầy đủ 10 modules AWS Security từ Let's Defend - CloudWatch, WAF, GuardDuty, CloudTrail, Incident Management, VPC, S3, IAM, Shield. Hành trình học AWS Security từ góc nhìn sinh viên...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">AWS</span>
+                            <span class="tag">Cloud Security</span>
+                            <span class="tag">Let's Defend</span>
+                            <span class="tag">GuardDuty</span>
+                            <span class="tag">WAF</span>
+                        </div>
+                        <a href="posts/cloud/aws-security-letdefend.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- AWS Network Foundation Post -->
+                <article class="blog-post-card" data-category="cloud">
+                    <div class="post-image">
+                        <img src="assets/img/Cert_AWS_Network.png" alt="AWS Network Foundation">
+                        <div class="post-category">Cloud Security</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                26 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                25 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/cloud/aws-network-foundation.html">🌐 Network Foundation – Blog tóm tắt dễ hiểu (góc nhìn sinh viên)</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Mình vừa hoàn thành Week 1 và tổng hợp lại nội dung theo cách ngắn gọn, đọc tới là áp dụng được. Bài này dành cho bạn mới bước vào AWS Networking...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">AWS</span>
+                            <span class="tag">Networking</span>
+                            <span class="tag">Cloud Security</span>
+                            <span class="tag">VPC</span>
+                        </div>
+                        <a href="posts/cloud/aws-network-foundation.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- AWS Misconfigurations Post -->
+                <article class="blog-post-card" data-category="cloud">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=300&fit=crop" alt="AWS Misconfigurations">
+                        <div class="post-category">Cloud Security</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                25 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                18 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/cloud/aws-misconfigurations.html">☁️ 10 cấu hình sai phổ biến nhất trên AWS</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Misconfiguration vẫn là nguyên nhân hàng đầu dẫn đến lộ lọt dữ liệu trên đám mây. Hướng dẫn chi tiết 10 lỗi cấu hình phổ biến trên AWS và cách khắc phục...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">AWS</span>
+                            <span class="tag">Cloud Security</span>
+                            <span class="tag">Misconfiguration</span>
+                        </div>
+                        <a href="posts/cloud/aws-misconfigurations.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- AWS DB & Storage Foundation Post -->
+                <article class="blog-post-card" data-category="cloud">
+                    <div class="post-image">
+                        <img src="assets/img/Cert_AWS_DB.png" alt="AWS Database & Storage">
+                        <div class="post-category">Cloud Security</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                28 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                22 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/cloud/aws-db-storage-foundation.html">💾 Database & Storage Foundation – Blog tóm tắt dễ hiểu (góc nhìn sinh viên)</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Tóm tắt dễ hiểu về Database & Storage Foundation (Week 2). Dạng blog giống mẫu Network Foundation, kèm quiz tương tác 20 câu...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">AWS</span>
+                            <span class="tag">Database</span>
+                            <span class="tag">Storage</span>
+                            <span class="tag">RDS</span>
+                            <span class="tag">S3</span>
+                        </div>
+                        <a href="posts/cloud/aws-db-storage-foundation.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+              
+                <!-- Cloud Quiz 41 Questions Post -->
+                <article class="blog-post-card" data-category="writeup">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=300&fit=crop" alt="Cloud Quiz">
+                        <div class="post-category">Writeup</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                20 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                30 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/writeup/cloud-quiz-41.html">☁️ Luyện tập Cloud & Architecture – 41 câu hỏi</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Bộ câu hỏi luyện tập về Cloud Computing và Architecture với 41 câu hỏi trắc nghiệm. Bao gồm AWS, Azure, GCP và các khái niệm cloud cơ bản...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">Cloud Computing</span>
+                            <span class="tag">Quiz</span>
+                            <span class="tag">AWS</span>
+                            <span class="tag">Architecture</span>
+                        </div>
+                        <a href="posts/writeup/cloud-quiz-41.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Security+ Handbook Post -->
+                <article class="blog-post-card" data-category="writeup">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&h=300&fit=crop" alt="Security+ Handbook">
+                        <div class="post-category">Writeup</div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
+                                10 Tháng 1, 2025
+                            </span>
+                            <span class="post-read-time">
+                                <i class="far fa-clock"></i>
+                                45 phút đọc
+                            </span>
+                        </div>
+                        <h2 class="post-title">
+                            <a href="posts/writeup/security-plus-handbook.html">📚 Sổ tay Security+ (phiên bản "đầy đặn")</a>
+                        </h2>
+                        <p class="post-excerpt">
+                            Sổ tay Security+ viết lại mạch lạc, dễ tra cứu: CIA, DoS/DDoS, MITM, Wi‑Fi, Cloud/Mobile, IAM, Risk, IR/Forensics, Pentest, OWASP, Crypto/PKI, Ports...
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">Security+</span>
+                            <span class="tag">Certification</span>
+                            <span class="tag">Study Guide</span>
+                            <span class="tag">Cybersecurity</span>
+                        </div>
+                        <a href="posts/writeup/security-plus-handbook.html" class="read-more-btn">
+                            Đọc tiếp <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Đăng ký nhận tin</h2>
+                <p>Nhận thông báo về bài viết mới và cập nhật bảo mật</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" placeholder="Nhập email của bạn" required>
+                    <button type="submit">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="assets/Music/Beethoven3.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/blog.js"></script>
+    <script src="assets/js/global-audio.js"></script>
+    <script src="assets/js/audio-player.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="assets/js/dark-mode.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/blog-search.js"></script>
+    <script src="assets/js/blog-animations.js"></script>
+    <script src="assets/js/rss-feed.js"></script>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>

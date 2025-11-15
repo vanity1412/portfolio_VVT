@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC là gì? Giới thiệu đơn giản về Security Operations Center - Vũ Văn Thông</title>
+    <meta name="description" content="SOC (Security Operations Center) là gì? Hướng dẫn đơn giản về trung tâm trực an ninh mạng, vai trò, công cụ và lộ trình nghề nghiệp cho người mới bắt đầu">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Blog Post Content -->
+    <article class="blog-post">
+        <div class="container">
+            <!-- Post Header -->
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+                
+                <div class="post-meta">
+                    <span class="post-category">Blue Team</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        29 Tháng 10, 2025
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        8 phút đọc
+                    </span>
+                </div>
+                
+                <h1 class="post-title">🛡️ SOC là gì? Giới thiệu đơn giản về Security Operations Center</h1>
+                <p class="post-subtitle">Hướng dẫn cơ bản về trung tâm trực an ninh mạng cho người mới bắt đầu</p>
+                
+                <div class="post-tags">
+                    <span class="tag">SOC</span>
+                    <span class="tag">Blue Team</span>
+                    <span class="tag">Security</span>
+                    <span class="tag">SIEM</span>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Chào các bạn! Mình là Vũ Văn Thông, sinh viên năm 3 ngành An toàn thông tin. Hôm nay mình muốn chia sẻ với các bạn những gì mình đã học được về SOC (Security Operations Center) - một trong những lĩnh vực mà mình rất quan tâm. Đây là những kiến thức mình tổng hợp từ việc học tập và nghiên cứu, hy vọng sẽ hữu ích cho các bạn đang muốn tìm hiểu về lĩnh vực này!</p>
+                </div>
+
+                <h2>1) SOC là gì?</h2>
+                
+                <p>Khi mình mới bắt đầu tìm hiểu về SOC, mình cũng thắc mắc không biết nó là gì. Sau khi đọc nhiều tài liệu và xem các video trên YouTube, mình hiểu được rằng <strong>SOC (Security Operations Center)</strong> chính là "trung tâm trực an ninh mạng" của một tổ chức. Nhiệm vụ chính của họ là <strong>theo dõi – phát hiện – điều tra – xử lý sự cố 24/7</strong>.</p>
+                
+                <p>Mình thường ví SOC giống như một trạm trực an ninh vậy: luôn có người canh hệ thống, thấy bất thường là nhảy vào xử lý ngay. Có lần mình được tham quan một SOC của một công ty, thấy các anh chị ngồi trước màn hình lớn với rất nhiều thông tin, mình thấy rất thú vị!</p>
+
+                <div class="info-box">
+                    <h4>Mình học được điều này:</h4>
+                    <ul>
+                        <li><strong>SOC</strong> lo bảo mật (Security)</li>
+                        <li><strong>NOC</strong> lo hoạt động hệ thống (Network Operations Center - mạng chạy ổn, dịch vụ không bị down)</li>
+                    </ul>
+                    <p>Ban đầu mình cũng hay nhầm lẫn giữa hai cái này, nhưng giờ đã phân biệt được rồi!</p>
+                </div>
+
+                <h2>2) SOC làm những gì hằng ngày?</h2>
+                
+                <p>Sau khi tìm hiểu, mình thấy công việc của SOC khá đa dạng và thú vị. Mình sẽ chia sẻ những gì mình hiểu được về các hoạt động chính của họ:</p>
+
+                <div class="workflow-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Giám sát liên tục</h3>
+                            <p>Thu thập log từ firewall, máy trạm, server, ứng dụng, cloud… để xem có gì lạ.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Phát hiện mối đe doạ</h3>
+                            <p>Dùng công cụ (SIEM/EDR/XDR) + thông tin threat intel để nhận ra hành vi xấu.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Phân tích cảnh báo</h3>
+                            <p>Xem cảnh báo đó có thật sự nguy hiểm không (True/False Positive), tìm nguyên nhân và phạm vi ảnh hưởng.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Ứng cứu sự cố</h3>
+                            <p>Cách ly máy bị nhiễm, chặn IP/domain xấu, khoá tài khoản bị lộ, khôi phục hệ thống.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Threat hunting</h3>
+                            <p>Chủ động "săn" dấu hiệu tấn công còn ẩn mà công cụ chưa báo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h3>Báo cáo & cải tiến</h3>
+                            <p>Ghi lại sự cố, rút kinh nghiệm, cập nhật quy tắc phát hiện để lần sau xử lý nhanh hơn.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>3) Con người trong SOC</h2>
+                
+                <p>Mình thấy điều thú vị nhất là trong SOC có nhiều cấp độ khác nhau, mỗi người có vai trò riêng. Đây là những gì mình học được:</p>
+
+                <div class="roles-grid">
+                    <div class="role-card">
+                        <div class="role-level">L1 (Tier 1)</div>
+                        <div class="role-description">
+                            <p>Ngồi "canh màn hình", nhận cảnh báo, lọc cái nào thật sự nghiêm trọng rồi chuyển lên.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="role-card">
+                        <div class="role-level">L2 (Tier 2)</div>
+                        <div class="role-description">
+                            <p>Điều tra sâu hơn, xem log chi tiết, phân tích malware đơn giản, xử lý các vụ phức tạp vừa.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="role-card">
+                        <div class="role-level">L3 / IR Lead</div>
+                        <div class="role-description">
+                            <p>Chỉ huy khi sự cố lớn, kinh nghiệm dày; vừa xử lý vừa hướng dẫn đội.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="role-card">
+                        <div class="role-level">SOC Manager</div>
+                        <div class="role-description">
+                            <p>Quản lý ca trực, quy trình, KPI; báo cáo cho lãnh đạo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p><em>(Mình cũng thấy có một số nơi còn có các vai trò chuyên biệt như viết rule/detection, tự động hoá SOAR, hay làm threat intel nữa).</em></p>
+
+                <h2>4) Công cụ mà SOC hay dùng</h2>
+                
+                <p>Khi tìm hiểu về SOC, mình thấy họ sử dụng rất nhiều công cụ khác nhau. Mình đã tổng hợp lại những công cụ phổ biến nhất:</p>
+
+                <div class="tools-grid">
+                    <div class="tool-category">
+                        <h3>SIEM (thu thập & phân tích log)</h3>
+                        <div class="tool-list">
+                            <span class="tool-item">Splunk</span>
+                            <span class="tool-item">Microsoft Sentinel</span>
+                            <span class="tool-item">QRadar</span>
+                            <span class="tool-item">ELK</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-category">
+                        <h3>EDR/XDR (giám sát máy trạm & toàn hệ)</h3>
+                        <div class="tool-list">
+                            <span class="tool-item">CrowdStrike</span>
+                            <span class="tool-item">SentinelOne</span>
+                            <span class="tool-item">Cortex XDR</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-category">
+                        <h3>SOAR (tự động hoá xử lý)</h3>
+                        <div class="tool-list">
+                            <span class="tool-item">Palo Alto XSOAR</span>
+                            <span class="tool-item">IBM Resilient</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-category">
+                        <h3>Threat Intelligence (thông tin IoC/TTP)</h3>
+                        <div class="tool-list">
+                            <span class="tool-item">MISP</span>
+                            <span class="tool-item">ThreatQ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Cách mình hiểu đơn giản:</h4>
+                    <ul>
+                        <li><strong>SIEM</strong> = chỗ xem log + cảnh báo (như một dashboard tổng hợp)</li>
+                        <li><strong>EDR/XDR</strong> = mắt tai trên máy trạm/hệ thống (giám sát từng máy)</li>
+                        <li><strong>SOAR</strong> = giúp làm việc lặp đi lặp lại tự động (như robot)</li>
+                        <li><strong>Threat intel</strong> = dữ liệu tham khảo về kẻ xấu (thông tin về hacker)</li>
+                    </ul>
+                    <p>Mình thường nhớ theo cách này để dễ hiểu hơn!</p>
+                </div>
+
+                <h2>5) Quy trình SOC cơ bản mà mình học được</h2>
+                
+                <p>Đây là quy trình mà mình thấy được áp dụng phổ biến trong các SOC. Mình đã vẽ ra sơ đồ để dễ hiểu hơn:</p>
+
+                <div class="process-flow">
+                    <div class="process-step">
+                        <div class="step-icon">🚨</div>
+                        <h3>Cảnh báo xuất hiện</h3>
+                        <p>Từ SIEM/EDR</p>
+                    </div>
+                    
+                    <div class="process-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">🔍</div>
+                        <h3>Triage (L1)</h3>
+                        <p>Xem cảnh báo có đáng lo không → gán mức độ ưu tiên → chuyển L2 nếu cần</p>
+                    </div>
+                    
+                    <div class="process-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">🕵️</div>
+                        <h3>Điều tra (L2)</h3>
+                        <p>Lập timeline, xem log liên quan, xác định nguyên nhân & phạm vi</p>
+                    </div>
+                    
+                    <div class="process-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">⚡</div>
+                        <h3>Ứng phó</h3>
+                        <p>Cách ly, xoá mã độc, đổi mật khẩu, vá lỗi… theo playbook</p>
+                    </div>
+                    
+                    <div class="process-arrow">→</div>
+                    
+                    <div class="process-step">
+                        <div class="step-icon">📚</div>
+                        <h3>Rút kinh nghiệm</h3>
+                        <p>Ghi báo cáo, cập nhật rule để lần sau phát hiện nhanh hơn</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>Ví dụ thực tế mà mình học được:</h4>
+                    <p>Tài khoản bị đăng nhập lạ → kiểm tra IP/địa lý, xem có bật MFA chưa, có rule chuyển tiếp email lạ không → khoá phiên đăng nhập, buộc đổi mật khẩu, bật MFA.</p>
+                    <p>Đây là một case study mà mình đã đọc trong một bài báo về SOC, thấy rất thú vị!</p>
+                </div>
+
+                <h2>6) Mình cần học gì để vào SOC?</h2>
+                
+                <p>Đây là câu hỏi mà mình tự hỏi mình rất nhiều lần! Sau khi tìm hiểu và hỏi các anh chị đi trước, mình tổng hợp được những kiến thức cần thiết:</p>
+
+                <div class="learning-sections">
+                    <div class="learning-section">
+                        <h3>Kỹ thuật:</h3>
+                        <ul>
+                            <li><strong>Mạng cơ bản:</strong> TCP/IP, DNS, HTTP/HTTPS</li>
+                            <li><strong>Hệ điều hành:</strong> Windows/Linux (process, dịch vụ, log)</li>
+                            <li><strong>Log & công cụ:</strong> Windows Event Logs, Syslog, web/proxy/email logs; làm quen SIEM (viết query cơ bản như SPL/KQL)</li>
+                            <li><strong>ATT&CK & Threat intel:</strong> Biết cách tra cứu IoC/TTP</li>
+                            <li><strong>Scripting:</strong> Python/PowerShell/Bash (tự động hoá việc lặp lại)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="learning-section">
+                        <h3>Kỹ năng mềm:</h3>
+                        <ul>
+                            <li>Tư duy điều tra, đặt câu hỏi đúng</li>
+                            <li>Giao tiếp rõ ràng (viết ticket/báo cáo dễ hiểu)</li>
+                            <li>Bình tĩnh khi có sự cố, làm việc nhóm tốt</li>
+                            <li>Chịu khó cập nhật kiến thức (đối thủ đổi chiêu liên tục)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>7) Lộ trình nghề nghiệp mà mình tìm hiểu được</h2>
+                
+                <p>Mình đã tìm hiểu về lộ trình phát triển trong SOC và thấy có nhiều cấp độ khác nhau. Đây là những gì mình học được:</p>
+
+                <div class="career-timeline">
+                    <div class="career-stage">
+                        <div class="stage-period">Intern (0–1 năm)</div>
+                        <div class="stage-description">Theo dõi cảnh báo, xử lý ticket đơn giản, escalate đúng lúc</div>
+                    </div>
+                    
+                    <div class="career-stage">
+                        <div class="stage-period">L1 (1–2 năm)</div>
+                        <div class="stage-description">Triage tốt hơn, điều tra cơ bản, tinh chỉnh rule đơn giản</div>
+                    </div>
+                    
+                    <div class="career-stage">
+                        <div class="stage-period">L2 (2–4 năm)</div>
+                        <div class="stage-description">Điều tra sâu, hunting, xử lý sự cố khó hơn</div>
+                    </div>
+                    
+                    <div class="career-stage">
+                        <div class="stage-period">Senior/L3 (4–6 năm)</div>
+                        <div class="stage-description">Dẫn dắt xử lý sự cố lớn, mentoring</div>
+                    </div>
+                    
+                    <div class="career-stage">
+                        <div class="stage-period">Lead/Manager (6+)</div>
+                        <div class="stage-description">Quản lý quy trình, con người, KPI</div>
+                    </div>
+                </div>
+
+                <p><strong>Về chứng chỉ:</strong> Mình cũng tìm hiểu về các chứng chỉ có thể giúp ích như Security+, CySA+, SC-200, AZ-500, một số GIAC (GCIA/GCIH/GCFA)… Tuy không bắt buộc nhưng mình nghĩ sẽ giúp có "khung" để học và chứng minh kiến thức.</p>
+
+                <h2>8) Tại sao mình thích nghề SOC?</h2>
+                
+                <p>Sau khi tìm hiểu về SOC, mình thấy đây là một nghề rất thú vị và có nhiều cơ hội phát triển. Đây là những lý do mà mình thích:</p>
+
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚀</div>
+                        <h3>Học nhanh, va chạm thật</h3>
+                        <p>Ngày nào cũng có case mới để rèn kỹ năng</p>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📈</div>
+                        <h3>Nhu cầu cao</h3>
+                        <p>Nhiều công ty đầu tư an ninh nên cần người làm SOC</p>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🗺️</div>
+                        <h3>Lộ trình rõ</h3>
+                        <p>Từ L1 → L2 → L3 → Lead/Manager, hoặc rẽ sang Forensics, Threat Hunter, Red Team…</p>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💪</div>
+                        <h3>Công việc có ý nghĩa</h3>
+                        <p>Bảo vệ hệ thống và dữ liệu của người dùng</p>
+                    </div>
+                </div>
+
+                <h2>9) Mẹo bắt đầu mà mình học được</h2>
+                
+                <p>Là một sinh viên, mình cũng muốn tìm cách để bắt đầu học về SOC một cách thực tế. Đây là những mẹo mà mình đã tổng hợp được:</p>
+
+                <div class="tips-list">
+                    <div class="tip-item">
+                        <div class="tip-number">1</div>
+                        <div class="tip-content">
+                            <h3>Chọn nguồn log cốt lõi trước</h3>
+                            <p>đăng nhập tài khoản, EDR, email, firewall</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-number">2</div>
+                        <div class="tip-content">
+                            <h3>Dùng SIEM/XDR dễ triển khai</h3>
+                            <p>bản community/trial để học</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-number">3</div>
+                        <div class="tip-content">
+                            <h3>Viết playbook cho vài tình huống phổ biến</h3>
+                            <p>phishing, đăng nhập lạ, máy bị nghi nhiễm</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-number">4</div>
+                        <div class="tip-content">
+                            <h3>Tự động hoá nhỏ</h3>
+                            <p>tạo ticket, gửi thông báo, tra IoC tự động là đủ "đỡ mệt"</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-number">5</div>
+                        <div class="tip-content">
+                            <h3>Theo dõi vài chỉ số cơ bản</h3>
+                            <p>thời gian phát hiện (MTTD), thời gian xử lý (MTTR), tỷ lệ cảnh báo giả (FP)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Kết luận</h2>
+                
+                <p>Qua quá trình tìm hiểu về SOC, mình nhận ra rằng SOC không chỉ là "mua tool xịn", mà là <strong>con người + quy trình + công cụ</strong> phối hợp với nhau. Mình nghĩ cách tốt nhất là bắt đầu đơn giản, làm tốt những việc cơ bản, rồi nâng cấp dần: thêm rule chuẩn hơn, playbook rõ hơn, và tự động hoá nhiều hơn.</p>
+                
+                <p>Mình hy vọng bài viết này sẽ giúp các bạn có cái nhìn tổng quan về SOC. Nếu các bạn có kinh nghiệm hay câu hỏi gì về SOC, hãy chia sẻ với mình nhé! Mình cũng đang học hỏi và rất muốn được trao đổi thêm.</p>
+                
+                <p>Chúc các bạn thành công trên con đường trở thành một <strong>SOC Analyst chắc tay</strong>! 🚀</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=300&h=200&fit=crop" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="incident-response.html">🔹 Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response (IR) cơ bản cho người mới – 6 bước vàng...</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=300&h=200&fit=crop" alt="Red Blue Purple Teams">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="red-blue-purple-teams.html">🔴🔵🟣 Phân biệt Red Team – Blue Team – Purple Team</a></h4>
+                        <p>Hiểu rõ vai trò của từng "màu" trong bảo mật mạng từ góc nhìn của một sinh viên...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/blog.js"></script>
+    <script src="../../assets/js/global-audio.js"></script>
+    <script src="../../assets/js/audio-player.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+    <!-- New Features -->
+    <script src="../../assets/js/dark-mode.js"></script>
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/comments.js"></script>
+    <script src="../../assets/js/related-posts.js"></script>
+    <script src="../../assets/js/blog-animations.js"></script>
+    <script src="../../assets/js/performance-optimizer.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>
