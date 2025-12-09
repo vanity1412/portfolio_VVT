@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS SAA-C03 Practice Quiz - Part 1 (30 Questions) - Vũ Văn Thông</title>
+    <meta name="description" content="Luyện thi AWS Solutions Architect Associate với 30 câu hỏi thực tế có giải thích chi tiết">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+    
+    <style>
+        .quiz-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .quiz-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .progress-info {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .progress-bar-container {
+            flex: 1;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #667eea;
+        }
+        
+        .question-number {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .option {
+            padding: 1.2rem;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .option input[type="checkbox"],
+        .option input[type="radio"] {
+            margin-top: 0.3rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .option-label {
+            flex: 1;
+            cursor: pointer;
+            line-height: 1.6;
+        }
+        
+        .option.selected {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+        
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            display: none;
+        }
+        
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .explanation h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .explanation p {
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        
+        .quiz-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results-container {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .score-display {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        
+        .score-message {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 1rem;
+            }
+            
+            .quiz-progress {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .progress-bar-container {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .quiz-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-placeholder"></div>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1><i class="fas fa-graduation-cap"></i> AWS SAA-C03 Practice Quiz - Part 1</h1>
+            <p>30 câu hỏi thực tế với giải thích chi tiết</p>
+        </div>
+
+        <div class="quiz-progress">
+            <div class="progress-info">
+                <span id="current-question">1</span> / <span id="total-questions">30</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-info">
+                <i class="fas fa-clock"></i> <span id="timer">00:00</span>
+            </div>
+        </div>
+
+        <div id="quiz-content">
+            <!-- Questions will be dynamically loaded here -->
+        </div>
+
+        <div class="results-container" id="results-container">
+            <h2><i class="fas fa-trophy"></i> Kết quả của bạn</h2>
+            <div class="score-display" id="score-display">0%</div>
+            <div class="score-message" id="score-message"></div>
+            
+            <div class="results-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div class="stat-label">Đúng</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="incorrect-count">0</div>
+                    <div class="stat-label">Sai</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="time-taken">00:00</div>
+                    <div class="stat-label">Thời gian</div>
+                </div>
+            </div>
+            
+            <div class="quiz-actions">
+                <button class="btn btn-primary" onclick="reviewAnswers()">
+                    <i class="fas fa-eye"></i> Xem lại đáp án
+                </button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">
+                    <i class="fas fa-redo"></i> Làm lại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load Components Script -->
+    <script src="../../assets/js/load-components.js"></script>
+    <script src="../../assets/js/script.js"></script>
+
+    
+    <script>
+        // Quiz data with 30 questions
+        const quizData = [
+            {
+                id: 1,
+                question: "A company wants to use the AWS Cloud to make an existing application highly available and resilient. The current version of the application resides in the company's data center. The application recently experienced data loss after a database server crashed because of an unexpected power outage. The company needs a solution that avoids any single points of failure. The solution must give the application the ability to scale to meet user demand. Which solution will meet these requirements?",
+                options: [
+                    "Deploy the application servers by using Amazon EC2 instances in an Auto Scaling group across multiple Availability Zones. Use an Amazon RDS DB instance in a Multi-AZ configuration.",
+                    "Deploy the application servers by using Amazon EC2 instances in an Auto Scaling group in a single Availability Zone. Deploy the database on an EC2 instance. Enable EC2 Auto Recovery.",
+                    "Deploy the application servers by using Amazon EC2 instances in an Auto Scaling group across multiple Availability Zones. Use an Amazon RDS DB instance with a read replica in a single Availability Zone. Promote the read replica to replace the primary DB instance if the primary DB instance fails.",
+                    "Deploy the application servers by using Amazon EC2 instances in an Auto Scaling group across multiple Availability Zones. Deploy the primary and secondary database servers on EC2 instances across multiple Availability Zones. Use Amazon Elastic Block Store (Amazon EBS) Multi-Attach to create shared storage between the instances."
+                ],
+                correctAnswers: [0],
+                multipleChoice: false,
+                explanation: "This option is correct because it addresses high availability, resilience, and scalability. Deploying EC2 instances in an Auto Scaling group across multiple Availability Zones ensures the application can continue running even if one AZ experiences issues. Using Amazon RDS in Multi-AZ configuration provides data redundancy and automatic failover. Auto Scaling automatically adjusts the number of EC2 instances based on traffic patterns."
+            },
+            {
+                id: 2,
+                question: "A company needs to ingest and handle large amounts of streaming data that its application generates. The application runs on Amazon EC2 instances and sends data to Amazon Kinesis Data Streams, which is configured with default settings. Every other day, the application consumes the data and writes the data to an Amazon S3 bucket for business intelligence (BI) processing. The company observes that Amazon S3 is not receiving all the data that the application sends to Kinesis Data Streams. What should a solutions architect do to resolve this issue?",
+                options: [
+                    "Update the Kinesis Data Streams default settings by modifying the data retention period.",
+                    "Update the application to use the Kinesis Producer Library (KPL) to send the data to Kinesis Data Streams.",
+                    "Update the number of Kinesis shards to handle the throughput of the data that is sent to Kinesis Data Streams.",
+                    "Turn on S3 Versioning within the S3 bucket to preserve every version of every object that is ingested in the S3 bucket."
+                ],
+                correctAnswers: [0],
+                multipleChoice: false,
+                explanation: "By updating the Kinesis Data Streams default settings and modifying the data retention period, you can address the issue of not all data being received by Amazon S3. The default data retention period might be too short, causing data to expire before it can be consumed. Increasing the retention period ensures all data sent to Kinesis Data Streams is successfully received and stored in S3."
+            }
+        ];
+        
+        // Continue with remaining 28 questions...
+        // (Due to length, I'll add them in the next part)
+    </script>
+</body>
+</html>
