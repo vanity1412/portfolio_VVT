@@ -2145,10 +2145,27 @@ section {
 body {
     margin-left: 300px;
     transition: margin-left 0.3s ease;
+    width: calc(100vw - 300px);
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 body.sidebar-hidden {
     margin-left: 0;
+    width: 100vw;
+}
+
+/* Fix for specific viewport sizes */
+@media (min-width: 1200px) {
+    body {
+        width: calc(100vw - 300px);
+        max-width: calc(100vw - 300px);
+    }
+    
+    body.sidebar-hidden {
+        width: 100vw;
+        max-width: 100vw;
+    }
 }
 
 /* Sidebar Toggle Button */
@@ -2189,11 +2206,22 @@ body.sidebar-hidden {
     }
     
     body {
-        margin-left: 0;
+        margin-left: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
     }
     
     body.sidebar-hidden {
-        margin-left: 0;
+        margin-left: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+    }
+    
+    .blog-content .container,
+    .blog-hero .container {
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 15px !important;
     }
 }
 

@@ -140,6 +140,18 @@ function fixSidebarImagePath() {
         }
     }
     
+    // Fix CV download link path
+    const cvLink = document.getElementById('cv-download-link');
+    if (cvLink) {
+        if (window.location.pathname.includes('/components/')) {
+            cvLink.href = '../assets/CV_VuVanThong.pdf';
+        } else if (window.location.pathname.includes('/posts/')) {
+            cvLink.href = '../../assets/CV_VuVanThong.pdf';
+        } else {
+            cvLink.href = 'assets/CV_VuVanThong.pdf';
+        }
+    }
+    
     // Also fix audio path if audio player exists
     const audio = document.getElementById('background-music');
     if (audio) {
