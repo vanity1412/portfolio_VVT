@@ -1,245 +1,186 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liên hệ - Vũ Văn Thông</title>
-    <meta name="description" content="Liên hệ với Vũ Văn Thông - Frontend Developer">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
-    
-    <!-- Google Fonts -->
+    <meta name="description" content="Liên hệ Vũ Văn Thông qua email, điện thoại, GitHub, HackMD, LinkedIn, Telegram hoặc Facebook.">
+    <meta name="theme-color" content="#0f766e">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=20260523-toc-layout">
 </head>
 <body>
-    <!-- Sidebar Placeholder -->
+    <a class="skip-link" href="#main-content">Bỏ qua điều hướng</a>
     <div id="sidebar-placeholder"></div>
-    
-    <!-- Mobile Sidebar Toggle -->
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Mở thông tin nhanh">
+        <i class="fas fa-bars" aria-hidden="true"></i>
     </button>
-    
-    <!-- Header Placeholder -->
     <div id="header-placeholder"></div>
 
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>Liên hệ với tôi</h1>
-            <p>Hãy kết nối và cùng tạo ra những sản phẩm tuyệt vời!</p>
-        </div>
-    </section>
+    <main id="main-content">
+        <section class="page-header">
+            <div class="container">
+                <span class="eyebrow">Liên hệ</span>
+                <h1 class="page-title">Tôi đang tìm cơ hội thực tập hoặc fresher trong ngành bảo mật</h1>
+                <p class="page-subtitle">
+                    Nếu anh/chị cần một ứng viên chịu học, làm kỹ, biết ghi chú bằng chứng và có định hướng SOC/Blue Team rõ ràng,
+                    tôi rất sẵn sàng trao đổi.
+                </p>
+            </div>
+        </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="contact-content">
+        <section class="section contact" id="contact">
+            <div class="container contact-content">
                 <div class="contact-info">
-                    <h2>Hãy kết nối với tôi!</h2>
-                    <p>Bạn có dự án thú vị? Hãy liên hệ với tôi để cùng tạo ra những sản phẩm tuyệt vời!</p>
-                    
-                    <div class="contact-details">
+                    <span class="eyebrow">Kênh chính</span>
+                    <h2 class="section-title">Thông tin liên hệ</h2>
+                    <div class="contact-details-panel">
+                        <a class="contact-item" href="mailto:vvthong.insec@gmail.com">
+                            <span class="contact-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                            <span class="contact-details">
+                                <span class="contact-label">Email</span>
+                                <span class="contact-value">vvthong.insec@gmail.com</span>
+                            </span>
+                        </a>
+                        <a class="contact-item" href="tel:+84968046024">
+                            <span class="contact-icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
+                            <span class="contact-details">
+                                <span class="contact-label">Điện thoại</span>
+                                <span class="contact-value">+84 968 046 024</span>
+                            </span>
+                        </a>
                         <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h4>Email</h4>
-                                <p>vvthong.insec@gmail.com</p>
-                            </div>
+                            <span class="contact-icon"><i class="fas fa-location-dot" aria-hidden="true"></i></span>
+                            <span class="contact-details">
+                                <span class="contact-label">Địa chỉ học tập</span>
+                                <span class="contact-value">Số 1, Võ Văn Ngân, Thủ Đức, TP.HCM</span>
+                            </span>
                         </div>
                         <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <h4>Điện thoại</h4>
-                                <p>0968046024</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <h4>Địa chỉ</h4>
-                                <p>Số 1 , Võ Văn Ngân , Thủ Đức , TP.HCM</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-clock"></i>
-                            <div>
-                                <h4>Thời gian làm việc</h4>
-                                <p>All time</p>
-                            </div>
+                            <span class="contact-icon"><i class="fas fa-clock" aria-hidden="true"></i></span>
+                            <span class="contact-details">
+                                <span class="contact-label">Phản hồi</span>
+                                <span class="contact-value">Ưu tiên email, sẵn sàng trao đổi lịch phỏng vấn phù hợp</span>
+                            </span>
                         </div>
                     </div>
-                    
-                    <div class="social-links">
-                        <h3>Theo dõi tôi</h3>
-                        <div class="social-grid">
-                            <a href="https://www.facebook.com/thong.vu.871003" target="_blank" class="social-link">
-                                <i class="fab fa-facebook"></i>
-                                <span>Facebook</span>
-                            </a>
-                            <a href="https://github.com/vanity1412" target="_blank" class="social-link">
-                                <i class="fab fa-github"></i>
-                                <span>GitHub</span>
-                            </a>
-                            <a href=" https://hackmd.io/@vinety" target="_blank" class="social-link">
-                                <i class="fas fa-book"></i>
-                                <span>HackMD</span>
-                            </a>
-                            <a href="https://www.linkedin.com/in/th%C3%B4ng-v%C5%A9-v%C4%83n-506966200/" target="_blank" class="social-link">
-                                <i class="fab fa-linkedin"></i>
-                                <span>LinkedIn</span>
-                            </a>
-                        </div>
+                    <div class="section-actions">
+                        <a href="../assets/CV_VuVanThong.pdf" class="btn btn-primary" target="_blank" rel="noopener">Xem CV PDF</a>
+                        <a href="https://github.com/vanity1412" class="btn btn-outline" target="_blank" rel="noopener">GitHub</a>
+                        <a href="https://hackmd.io/@vinety" class="btn btn-outline" target="_blank" rel="noopener">HackMD</a>
                     </div>
                 </div>
-                
+
                 <form class="contact-form" id="contact-form">
-                    <h3>Gửi tin nhắn</h3>
+                    <span class="eyebrow">Gửi nhanh</span>
+                    <h2 class="section-title">Mở email cho Thông</h2>
+                    <p class="section-lead">Điền vài dòng, trang sẽ mở ứng dụng email với nội dung đã chuẩn bị sẵn.</p>
                     <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Tên của bạn" required>
+                        <label for="name">Họ tên</label>
+                        <input type="text" id="name" name="name" placeholder="Tên của anh/chị" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Email của bạn" required>
+                        <label for="email">Email liên hệ</label>
+                        <input type="email" id="email" name="email" placeholder="email@company.com" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="subject" name="subject" placeholder="Chủ đề" required>
+                        <label for="subject">Tiêu đề</label>
+                        <input type="text" id="subject" name="subject" placeholder="Trao đổi vị trí Security Intern" required>
                     </div>
                     <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Tin nhắn của bạn" rows="5" required></textarea>
+                        <label for="message">Nội dung</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Nội dung cần trao đổi" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Gửi tin nhắn</button>
+                    <button type="submit" class="btn btn-primary">Mở email</button>
                 </form>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Methods -->
-    <section class="contact-methods">
-        <div class="container">
-            <h2 class="section-title">Cách thức liên hệ</h2>
-            <div class="methods-grid">
-                <div class="method-card">
-                    <div class="method-icon">
-                        <i class="fas fa-envelope"></i>
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Hồ sơ online</span>
+                        <h2 class="section-title">Kênh xem thêm quá trình học và dự án</h2>
                     </div>
-                    <h3>Email</h3>
-                    <p>Phản hồi trong vòng 24 giờ</p>
-                    <a href="mailto:vvthong.insec@gmail.com" class="method-link">vvthong.insec@gmail.com</a>
                 </div>
-                <div class="method-card">
-                    <div class="method-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <h3>Điện thoại</h3>
-                    <p>Liên hệ trực tiếp</p>
-                    <a href="tel:0968046024" class="method-link">0968046024</a>
-                </div>
-                <div class="method-card">
-                    <div class="method-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <h3>WhatsApp</h3>
-                    <p>Chat nhanh chóng</p>
-                    <a href="https://wa.me/84968046024" target="_blank" class="method-link">Chat ngay</a>
-                </div>
-                <div class="method-card">
-                    <div class="method-icon">
-                        <i class="fab fa-telegram"></i>
-                    </div>
-                    <h3>Telegram</h3>
-                    <p>Tin nhắn tức thì</p>
-                    <a href="https://t.me/vvthong" target="_blank" class="method-link">@vvthong</a>
+                <div class="methods-grid">
+                    <article class="method-card">
+                        <div class="method-icon"><i class="fab fa-github" aria-hidden="true"></i></div>
+                        <h3>GitHub</h3>
+                        <p>Mã nguồn, bài tập và các repo học tập.</p>
+                        <a href="https://github.com/vanity1412" class="method-link" target="_blank" rel="noopener">Mở GitHub</a>
+                    </article>
+                    <article class="method-card">
+                        <div class="method-icon"><i class="fas fa-book-open" aria-hidden="true"></i></div>
+                        <h3>HackMD</h3>
+                        <p>Ghi chú học tập, write-up và tóm tắt lab.</p>
+                        <a href="https://hackmd.io/@vinety" class="method-link" target="_blank" rel="noopener">Mở HackMD</a>
+                    </article>
+                    <article class="method-card">
+                        <div class="method-icon"><i class="fab fa-linkedin" aria-hidden="true"></i></div>
+                        <h3>LinkedIn</h3>
+                        <p>Kết nối nghề nghiệp và cập nhật hồ sơ.</p>
+                        <a href="https://www.linkedin.com/in/th%C3%B4ng-v%C5%A9-v%C4%83n-506966200/" class="method-link" target="_blank" rel="noopener">Mở LinkedIn</a>
+                    </article>
+                    <article class="method-card">
+                        <div class="method-icon"><i class="fab fa-facebook" aria-hidden="true"></i></div>
+                        <h3>Facebook</h3>
+                        <p>Kênh cá nhân dùng để kết nối nhanh.</p>
+                        <a href="https://www.facebook.com/thong.vu.871003" class="method-link" target="_blank" rel="noopener">Mở Facebook</a>
+                    </article>
+                    <article class="method-card">
+                        <div class="method-icon"><i class="fab fa-whatsapp" aria-hidden="true"></i></div>
+                        <h3>WhatsApp</h3>
+                        <p>Liên hệ nhanh qua số điện thoại cá nhân.</p>
+                        <a href="https://wa.me/84968046024" class="method-link" target="_blank" rel="noopener">Chat WhatsApp</a>
+                    </article>
+                    <article class="method-card">
+                        <div class="method-icon"><i class="fab fa-telegram" aria-hidden="true"></i></div>
+                        <h3>Telegram</h3>
+                        <p>Trao đổi nhanh khi cần gửi link hoặc tài liệu.</p>
+                        <a href="https://t.me/vvthong" class="method-link" target="_blank" rel="noopener">@vvthong</a>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- FAQ Section -->
-    <section class="faq">
-        <div class="container">
-            <h2 class="section-title">Câu hỏi thường gặp</h2>
-            <div class="faq-content">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Thời gian phản hồi dự án là bao lâu?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Tôi thường phản hồi trong vòng 24 giờ. Đối với các dự án phức tạp, tôi sẽ cần thời gian để đánh giá và đưa ra báo giá chi tiết.</p>
+        <section class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Vai trò phù hợp</span>
+                        <h2 class="section-title">Những vị trí tôi muốn bắt đầu</h2>
                     </div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Bạn có nhận dự án freelance không?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Có, tôi nhận các dự án freelance. Hãy liên hệ để thảo luận về yêu cầu và timeline của dự án.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Chi phí phát triển website như thế nào?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Chi phí phụ thuộc vào độ phức tạp của dự án. Tôi sẽ đưa ra báo giá chi tiết sau khi hiểu rõ yêu cầu của bạn.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Bạn có hỗ trợ bảo trì sau khi hoàn thành dự án không?</h3>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Có, tôi cung cấp dịch vụ bảo trì và hỗ trợ kỹ thuật sau khi dự án hoàn thành với các gói dịch vụ linh hoạt.</p>
-                    </div>
+                <div class="grid grid-3">
+                    <article class="card">
+                        <span class="card-icon"><i class="fas fa-headset" aria-hidden="true"></i></span>
+                        <h3>SOC Analyst Intern</h3>
+                        <p>Alert triage, log review, ghi chú sự kiện, hỗ trợ điều tra ban đầu và escalation.</p>
+                    </article>
+                    <article class="card">
+                        <span class="card-icon"><i class="fas fa-user-shield" aria-hidden="true"></i></span>
+                        <h3>Security Analyst Intern</h3>
+                        <p>Kiểm tra cấu hình, hỗ trợ kiểm thử, ghi nhận rủi ro và theo dõi khuyến nghị khắc phục.</p>
+                    </article>
+                    <article class="card">
+                        <span class="card-icon"><i class="fas fa-cloud" aria-hidden="true"></i></span>
+                        <h3>Cloud Security Intern</h3>
+                        <p>Học và hỗ trợ kiểm tra IAM, logging, network, storage policy và misconfiguration trên AWS.</p>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer Placeholder -->
     <div id="footer-placeholder"></div>
 
-    <!-- Audio Player -->
-    <div class="audio-player" id="audio-player">
-        <div class="audio-controls">
-            <button class="audio-toggle" id="audio-toggle">
-                <i class="fas fa-play" id="play-icon"></i>
-            </button>
-            <div class="audio-info">
-                <span class="song-title">MUSIC</span>
-                <span class="song-artist">PIANO</span>
-            </div>
-            <div class="audio-volume">
-                <i class="fas fa-volume-up"></i>
-                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
-            </div>
-        </div>
-        <audio id="background-music" loop>
-            <source src="../assets/Music/Beethoven3.mp3" type="audio/mpeg">
-            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Load Components Script -->
-    <script src="../assets/js/load-components.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/global-audio.js"></script>
-    <script src="../assets/js/audio-player.js"></script>
-    <script src="../assets/js/animations.js"></script>
-    <!-- New Features -->
-    <script src="../assets/js/dark-mode.js"></script>
-    <script src="../assets/js/i18n.js"></script>
-    <script src="../assets/js/performance-optimizer.js"></script>
+    <script src="../assets/js/load-components.js?v=20260523-toc-layout"></script>
+    <script src="../assets/js/script.js?v=20260523-toc-layout"></script>
+    <script src="../assets/js/dark-mode.js?v=20260523-toc-layout"></script>
 </body>
 </html>

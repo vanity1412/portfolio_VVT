@@ -1,459 +1,270 @@
-// Blog JavaScript Functionality
+(function () {
+    function qs(selector, root = document) {
+        return root.querySelector(selector);
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize blog functionality
-    initBlogFilters();
-    initNewsletterForm();
-    initShareButtons();
-    initSmoothScrolling();
-    initCodeHighlighting();
-    initChecklistInteractions();
-});
+    function qsa(selector, root = document) {
+        return Array.from(root.querySelectorAll(selector));
+    }
 
-// Blog Category Filtering
-function initBlogFilters() {
-    const categoryBtns = document.querySelectorAll('.filter-btn');
-    const postCards = document.querySelectorAll('.blog-post-card');
-    
-    if (categoryBtns.length === 0 || postCards.length === 0) return;
-    
-    categoryBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const category = this.getAttribute('data-category');
-            
-            // Update active button
-            categoryBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filter posts
-            postCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                
-                if (category === 'all' || cardCategory === category) {
-                    card.style.display = 'block';
-                    card.style.animation = 'fadeInUp 0.5s ease forwards';
-                } else {
-                    card.style.display = 'none';
+    function initBlogFilters() {
+        qsa(".blog-filters").forEach((group) => {
+            if (group.dataset.blogInitialized) return;
+            group.dataset.blogInitialized = "true";
+
+            const buttons = qsa(".filter-btn", group);
+            const cards = qsa(".blog-post-card");
+
+            buttons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    const category = button.dataset.category || "all";
+                    buttons.forEach((item) => item.classList.remove("active"));
+                    button.classList.add("active");
+
+                    cards.forEach((card) => {
+                        const visible = category === "all" || card.dataset.category === category;
+                        card.style.display = visible ? "" : "none";
+                    });
+                });
+            });
+        });
+    }
+
+    function slugify(text) {
+        return text
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/đ/g, "d")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+            .slice(0, 80) || "section";
+    }
+
+    function cleanDisplayText(text) {
+        return text
+            .replace(/\s*#$/g, "")
+            .replace(/^[^\p{L}\p{N}]+/u, "")
+            .trim();
+    }
+
+    function uniqueId(base) {
+        let id = base;
+        let index = 2;
+        while (document.getElementById(id)) {
+            id = `${base}-${index}`;
+            index += 1;
+        }
+        return id;
+    }
+
+    function wrapWideContent(content) {
+        qsa("pre", content).forEach((pre) => {
+            if (pre.parentElement && pre.parentElement.classList.contains("code-scroll")) return;
+            const wrapper = document.createElement("div");
+            wrapper.className = "code-scroll";
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+        });
+
+        qsa("table", content).forEach((table) => {
+            if (table.parentElement && table.parentElement.classList.contains("table-scroll")) return;
+            const wrapper = document.createElement("div");
+            wrapper.className = "table-scroll";
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+    }
+
+    function createArticleTools(content, headings) {
+        if (qs(".article-tools")) return;
+
+        const tools = document.createElement("div");
+        tools.className = "article-tools";
+        tools.setAttribute("aria-label", "Công cụ đọc bài");
+
+        if (headings.length >= 3) {
+            const toc = document.createElement("nav");
+            toc.className = "article-toc";
+            toc.setAttribute("aria-label", "Mục lục bài viết");
+
+            const title = document.createElement("div");
+            title.className = "article-toc-title";
+            title.textContent = "Mục lục";
+
+            const list = document.createElement("ol");
+            list.className = "article-toc-list";
+
+            headings.forEach((heading) => {
+                const item = document.createElement("li");
+                item.className = `toc-level-${heading.tagName === "H3" ? "3" : "2"}`;
+                const link = document.createElement("a");
+                link.href = `#${heading.id}`;
+                link.textContent = heading.dataset.tocTitle || cleanDisplayText(heading.innerText);
+                link.addEventListener("click", () => {
+                    qsa(".article-toc a").forEach((itemLink) => itemLink.classList.remove("active"));
+                    link.classList.add("active");
+                });
+                item.appendChild(link);
+                list.appendChild(item);
+            });
+
+            toc.append(title, list);
+            tools.appendChild(toc);
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "article-actions";
+
+        const copy = document.createElement("button");
+        copy.className = "article-action-btn";
+        copy.type = "button";
+        copy.innerHTML = '<i class="fas fa-link" aria-hidden="true"></i><span>Sao chép link</span>';
+        copy.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(window.location.href.split("#")[0]);
+                copy.classList.add("copied");
+                copy.querySelector("span").textContent = "Đã sao chép";
+                window.setTimeout(() => {
+                    copy.classList.remove("copied");
+                    copy.querySelector("span").textContent = "Sao chép link";
+                }, 1800);
+            } catch (error) {
+                copy.querySelector("span").textContent = "Copy không thành công";
+            }
+        });
+
+        const top = document.createElement("button");
+        top.className = "article-action-btn";
+        top.type = "button";
+        top.innerHTML = '<i class="fas fa-arrow-up" aria-hidden="true"></i><span>Lên đầu</span>';
+        top.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+        actions.append(copy, top);
+        tools.appendChild(actions);
+        content.parentElement.insertBefore(tools, content);
+    }
+
+    function initTocHighlight(headings) {
+        const links = qsa(".article-toc a");
+        if (!headings.length || !links.length) return;
+
+        const linkById = new Map(
+            links.map((link) => [decodeURIComponent(link.hash.replace("#", "")), link])
+        );
+
+        let ticking = false;
+        const setActive = (id) => {
+            links.forEach((link) => link.classList.toggle("active", linkById.get(id) === link));
+        };
+
+        const update = () => {
+            const headerHeight = Number.parseFloat(
+                getComputedStyle(document.documentElement).getPropertyValue("--header-height")
+            ) || 72;
+            const triggerLine = headerHeight + 90;
+            let current = headings[0].id;
+
+            headings.forEach((heading) => {
+                if (heading.getBoundingClientRect().top <= triggerLine) {
+                    current = heading.id;
                 }
             });
-            
-            // Update URL without page reload
-            const url = new URL(window.location);
-            if (category === 'all') {
-                url.searchParams.delete('category');
-            } else {
-                url.searchParams.set('category', category);
-            }
-            window.history.pushState({}, '', url);
+
+            setActive(current);
+            ticking = false;
+        };
+
+        const schedule = () => {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(update);
+        };
+
+        update();
+        window.addEventListener("scroll", schedule, { passive: true });
+        window.addEventListener("resize", schedule);
+    }
+
+    function initHeadingAnchors(content) {
+        const headings = qsa("h2, h3", content).filter((heading) => heading.innerText.trim());
+        headings.forEach((heading) => {
+            heading.dataset.tocTitle = cleanDisplayText(heading.innerText);
+            if (!heading.id) heading.id = uniqueId(slugify(heading.innerText));
+            if (qs(".heading-anchor", heading)) return;
+
+            const anchor = document.createElement("a");
+            anchor.className = "heading-anchor";
+            anchor.href = `#${heading.id}`;
+            anchor.setAttribute("aria-label", "Liên kết tới mục này");
+            anchor.textContent = "#";
+            heading.appendChild(anchor);
         });
-    });
-    
-    // Check for category in URL on page load
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryParam = urlParams.get('category');
-    if (categoryParam) {
-        const targetBtn = document.querySelector(`[data-category="${categoryParam}"]`);
-        if (targetBtn) {
-            targetBtn.click();
-        }
+
+        return headings;
     }
-}
 
-// Newsletter Form
-function initNewsletterForm() {
-    const newsletterForm = document.querySelector('.newsletter-form');
-    if (!newsletterForm) return;
-    
-    newsletterForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = this.querySelector('input[type="email"]').value;
-        const submitBtn = this.querySelector('button[type="submit"]');
-        
-        if (!email) {
-            showNotification('Vui lòng nhập email của bạn!', 'error');
-            return;
+    function initReadingProgress(content) {
+        if (qs(".reading-progress")) return;
+
+        const progress = document.createElement("div");
+        progress.className = "reading-progress";
+        progress.setAttribute("aria-hidden", "true");
+        progress.innerHTML = '<span class="reading-progress-bar"></span>';
+        document.body.appendChild(progress);
+
+        const bar = qs(".reading-progress-bar", progress);
+        const update = () => {
+            const rect = content.getBoundingClientRect();
+            const total = content.offsetHeight - window.innerHeight;
+            const read = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+            const percent = total <= 0 ? 100 : (read / total) * 100;
+            bar.style.width = `${Math.min(Math.max(percent, 0), 100)}%`;
+        };
+
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update);
+    }
+
+    function initArticleEnhancements() {
+        const content = qs(".blog-post > .container > .post-content");
+        if (!content || content.dataset.articleEnhanced) return;
+        content.dataset.articleEnhanced = "true";
+
+        const postTitle = qs(".post-header .post-title");
+        if (postTitle && !postTitle.dataset.cleanedTitle) {
+            postTitle.dataset.cleanedTitle = "true";
+            postTitle.textContent = cleanDisplayText(postTitle.textContent);
         }
-        
-        // Simulate form submission
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang đăng ký...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            showNotification('Cảm ơn bạn đã đăng ký nhận tin!', 'success');
-            this.reset();
-            submitBtn.innerHTML = 'Đăng ký';
-            submitBtn.disabled = false;
-        }, 2000);
-    });
-}
 
-// Share Buttons
-function initShareButtons() {
-    const shareBtns = document.querySelectorAll('.share-btn');
-    
-    shareBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const url = window.location.href;
-            const title = document.title;
-            const text = document.querySelector('.post-excerpt')?.textContent || '';
-            
-            if (this.classList.contains('facebook')) {
-                shareToFacebook(url, title);
-            } else if (this.classList.contains('twitter')) {
-                shareToTwitter(url, title);
-            } else if (this.classList.contains('linkedin')) {
-                shareToLinkedIn(url, title);
-            } else if (this.classList.contains('copy')) {
-                copyToClipboard(url);
-            }
+        wrapWideContent(content);
+        const headings = initHeadingAnchors(content);
+        createArticleTools(content, headings);
+        initTocHighlight(headings);
+        initReadingProgress(content);
+
+        qsa(".share-btn.copy").forEach((button) => {
+            if (button.dataset.copyInitialized) return;
+            button.dataset.copyInitialized = "true";
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                try {
+                    await navigator.clipboard.writeText(window.location.href.split("#")[0]);
+                    button.classList.add("copied");
+                    window.setTimeout(() => button.classList.remove("copied"), 1400);
+                } catch (error) {
+                    button.setAttribute("title", "Không thể sao chép link");
+                }
+            });
         });
-    });
-}
-
-// Share Functions
-function shareToFacebook(url, title) {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-    openShareWindow(facebookUrl, 'Facebook Share');
-}
-
-function shareToTwitter(url, title) {
-    const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
-    openShareWindow(twitterUrl, 'Twitter Share');
-}
-
-function shareToLinkedIn(url, title) {
-    const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-    openShareWindow(linkedinUrl, 'LinkedIn Share');
-}
-
-function copyToClipboard(text) {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-            showNotification('Đã sao chép link vào clipboard!', 'success');
-        }).catch(() => {
-            fallbackCopyToClipboard(text);
-        });
-    } else {
-        fallbackCopyToClipboard(text);
     }
-}
 
-function fallbackCopyToClipboard(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        document.execCommand('copy');
-        showNotification('Đã sao chép link vào clipboard!', 'success');
-    } catch (err) {
-        showNotification('Không thể sao chép link!', 'error');
+    function init() {
+        initBlogFilters();
+        initArticleEnhancements();
     }
-    
-    document.body.removeChild(textArea);
-}
 
-function openShareWindow(url, title) {
-    const width = 600;
-    const height = 400;
-    const left = (screen.width - width) / 2;
-    const top = (screen.height - height) / 2;
-    
-    window.open(url, title, `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`);
-}
-
-// Smooth Scrolling for anchor links
-function initSmoothScrolling() {
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    
-    anchorLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-            
-            if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-}
-
-// Code Highlighting
-function initCodeHighlighting() {
-    // Add copy button to code blocks
-    const codeBlocks = document.querySelectorAll('pre code');
-    
-    codeBlocks.forEach(block => {
-        const pre = block.parentElement;
-        if (pre.tagName === 'PRE') {
-            addCopyButton(pre, block.textContent);
-        }
-    });
-}
-
-function addCopyButton(pre, code) {
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'copy-code-btn';
-    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-    copyBtn.title = 'Sao chép code';
-    
-    copyBtn.addEventListener('click', function() {
-        copyToClipboard(code);
-        this.innerHTML = '<i class="fas fa-check"></i>';
-        this.style.background = '#28a745';
-        
-        setTimeout(() => {
-            this.innerHTML = '<i class="fas fa-copy"></i>';
-            this.style.background = '';
-        }, 2000);
-    });
-    
-    pre.style.position = 'relative';
-    pre.appendChild(copyBtn);
-}
-
-// Checklist Interactions
-function initChecklistInteractions() {
-    const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
-    
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const label = this.nextElementSibling;
-            if (this.checked) {
-                label.style.textDecoration = 'line-through';
-                label.style.opacity = '0.7';
-            } else {
-                label.style.textDecoration = 'none';
-                label.style.opacity = '1';
-            }
-        });
-    });
-}
-
-// Notification System
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
-    
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-        <div class="notification-content">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-            <span>${message}</span>
-            <button class="notification-close">&times;</button>
-        </div>
-    `;
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 10000;
-        max-width: 400px;
-        animation: slideInRight 0.3s ease;
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }
-    }, 5000);
-    
-    // Close button
-    notification.querySelector('.notification-close').addEventListener('click', () => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    });
-}
-
-// Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-    
-    .copy-code-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
-    }
-    
-    .copy-code-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: scale(1.05);
-    }
-    
-    .notification-content {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .notification-close {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        margin-left: auto;
-        padding: 0;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .notification-close:hover {
-        opacity: 0.8;
-    }
-`;
-document.head.appendChild(style);
-
-// Reading Progress Bar
-function initReadingProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'reading-progress';
-    progressBar.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 3px;
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        z-index: 1000;
-        transition: width 0.3s ease;
-    `;
-    document.body.appendChild(progressBar);
-    
-    window.addEventListener('scroll', () => {
-        const article = document.querySelector('.blog-post');
-        if (!article) return;
-        
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset;
-        
-        const progress = Math.min(
-            Math.max((scrollTop - articleTop + windowHeight) / articleHeight, 0),
-            1
-        );
-        
-        progressBar.style.width = `${progress * 100}%`;
-    });
-}
-
-// Initialize reading progress on blog post pages
-if (document.querySelector('.blog-post')) {
-    initReadingProgress();
-}
-
-// Lazy loading for images
-function initLazyLoading() {
-    const images = document.querySelectorAll('img[data-src]');
-    
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                observer.unobserve(img);
-            }
-        });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-}
-
-// Initialize lazy loading
-initLazyLoading();
-
-// Search functionality (if search input exists)
-function initSearch() {
-    const searchInput = document.querySelector('.blog-search input');
-    if (!searchInput) return;
-    
-    searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        const posts = document.querySelectorAll('.blog-post-card');
-        
-        posts.forEach(post => {
-            const title = post.querySelector('.post-title').textContent.toLowerCase();
-            const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
-            
-            if (title.includes(query) || excerpt.includes(query)) {
-                post.style.display = 'block';
-            } else {
-                post.style.display = 'none';
-            }
-        });
-    });
-}
-
-// Initialize search
-initSearch();
+    document.addEventListener("DOMContentLoaded", init);
+    window.addEventListener("components:loaded", init);
+})();

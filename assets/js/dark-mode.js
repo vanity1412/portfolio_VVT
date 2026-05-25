@@ -1,83 +1,39 @@
-// ============================================
-// Dark Mode Toggle
-// ============================================
+(function () {
+    const storageKey = "portfolio-theme";
 
-class DarkMode {
-    constructor() {
-        this.isDark = localStorage.getItem('darkMode') === 'true' || 
-                     (localStorage.getItem('darkMode') === null && 
-                      window.matchMedia('(prefers-color-scheme: dark)').matches);
-        this.init();
+    function prefersDark() {
+        return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
 
-    init() {
-        // Apply dark mode immediately to prevent flash
-        if (this.isDark) {
-            document.documentElement.classList.add('dark-mode');
-        }
+    function currentTheme() {
+        return localStorage.getItem(storageKey) || (prefersDark() ? "dark" : "light");
+    }
 
-        // Initialize toggle button
-        this.setupToggle();
-        
-        // Listen for system preference changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (localStorage.getItem('darkMode') === null) {
-                this.isDark = e.matches;
-                this.toggle();
-            }
+    function applyTheme(theme) {
+        const isDark = theme === "dark";
+        document.documentElement.classList.toggle("dark-mode", isDark);
+        document.documentElement.dataset.theme = theme;
+
+        const icon = document.getElementById("theme-icon");
+        if (icon) {
+            icon.classList.toggle("fa-moon", !isDark);
+            icon.classList.toggle("fa-sun", isDark);
+        }
+    }
+
+    function setupToggle() {
+        const button = document.getElementById("theme-toggle");
+        if (!button || button.dataset.initialized) return;
+        button.dataset.initialized = "true";
+
+        button.addEventListener("click", () => {
+            const nextTheme = document.documentElement.classList.contains("dark-mode") ? "light" : "dark";
+            localStorage.setItem(storageKey, nextTheme);
+            applyTheme(nextTheme);
         });
     }
 
-    setupToggle() {
-        const toggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        
-        if (!toggleBtn) return;
-
-        // Update icon based on current state
-        this.updateIcon(themeIcon);
-
-        toggleBtn.addEventListener('click', () => {
-            this.toggle();
-        });
-    }
-
-    toggle() {
-        this.isDark = !this.isDark;
-        document.documentElement.classList.toggle('dark-mode', this.isDark);
-        localStorage.setItem('darkMode', this.isDark);
-        
-        const themeIcon = document.getElementById('theme-icon');
-        if (themeIcon) {
-            this.updateIcon(themeIcon);
-        }
-
-        // Dispatch custom event for other scripts
-        window.dispatchEvent(new CustomEvent('themeChanged', { 
-            detail: { isDark: this.isDark } 
-        }));
-    }
-
-    updateIcon(icon) {
-        if (!icon) return;
-        
-        if (this.isDark) {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-        } else {
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-        }
-    }
-
-    getTheme() {
-        return this.isDark ? 'dark' : 'light';
-    }
-}
-
-// Initialize dark mode
-const darkMode = new DarkMode();
-
-// Export for use in other scripts
-window.darkMode = darkMode;
-
+    applyTheme(currentTheme());
+    document.addEventListener("DOMContentLoaded", setupToggle);
+    window.addEventListener("components:loaded", setupToggle);
+})();

@@ -1,366 +1,325 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kỹ năng - Vũ Văn Thông</title>
-    <meta name="description" content="Kỹ năng và chuyên môn của Vũ Văn Thông - Frontend Developer">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
-    
-    <!-- Google Fonts -->
+    <meta name="description" content="Kỹ năng bảo mật, công cụ, lập trình, chứng chỉ và thành tích của Vũ Văn Thông.">
+    <meta name="theme-color" content="#0f766e">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=20260523-toc-layout">
 </head>
 <body>
-    <!-- Sidebar Placeholder -->
+    <a class="skip-link" href="#main-content">Bỏ qua điều hướng</a>
     <div id="sidebar-placeholder"></div>
-    
-    <!-- Mobile Sidebar Toggle -->
-    <button class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Mở thông tin nhanh">
+        <i class="fas fa-bars" aria-hidden="true"></i>
     </button>
-    
-    <!-- Header Placeholder -->
     <div id="header-placeholder"></div>
 
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>Kỹ năng & Chuyên môn</h1>
-            <p>Những công nghệ và kỹ năng tôi thành thạo</p>
-        </div>
-    </section>
+    <main id="main-content">
+        <section class="page-header">
+            <div class="container">
+                <span class="eyebrow">Kỹ năng</span>
+                <h1 class="page-title">Bộ kỹ năng tôi xây để bắt đầu tốt trong SOC và Security Analyst</h1>
+                <p class="page-subtitle">
+                    Tôi không chỉ liệt kê công cụ. Tôi ưu tiên năng lực có thể dùng trong công việc: đọc log,
+                    phân tích traffic, kiểm thử ứng dụng, hiểu cloud, viết script hỗ trợ và trình bày kết quả rõ ràng.
+                </p>
+            </div>
+        </section>
 
-    <!-- Skills Section -->
-    <section class="skills" id="skills">
-        <div class="container">
-            <div class="skills-content">
-                <div class="skills-category">
-                    <h3>An toàn thông tin</h3>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-shield-alt"></i> Network Security</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-bug"></i> Penetration Testing</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="80"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-search"></i> Malware Analysis</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-lock"></i> Cryptography</span>
-                            <span>70%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="70"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-eye"></i> Digital Forensics</span>
-                            <span>65%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="65"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-search-plus"></i> Threat Intelligence</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
-                    </div>
+        <section class="section">
+            <div class="container skills-content">
+                <div>
+                    <span class="eyebrow">Core Security</span>
+                    <h2 class="section-title">An toàn thông tin</h2>
+                    <p class="section-lead">
+                        Các nhóm kỹ năng cốt lõi được tôi rèn qua môn học, CTF, lab cá nhân và blog ghi chú.
+                        Mức phần trăm dùng để thể hiện trọng tâm học tập, không phải cam kết “thành thạo tuyệt đối”.
+                    </p>
                 </div>
-                
-                <div class="skills-category">
-                    <h3>Tools & Technologies</h3>
+
+                <div class="skill-list">
                     <div class="skill-item">
                         <div class="skill-info">
-                            <span><i class="fas fa-network-wired"></i> Wireshark</span>
-                            <span>85%</span>
+                            <span><i class="fas fa-shield-alt" aria-hidden="true"></i> Network Security</span>
+                            <span class="skill-level">85%</span>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85"></div>
-                        </div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
-                            <span><i class="fas fa-crosshairs"></i> Metasploit</span>
-                            <span>80%</span>
+                            <span><i class="fas fa-bug" aria-hidden="true"></i> Penetration Testing</span>
+                            <span class="skill-level">80%</span>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="80"></div>
-                        </div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
-                            <span><i class="fas fa-search"></i> Nmap</span>
-                            <span>85%</span>
+                            <span><i class="fas fa-search" aria-hidden="true"></i> Malware Analysis</span>
+                            <span class="skill-level">75%</span>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85"></div>
-                        </div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
-                            <span><i class="fas fa-shield-virus"></i> Burp Suite</span>
-                            <span>75%</span>
+                            <span><i class="fas fa-lock" aria-hidden="true"></i> Cryptography</span>
+                            <span class="skill-level">70%</span>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="skills-category">
-                    <h3>Programming & Others</h3>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="80"></div>
-                        </div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
-                            <span><i class="fas fa-terminal"></i> Linux</span>
-                            <span>85%</span>
+                            <span><i class="fas fa-eye" aria-hidden="true"></i> Digital Forensics</span>
+                            <span class="skill-level">65%</span>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85"></div>
-                        </div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="65"></div></div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
-                            <span><i class="fas fa-code"></i> C/C++</span>
-                            <span>70%</span>
+                            <span><i class="fas fa-search-plus" aria-hidden="true"></i> Threat Intelligence</span>
+                            <span class="skill-level">75%</span>
                         </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="70"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span><i class="fas fa-database"></i> SQL</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Soft Skills Section -->
-    <section class="soft-skills">
-        <div class="container">
-            <h2 class="section-title">Kỹ năng mềm</h2>
-            <div class="soft-skills-grid">
-                <div class="soft-skill-item">
-                    <i class="fas fa-users"></i>
-                    <h3>Làm việc nhóm</h3>
-                    <p>Khả năng hợp tác hiệu quả trong team, chia sẻ kiến thức và hỗ trợ đồng nghiệp</p>
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Tools & Technologies</span>
+                        <h2 class="section-title">Công cụ bảo mật tôi dùng trong lab</h2>
+                    </div>
                 </div>
-                <div class="soft-skill-item">
-                    <i class="fas fa-lightbulb"></i>
-                    <h3>Tư duy sáng tạo</h3>
-                    <p>Luôn tìm kiếm giải pháp mới và cải tiến để tạo ra sản phẩm tốt nhất</p>
-                </div>
-                <div class="soft-skill-item">
-                    <i class="fas fa-clock"></i>
-                    <h3>Quản lý thời gian</h3>
-                    <p>Lập kế hoạch và thực hiện dự án đúng tiến độ, ưu tiên công việc hiệu quả</p>
-                </div>
-                <div class="soft-skill-item">
-                    <i class="fas fa-comments"></i>
-                    <h3>Giao tiếp</h3>
-                    <p>Khả năng trình bày ý tưởng rõ ràng và lắng nghe phản hồi từ khách hàng</p>
-                </div>
-                <div class="soft-skill-item">
-                    <i class="fas fa-graduation-cap"></i>
-                    <h3>Học hỏi liên tục</h3>
-                    <p>Luôn cập nhật kiến thức mới và thích ứng với công nghệ thay đổi</p>
-                </div>
-                <div class="soft-skill-item">
-                    <i class="fas fa-tasks"></i>
-                    <h3>Giải quyết vấn đề</h3>
-                    <p>Phân tích và tìm ra giải pháp hiệu quả cho các thách thức kỹ thuật</p>
+                <div class="grid grid-4">
+                    <article class="skill-card">
+                        <i class="fas fa-network-wired" aria-hidden="true"></i>
+                        <h3>Wireshark</h3>
+                        <p>Đọc packet, quan sát luồng kết nối và kiểm tra dấu hiệu bất thường trên network.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+                    </article>
+                    <article class="skill-card">
+                        <i class="fas fa-crosshairs" aria-hidden="true"></i>
+                        <h3>Metasploit</h3>
+                        <p>Thực hành trong lab để hiểu exploit flow, điều kiện khai thác và góc nhìn phòng thủ.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                    </article>
+                    <article class="skill-card">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <h3>Nmap</h3>
+                        <p>Quét host, port, service, version và ghi nhận bề mặt tấn công ban đầu.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+                    </article>
+                    <article class="skill-card">
+                        <i class="fas fa-shield-virus" aria-hidden="true"></i>
+                        <h3>Burp Suite</h3>
+                        <p>Kiểm thử request/response, authentication, input validation và OWASP Top 10 cơ bản.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Certifications Section -->
-    <section class="certifications">
-        <div class="container">
-            <h2 class="section-title">Chứng chỉ & Bằng cấp</h2>
-            <div class="certifications-grid">
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Cử nhân An toàn thông tin</h3>
-                        <p>Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh</p>
-                        <span class="cert-date">2022 - 2026 (Dự kiến)</span>
-                        <p class="cert-desc">Chuyên ngành: An toàn thông tin và Bảo mật mạng</p>
+        <section class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Programming & Others</span>
+                        <h2 class="section-title">Lập trình và nền tảng hỗ trợ phân tích</h2>
                     </div>
                 </div>
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Chứng chỉ CAPT (Certified Advanced Penetration Tester)</h3>
-                        <p>EC-Council</p>
-                        <span class="cert-date">2024</span>
-                        <p class="cert-desc">Advanced Penetration Testing, Advanced Ethical Hacking Techniques</p>
-                        <div class="certificate-image">
-                            <img src="../assets/img/Cert_CAPT.png" alt="Chứng chỉ CAPT" class="cert-img">
-                        </div>
-                    </div>
-                </div>
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Chứng chỉ MOS (Microsoft Office Specialist)</h3>
-                        <p>Microsoft</p>
-                        <span class="cert-date">2023</span>
-                        <p class="cert-desc">Word, Excel, PowerPoint - Chứng nhận kỹ năng sử dụng Microsoft Office</p>
-                        <div class="certificate-image">
-                            <img src="../assets/img/Cert_MOS.png" alt="Chứng chỉ MOS" class="cert-img">
-                        </div>
-                    </div>
-                </div>
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Olympic Toán Sinh viên</h3>
-                        <p>Bộ Giáo dục và Đào tạo</p>
-                        <span class="cert-date">2023</span>
-                        <p class="cert-desc">Tham gia kỳ thi Olympic Toán học Sinh viên toàn quốc</p>
-                        <div class="certificate-image">
-                            <img src="../assets/img/Olympic_Toán_SV.png" alt="Chứng nhận Olympic Toán Sinh viên" class="cert-img">
-                            <img src="../assets/img/Olympic_Toán_SV1.png" alt="Chứng nhận Olympic Toán Sinh viên" class="cert-img">
-                        </div>
-                    </div>
-                </div>
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Giải Nhì CTF An toàn thông tin</h3>
-                        <p>Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh</p>
-                        <span class="cert-date">2024</span>
-                        <p class="cert-desc">Cuộc thi CTF (Capture The Flag) cấp trường - Chuyên ngành An toàn thông tin</p>
-                        <div class="certificate-image">
-                            <img src="../assets/img/GiaiNhiCTF2024.png" alt="Giải Nhì CTF 2024" class="cert-img">
-                        </div>
-                    </div>
-                </div>
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-award"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Giải Khuyến khích CTF An toàn thông tin</h3>
-                        <p>Đại học Sư Phạm Kĩ Thuật Hồ Chí Minh</p>
-                        <span class="cert-date">2025</span>
-                        <p class="cert-desc">Cuộc thi CTF (Capture The Flag) cấp trường - Chuyên ngành An toàn thông tin</p>
-                        <div class="certificate-image">
-                            <img src="../assets/img/GiaiKKCTF2025.png" alt="Giải Khuyến khích CTF 2025" class="cert-img">
-                        </div>
-                    </div>
-                </div>
-                <div class="certification-item">
-                    <div class="cert-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                    <div class="cert-content">
-                        <h3>Certified Threat Intelligence & Governance Analyst (CTIGA)</h3>
-                        <p>Cybersecurity Certification Authority</p>
-                        <span class="cert-date">2025</span>
-                        <p class="cert-desc">Chuyên gia phân tích tình báo mối đe dọa và quản trị an ninh mạng</p>
-                        <div class="certificate-image">
-                            <img src="../assets/img/CTI&GA.png" alt="Chứng chỉ CTIGA" class="cert-img">
-                        </div>
-                    </div>
+                <div class="grid grid-4">
+                    <article class="skill-card">
+                        <i class="fab fa-python" aria-hidden="true"></i>
+                        <h3>Python</h3>
+                        <p>Viết script xử lý file, parse log, tự động hóa thao tác nhỏ và luyện tư duy giải quyết vấn đề.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="80"></div></div>
+                    </article>
+                    <article class="skill-card">
+                        <i class="fas fa-terminal" aria-hidden="true"></i>
+                        <h3>Linux</h3>
+                        <p>Làm việc với terminal, quyền file, service, log hệ thống và môi trường lab bảo mật.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="85"></div></div>
+                    </article>
+                    <article class="skill-card">
+                        <i class="fas fa-code" aria-hidden="true"></i>
+                        <h3>C/C++</h3>
+                        <p>Nền tảng lập trình hệ thống, cấu trúc dữ liệu và tư duy memory khi học bảo mật.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="70"></div></div>
+                    </article>
+                    <article class="skill-card">
+                        <i class="fas fa-database" aria-hidden="true"></i>
+                        <h3>SQL</h3>
+                        <p>Truy vấn dữ liệu, hiểu database cơ bản và nhận diện rủi ro injection trong web security.</p>
+                        <div class="skill-bar"><div class="skill-progress" data-width="75"></div></div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer Placeholder -->
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Kỹ năng mềm</span>
+                        <h2 class="section-title">Cách tôi làm việc trong nhóm</h2>
+                    </div>
+                </div>
+                <div class="soft-skills-grid">
+                    <article class="soft-skill-item">
+                        <i class="fas fa-users" aria-hidden="true"></i>
+                        <h3>Làm việc nhóm</h3>
+                        <p>Biết chia sẻ tiến độ, hỏi đúng lúc và hỗ trợ người khác khi cùng xử lý bài hoặc dự án.</p>
+                    </article>
+                    <article class="soft-skill-item">
+                        <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                        <h3>Tư duy sáng tạo</h3>
+                        <p>Thử nhiều hướng tiếp cận, nhưng luôn kiểm chứng lại bằng dữ liệu thay vì suy đoán.</p>
+                    </article>
+                    <article class="soft-skill-item">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        <h3>Quản lý thời gian</h3>
+                        <p>Chia việc thành từng bước nhỏ, ưu tiên việc có tác động rõ và ghi lại những việc đã làm.</p>
+                    </article>
+                    <article class="soft-skill-item">
+                        <i class="fas fa-comments" aria-hidden="true"></i>
+                        <h3>Giao tiếp</h3>
+                        <p>Trình bày phát hiện theo bối cảnh, bằng chứng, mức độ ảnh hưởng và hướng xử lý.</p>
+                    </article>
+                    <article class="soft-skill-item">
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                        <h3>Học hỏi liên tục</h3>
+                        <p>Chủ động đọc tài liệu, thử lab, viết lại bài học và cập nhật thêm cloud/security tooling.</p>
+                    </article>
+                    <article class="soft-skill-item">
+                        <i class="fas fa-tasks" aria-hidden="true"></i>
+                        <h3>Giải quyết vấn đề</h3>
+                        <p>Tách vấn đề phức tạp thành giả thuyết nhỏ, kiểm tra lần lượt và rút ra kết luận rõ.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="certifications">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Chứng chỉ & bằng cấp</span>
+                        <h2 class="section-title">Những dấu mốc học tập và thi đấu</h2>
+                    </div>
+                </div>
+                <div class="certifications-grid">
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>Cử nhân An toàn thông tin</h3>
+                            <p>Đại học Sư phạm Kỹ thuật TP.HCM. Chuyên ngành: An toàn thông tin và Bảo mật mạng.</p>
+                            <span class="cert-date">2022 - 2026 (dự kiến)</span>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-certificate" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>CAPT - Certified Advanced Penetration Tester</h3>
+                            <p>EC-Council. Nội dung tập trung vào Advanced Penetration Testing và Ethical Hacking Techniques.</p>
+                            <span class="cert-date">2024</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/Cert_CAPT.png" alt="Chứng chỉ CAPT" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-file-word" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>MOS - Microsoft Office Specialist</h3>
+                            <p>Microsoft. Chứng nhận kỹ năng sử dụng Word, Excel và PowerPoint phục vụ học tập, báo cáo và trình bày.</p>
+                            <span class="cert-date">2023</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/Cert_MOS.png" alt="Chứng chỉ MOS" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-square-root-variable" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>Olympic Toán Sinh viên</h3>
+                            <p>Bộ Giáo dục và Đào tạo. Một dấu mốc giúp tôi rèn tư duy logic, kiên trì và phân tích bài toán.</p>
+                            <span class="cert-date">2023</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/Olympic_Toán_SV.png" alt="Olympic Toán Sinh viên" class="cert-img">
+                                <img src="../assets/img/Olympic_Toán_SV1.png" alt="Olympic Toán Sinh viên bổ sung" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-medal" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>Giải Nhì CTF An toàn thông tin</h3>
+                            <p>Đại học Sư phạm Kỹ thuật TP.HCM. Cuộc thi CTF cấp trường, chuyên ngành An toàn thông tin.</p>
+                            <span class="cert-date">2024</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/GiaiNhiCTF2024.png" alt="Giải Nhì CTF 2024" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-award" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>Giải Khuyến khích CTF An toàn thông tin</h3>
+                            <p>Đại học Sư phạm Kỹ thuật TP.HCM. Tiếp tục tham gia thi để giữ nhịp học và luyện xử lý bài thực chiến.</p>
+                            <span class="cert-date">2025</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/GiaiKKCTF2025.png" alt="Giải Khuyến khích CTF 2025" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-user-secret" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>Certified Threat Intelligence & Governance Analyst</h3>
+                            <p>Cybersecurity Certification Authority. Bổ sung nền tảng threat intelligence và governance cho góc nhìn phòng thủ.</p>
+                            <span class="cert-date">2025</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/CTI%26GA.png" alt="Chứng chỉ CTIGA" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="certification-item">
+                        <div class="cert-icon"><i class="fas fa-cloud" aria-hidden="true"></i></div>
+                        <div class="cert-content">
+                            <h3>AWS Security Learning Modules</h3>
+                            <p>Các ghi chú và chứng nhận học tập xoay quanh AWS Security, Network, Database, Storage và Incident Response.</p>
+                            <span class="cert-date">2025</span>
+                            <div class="certificate-image">
+                                <img src="../assets/img/Cert_AWS_Security.png" alt="AWS Security certificate" class="cert-img">
+                                <img src="../assets/img/Cert_AWS_Network.png" alt="AWS Network certificate" class="cert-img">
+                                <img src="../assets/img/Cert_AWS_DB.png" alt="AWS Database certificate" class="cert-img">
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <div id="footer-placeholder"></div>
 
-    <!-- Audio Player -->
-    <div class="audio-player" id="audio-player">
-        <div class="audio-controls">
-            <button class="audio-toggle" id="audio-toggle">
-                <i class="fas fa-play" id="play-icon"></i>
-            </button>
-            <div class="audio-info">
-                <span class="song-title">MUSIC</span>
-                <span class="song-artist">PIANO</span>
-            </div>
-            <div class="audio-volume">
-                <i class="fas fa-volume-up"></i>
-                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
-            </div>
-        </div>
-        <audio id="background-music" loop>
-            <source src="../assets/Music/Beethoven1.mp3" type="audio/mpeg">
-            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Load Components Script -->
-    <script src="../assets/js/load-components.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/global-audio.js"></script>
-    <script src="../assets/js/audio-player.js"></script>
-    <script src="../assets/js/animations.js"></script>
-    <!-- New Features -->
-    <script src="../assets/js/dark-mode.js"></script>
-    <script src="../assets/js/i18n.js"></script>
-    <script src="../assets/js/performance-optimizer.js"></script>
+    <script src="../assets/js/load-components.js?v=20260523-toc-layout"></script>
+    <script src="../assets/js/script.js?v=20260523-toc-layout"></script>
+    <script src="../assets/js/dark-mode.js?v=20260523-toc-layout"></script>
 </body>
 </html>

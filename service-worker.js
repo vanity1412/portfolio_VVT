@@ -1,8 +1,11 @@
-// ============================================
+﻿// ============================================
 // Service Worker for PWA
 // ============================================
 
-const CACHE_NAME = 'portfolio-vvtr-v1';
+const CACHE_NAME = 'portfolio-vvt-toc-layout-v4';
+const ASSET_VERSION = '20260523-toc-layout';
+const versioned = (url) => `${url}?v=${ASSET_VERSION}`;
+
 const urlsToCache = [
     '/',
     '/index.html',
@@ -11,20 +14,20 @@ const urlsToCache = [
     '/components/skills.html',
     '/components/projects.html',
     '/components/contact.html',
-    '/assets/css/style.css',
-    '/assets/css/blog.css',
-    '/assets/js/script.js',
-    '/assets/js/blog.js',
-    '/assets/js/load-components.js',
-    '/assets/js/global-audio.js',
-    '/assets/js/audio-player.js',
-    '/assets/js/animations.js',
-    '/assets/js/dark-mode.js',
-    '/assets/js/i18n.js',
-    '/assets/js/blog-search.js',
-    '/assets/js/comments.js',
-    '/assets/js/related-posts.js',
-    '/assets/js/rss-feed.js',
+    versioned('/assets/css/style.css'),
+    versioned('/assets/css/blog.css'),
+    versioned('/assets/js/script.js'),
+    versioned('/assets/js/blog.js'),
+    versioned('/assets/js/load-components.js'),
+    versioned('/assets/js/global-audio.js'),
+    versioned('/assets/js/audio-player.js'),
+    versioned('/assets/js/animations.js'),
+    versioned('/assets/js/dark-mode.js'),
+    versioned('/assets/js/i18n.js'),
+    versioned('/assets/js/blog-search.js'),
+    versioned('/assets/js/comments.js'),
+    versioned('/assets/js/related-posts.js'),
+    versioned('/assets/js/rss-feed.js'),
     '/assets/img/myface.jpg',
     '/manifest.json'
 ];
@@ -37,42 +40,52 @@ self.addEventListener('install', (event) => {
                 console.log('Opened cache');
                 return cache.addAll(urlsToCache);
             })
+            .then(() => self.skipWaiting())
     );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - keep documents fresh, cache static assets for repeat visits.
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Cache hit - return response
-                if (response) {
+    const { request } = event;
+
+    if (request.method !== 'GET') return;
+
+    if (request.mode === 'navigate' || request.destination === 'document') {
+        event.respondWith(
+            fetch(request)
+                .then((response) => {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(request, responseToCache);
+                    });
                     return response;
-                }
+                })
+                .catch(() => caches.match(request).then((response) => response || caches.match('/index.html')))
+        );
+        return;
+    }
 
-                // Clone the request
-                const fetchRequest = event.request.clone();
+    const requestUrl = new URL(request.url);
 
-                return fetch(fetchRequest).then((response) => {
-                    // Check if valid response
+    if (requestUrl.origin !== self.location.origin) return;
+
+    event.respondWith(
+        caches.match(request)
+            .then((cachedResponse) => {
+                if (cachedResponse) return cachedResponse;
+
+                return fetch(request).then((response) => {
                     if (!response || response.status !== 200 || response.type !== 'basic') {
                         return response;
                     }
 
-                    // Clone the response
                     const responseToCache = response.clone();
-
                     caches.open(CACHE_NAME)
                         .then((cache) => {
-                            cache.put(event.request, responseToCache);
+                            cache.put(request, responseToCache);
                         });
 
                     return response;
-                }).catch(() => {
-                    // Fallback for offline
-                    if (event.request.destination === 'document') {
-                        return caches.match('/index.html');
-                    }
                 });
             })
     );
@@ -91,7 +104,7 @@ self.addEventListener('activate', (event) => {
                     }
                 })
             );
-        })
+        }).then(() => self.clients.claim())
     );
 });
 
