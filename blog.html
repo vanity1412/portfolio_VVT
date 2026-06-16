@@ -39,11 +39,39 @@
                 <div class="blog-filters" aria-label="Lọc bài viết">
                     <button class="filter-btn active" type="button" data-category="all">Tất cả</button>
                     <button class="filter-btn" type="button" data-category="blue">Blue Team</button>
+                    <button class="filter-btn" type="button" data-category="writeups">Writeups</button>
                     <button class="filter-btn" type="button" data-category="cloud">Cloud Security</button>
                     <button class="filter-btn" type="button" data-category="projects">Projects</button>
                 </div>
 
                 <div class="blog-posts-grid">
+                    <article class="blog-post-card" data-category="writeups">
+                        <div class="post-image">
+                            <img src="assets/img/CTF2025.png" alt="HackTheBox Sherlocks writeup">
+                            <div class="post-category">Writeups</div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar" aria-hidden="true"></i> 4 Tháng 6, 2026</span>
+                                <span><i class="far fa-clock" aria-hidden="true"></i> 18 phút đọc</span>
+                            </div>
+                            <h2 class="post-title"><a href="posts/writeup/hackthebox-sherlocks-part-1.html">HackTheBox Sherlocks: Tổng hợp 25 writeup - Phần 1</a></h2>
+                            <p class="post-excerpt">
+                                Tổng hợp 25 PDF Sherlock, chia theo nhóm artifact như PCAP, KAPE, CloudTrail,
+                                Kubernetes và malware để chuẩn bị viết từng writeup riêng.
+                            </p>
+                            <div class="post-tags">
+                                <span class="tag">HackTheBox</span>
+                                <span class="tag">Sherlocks</span>
+                                <span class="tag">DFIR</span>
+                                <span class="tag">SOC</span>
+                            </div>
+                            <a href="posts/writeup/hackthebox-sherlocks-part-1.html" class="read-more-btn">
+                                Đọc bài viết <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </article>
+
                     <article class="blog-post-card" data-category="blue">
                         <div class="post-image">
                             <img src="assets/img/blue/Lab_SOC/setup1.png" alt="Ransomware Response Challenge">

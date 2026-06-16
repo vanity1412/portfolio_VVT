@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackTheBox Sherlocks: Tổng hợp 25 writeup - Phần 1 - Vũ Văn Thông</title>
+    <meta name="description" content="Phần 1 của series blog HackTheBox Sherlocks: tổng hợp 25 PDF writeup, chia nhóm artifact và ghi lại các điểm cần học theo kiểu sinh viên viết writeup.">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css?v=20260523-toc-layout">
+    <link rel="stylesheet" href="../../assets/css/blog.css?v=20260523-toc-layout">
+</head>
+<body>
+    <div id="sidebar-placeholder"></div>
+
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Mở thông tin nhanh">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <div id="header-placeholder"></div>
+
+    <article class="blog-post">
+        <div class="container">
+            <header class="post-header">
+                <div class="post-breadcrumb">
+                    <a href="../../blog.html"><i class="fas fa-arrow-left"></i> Quay lại Blog</a>
+                </div>
+
+                <div class="post-meta">
+                    <span class="post-category">Writeups</span>
+                    <span class="post-date">
+                        <i class="far fa-calendar"></i>
+                        4 Tháng 6, 2026
+                    </span>
+                    <span class="post-read-time">
+                        <i class="far fa-clock"></i>
+                        18 phút đọc
+                    </span>
+                </div>
+
+                <h1 class="post-title">HackTheBox Sherlocks: Tổng hợp 25 writeup - Phần 1</h1>
+                <p class="post-subtitle">Mình tổng hợp các PDF Sherlock đã làm, chia nhóm artifact và ghi lại những điểm cần học trước khi viết từng bài riêng.</p>
+
+                <div class="post-tags">
+                    <span class="tag">HackTheBox</span>
+                    <span class="tag">Sherlocks</span>
+                    <span class="tag">DFIR</span>
+                    <span class="tag">SOC</span>
+                    <span class="tag">Cloud Security</span>
+                </div>
+            </header>
+
+            <div class="post-content">
+                <div class="post-excerpt">
+                    <p>Mình là sinh viên An toàn thông tin, đang tổng hợp lại các writeup Sherlock của HackTheBox để người truy cập blog có thể đọc nhanh, biết mỗi bài cần phân tích artifact gì và nên học phần nào. Phần 1 này là bài mở đầu, chủ yếu để làm mục lục cho 25 PDF.</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Lưu ý cách viết</h4>
+                    <p>Mình viết lại theo kiểu ghi chú học tập, không copy nguyên văn PDF. Các bài sau sẽ tập trung vào: bài cho artifact gì, mình dùng tool nào, tìm bằng chứng ở đâu, kết luận ra sao và có thể rút kinh nghiệm gì.</p>
+                </div>
+
+                <h2>Mục tiêu của phần 1</h2>
+                <p>Nếu đọc từng PDF riêng lẻ thì hơi khó nhớ, vì mỗi bài dùng một loại dữ liệu khác nhau: PCAP, CloudTrail, MFT, KAPE, Kubernetes YAML, SQLite, log Linux hoặc binary malware. Vì vậy mình gom lại trước để nhìn tổng quan.</p>
+
+                <p>Mục tiêu của bài này là giúp người đọc biết nên bắt đầu từ đâu. Ai muốn luyện network forensics thì đọc nhóm PCAP trước. Ai muốn học cloud thì đọc nhóm AWS. Ai muốn học Windows forensic thì đọc nhóm KAPE, MFT, notification hoặc Notepad++ artifacts.</p>
+
+                <blockquote>
+                    <p>Nguyên tắc mình dùng khi viết writeup: kết luận nào cũng phải có artifact hoặc log chứng minh.</p>
+                </blockquote>
+
+                <h2>Danh sách 25 PDF Sherlock</h2>
+                <p>Bảng dưới đây là danh sách các PDF hiện có. Mình ghi ngắn gọn nhóm điều tra và điểm chính nên học ở từng bài.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PDF</th>
+                            <th>Nhóm điều tra</th>
+                            <th>Điểm nên học</th>
+                            <th>File gốc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BlingBling</td>
+                            <td>Fraud / Graph analysis</td>
+                            <td>Dùng Neo4j để tìm tài khoản trùng IP, địa chỉ, thẻ và hành vi tạo nhiều account.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/BlingBling.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Compromised</td>
+                            <td>Network malware triage</td>
+                            <td>Export object từ PCAP, hash DLL, đối chiếu threat intel và đọc TLS self-signed certificate.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Compromised.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>constellation</td>
+                            <td>URL forensics / OSINT</td>
+                            <td>Chỉ từ URL Discord và Google search vẫn có thể dựng timestamp, file name, insider và handler.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/constellation.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>CookieConsumption</td>
+                            <td>Kubernetes incident</td>
+                            <td>Đọc deployment, service, pod log, cron và backdoor để nối web exploit với container compromise.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/CookieConsumption.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>detroitbecomehuman</td>
+                            <td>Windows KAPE / browser history</td>
+                            <td>Theo dấu social media lure, file tải về, install command, prefetch, registry và staging path.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/detroitbecomehuman.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>einladen</td>
+                            <td>Phishing HTA / malware behavior</td>
+                            <td>HTA tạo EXE/DLL/PDF, ProcMon xác nhận host/user, PCAP lộ C2 qua Zulip và .NET anti-analysis.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/einladen.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>hyperfiletable</td>
+                            <td>MFT / Mark of the Web</td>
+                            <td>MFTECmd, TimelineExplorer, Zone.Identifier ADS, deleted file và resident data trong MFT.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/hyperfiletable.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>jinglebell</td>
+                            <td>Windows notification forensics</td>
+                            <td>SQLite notification database có thể giữ lại Slack message và manh mối insider exfiltration.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/jinglebell.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>knockknock</td>
+                            <td>PCAP / port knocking</td>
+                            <td>NetworkMiner + Wireshark để phát hiện file rò rỉ, FTP, port knocking và chuỗi truy cập ẩn.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/knockknock.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Kuber</td>
+                            <td>Kubernetes configuration</td>
+                            <td>Đọc YAML bằng yq, kiểm tra NodePort, ConfigMap, Secret và pod lạ giả danh metrics-server.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Kuber.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>litter</td>
+                            <td>DNS tunneling</td>
+                            <td>Nhìn traffic DNS bất thường, command qua tunnel, exfil PII và công cụ bị đổi tên.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/litter.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>lockpick2</td>
+                            <td>Ransomware recovery</td>
+                            <td>Sandbox ELF, nhận diện UPX, MITM libcurl traffic, lấy key material và giải AES.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/lockpick2.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Loggy</td>
+                            <td>Golang malware reversing</td>
+                            <td>Nhìn dependency, keylog, screenshot, FTP credential và dữ liệu người dùng bị ghi ra disk.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Loggy.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>NeuralNoel</td>
+                            <td>AI chatbot / Linux logs</td>
+                            <td>Prompt abuse, file disclosure, auth.log, history và privilege escalation qua thư viện Python.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/NeuralNoel.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Noted</td>
+                            <td>Notepad++ artifacts</td>
+                            <td>config.xml, session.xml và backup folder hé lộ source file, archive exfil và extortion note.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Noted.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>nubilum_2</td>
+                            <td>AWS S3 / IAM escalation</td>
+                            <td>Từ S3 public access tới compromised keys, PutUserPolicy, KMS encryption và persistence.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/nubilum_2.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Origins</td>
+                            <td>FTP brute force / exfil</td>
+                            <td>PCAP tối giản nhưng đủ để thấy brute force, credential đúng, RETR exfil và pivot sang S3.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Origins.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>PercyPay</td>
+                            <td>AWS CloudTrail</td>
+                            <td>Dùng SIEM để dựng blast radius, IAM user, access key, policy abuse, Lambda và PassRole.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/PercyPay.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Psittaciformes</td>
+                            <td>Linux / GitHub supply chain</td>
+                            <td>Bash history, CatScale timeline, commit diff, cron persistence và cryptojacking.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Psittaciformes.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>SuperStar</td>
+                            <td>Electron malware / PCAP</td>
+                            <td>asar extraction, nodeIntegration, keylogger qua WebSocket, shellcode decode và reverse shell.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/SuperStar.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>TeamWork</td>
+                            <td>Email / CTI / MITRE</td>
+                            <td>Phân tích EML, domain WHOIS, social persona, malicious package và mapping ATT&CK.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/TeamWork.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>ticktock</td>
+                            <td>KAPE / TeamViewer / Sysmon</td>
+                            <td>Remote access social engineering, Merlin C2, Defender log và system time tampering.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/ticktock.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>TrainingDay</td>
+                            <td>Beginner reverse engineering</td>
+                            <td>PEStudio, compiler, PDB path, calling convention, stack argument và register return value.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/TrainingDay.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>Trent</td>
+                            <td>Router PCAP / RCE</td>
+                            <td>HTTP admin login, firmware, manipulated parameter, CVE và reverse shell traffic.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/Trent.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                        <tr>
+                            <td>ultimatum</td>
+                            <td>WordPress / Linux triage</td>
+                            <td>WPScan, vulnerable plugin, Apache logs, suspicious PHP, shell và post-exploitation scripts.</td>
+                            <td><a href="../../assets/writeups/hackthebox-sherlocks/ultimatum.pdf" target="_blank" rel="noopener">Mở PDF</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Cách mình đọc từng PDF</h2>
+                <p>Khi đọc lại các PDF, mình không chỉ nhìn đáp án. Mình dùng checklist dưới đây để hiểu cách điều tra của từng bài.</p>
+
+                <ol>
+                    <li><strong>Xác định artifact:</strong> Bài cho PCAP, KAPE, CatScale, CloudTrail, SQLite, MFT, YAML hay binary. Biết artifact trước thì mới chọn đúng tool.</li>
+                    <li><strong>Tìm timeline:</strong> Ghi lại mốc thời gian quan trọng, nhưng phải kiểm tra nguồn log. Ví dụ `ticktock` có attacker chỉnh giờ hệ thống nên không thể tin một nguồn duy nhất.</li>
+                    <li><strong>Pivot theo dữ liệu:</strong> Dùng IP, user, process, access key, pod, bucket, domain hoặc file path để tìm thêm bằng chứng liên quan.</li>
+                    <li><strong>Viết kết luận:</strong> Không kết luận file độc hại chỉ vì tên lạ. Cần có process tree, network traffic, hash, registry, command hoặc log chứng minh.</li>
+                </ol>
+
+                <h2>Thứ tự đọc đề xuất</h2>
+                <p>Nếu mới bắt đầu đọc Sherlock, mình nghĩ không nên đọc theo alphabet. Nên chọn vài bài dễ hiểu trước để quen cách đọc artifact, sau đó mới sang cloud hoặc malware.</p>
+
+                <h3>1. BlingBling - làm quen với graph analysis</h3>
+                <p>`BlingBling` dùng Neo4j để tìm hành vi tạo nhiều tài khoản. Các dấu hiệu chính là trùng IP đăng ký, trùng địa chỉ giao hàng và trùng thẻ thanh toán. Bài này hợp để học cách chuyển câu hỏi điều tra thành truy vấn graph.</p>
+
+                <p>Khi viết bài riêng, mình sẽ trình bày theo hướng: bắt đầu từ một IP đáng nghi, mở rộng sang các account liên quan, sau đó kiểm tra thêm địa chỉ và credit card để tránh kết luận vội.</p>
+
+                <h3>2. Constellation - phân tích URL và OSINT</h3>
+                <p>`constellation` chỉ có rất ít artifact, chủ yếu là URL. Tuy vậy, Discord URL, Google search URL, metadata PDF và OSINT vẫn đủ để tìm timeline, file được gửi, tên insider và thông tin handler.</p>
+
+                <p>Bài riêng sẽ tập trung vào Unfurl, Discord snowflake và Google original query. Đây là bài tốt để học rằng URL cũng là artifact, không chỉ là link để bấm mở.</p>
+
+                <h3>3. HyperFileTable và ticktock - Windows forensics</h3>
+                <p>`hyperfiletable` phù hợp để học MFT, Mark of the Web và deleted file. File HTA tải từ Internet có thể để lại Zone.Identifier. File nhỏ như note chứa credential có thể nằm ngay trong MFT entry.</p>
+
+                <p>`ticktock` phức tạp hơn vì có TeamViewer, `merlin.exe`, Defender alert, Sysmon network event và PowerShell script dùng để chỉnh giờ hệ thống. Bài này nhắc mình phải kiểm tra chéo timeline bằng nhiều nguồn log.</p>
+
+                <h3>4. Kuber và CookieConsumption - Kubernetes incident</h3>
+                <p>`Kuber` giúp làm quen với service, deployment, configmap, secret và pod trong Kubernetes. Điểm cần chú ý là pod lạ có thể đặt tên gần giống thành phần hệ thống thật.</p>
+
+                <p>`CookieConsumption` có thêm web fuzzing, endpoint bị exploit, cài `curl`, tạo pod độc hại và backdoor qua cron. Với nhóm Kubernetes, mình sẽ viết theo flow: service exposure, pod lạ, log ứng dụng, persistence.</p>
+
+                <h3>5. PercyPay và nubilum_2 - AWS logs</h3>
+                <p>Nhóm AWS nên đọc chậm vì nhiều bước liên quan đến quyền. `PercyPay` dùng CloudTrail để tìm bucket, IAM user, access key, IP, số file bị ảnh hưởng và các hành động leo quyền. `nubilum_2` cũng liên quan S3, access key, policy và KMS.</p>
+
+                <p>Khi đọc cloud case, mình sẽ không chỉ nhìn file bị lấy. Mình cần kiểm tra user có quyền gì, policy nào bị đổi, role nào được pass, Lambda nào được tạo, key nào cần revoke và có dấu hiệu persistence không.</p>
+
+                <h3>6. LockPick 2.0, Loggy và SuperStar - malware analysis</h3>
+                <p>`lockpick2` là bài ransomware recovery: chạy trong lab, nhận diện UPX, quan sát libcurl, MITM traffic, lấy key material và thử giải AES. `Loggy` là malware Golang có keylog, screenshot và FTP credential. `SuperStar` là Electron app có keylogger, WebSocket và reverse shell.</p>
+
+                <p>Nhóm malware sẽ luôn có cảnh báo lab cô lập. Mục tiêu là hiểu hành vi và cách phân tích, không khuyến khích chạy mẫu trên máy thật.</p>
+
+                <h2>Những điểm mình rút ra</h2>
+                <ul>
+                    <li><strong>Credential có thể nằm ở nhiều chỗ:</strong> note, script, browser history, Git commit cũ, configmap, secret, Slack notification hoặc log của tool.</li>
+                    <li><strong>PCAP không chỉ dùng để tìm IP:</strong> có thể export file, đọc command, xem login flow, tìm C2, phát hiện tunnel hoặc chứng minh exfiltration.</li>
+                    <li><strong>CloudTrail phải đọc theo timeline:</strong> thường bắt đầu từ `GetCallerIdentity`, sau đó là enumerate, thay đổi quyền, tạo resource và truy cập dữ liệu.</li>
+                    <li><strong>Artifact nhỏ vẫn quan trọng:</strong> một URL, SQLite notification database, MFT entry hoặc Notepad++ backup cũng có thể đủ để mở hướng điều tra.</li>
+                    <li><strong>Tool chỉ hỗ trợ phân tích:</strong> Wireshark, Splunk, Chronicle, ProcMon, MFTECmd, yq, Unfurl, PEStudio, CyberChef đều cần câu hỏi điều tra rõ ràng.</li>
+                </ul>
+
+                <h2>Form viết cho các phần tiếp theo</h2>
+                <p>Từ phần 2 trở đi, mình sẽ chọn từng nhóm để viết sâu hơn. Mỗi bài riêng sẽ đi theo form này để người đọc dễ theo dõi:</p>
+
+                <div class="lab-setup">
+                    <h3>Template writeup</h3>
+                    <ol>
+                        <li><strong>Bối cảnh:</strong> mô tả ngắn sự cố trong Sherlock.</li>
+                        <li><strong>Artifact:</strong> liệt kê file được cung cấp và tool sẽ dùng.</li>
+                        <li><strong>Phân tích:</strong> ghi từng bước tìm bằng chứng, không nhảy thẳng tới đáp án.</li>
+                        <li><strong>Timeline:</strong> gom các mốc thời gian chính nếu bài có log.</li>
+                        <li><strong>Kết luận:</strong> root cause, impact, IOC/IOA và hành động response.</li>
+                        <li><strong>Ghi chú học được:</strong> detection rule, hardening hoặc checklist nhỏ.</li>
+                    </ol>
+                </div>
+
+                <h2>Kết phần 1</h2>
+                <p>Phần 1 chỉ là bài tổng hợp và chia nhóm. Sau khi có danh sách này, mình sẽ viết từng bài theo hướng thực hành hơn: đọc artifact, dùng tool, tìm bằng chứng và giải thích kết luận.</p>
+
+                <p>Phần 2 mình sẽ bắt đầu với nhóm Network Forensics: `Compromised`, `litter`, `knockknock`, `Trent` và `Origins`. Nhóm này hợp để luyện Wireshark, đọc PCAP và dựng timeline từ network traffic.</p>
+
+                <div class="post-footer">
+                    <div class="post-share">
+                        <h4>Chia sẻ bài viết:</h4>
+                        <div class="share-buttons">
+                            <a href="#" class="share-btn facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="share-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="share-btn linkedin"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="share-btn copy"><i class="fas fa-copy"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <section class="related-posts">
+        <div class="container">
+            <h3>Bài viết liên quan</h3>
+            <div class="related-posts-grid">
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Blueteam.png" alt="Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="../blue/incident-response.html">Blue Team: Làm gì khi bị tấn công?</a></h4>
+                        <p>Quy trình Incident Response cơ bản để đọc các Sherlock theo hướng xử lý sự cố.</p>
+                    </div>
+                </article>
+                <article class="related-post">
+                    <div class="related-post-image">
+                        <img src="../../assets/img/Cert_AWS_Security.png" alt="AWS Incident Response">
+                    </div>
+                    <div class="related-post-content">
+                        <h4><a href="../cloud/aws-incident-response.html">AWS Security Incident Response</a></h4>
+                        <p>Ghi chú cloud IR để đọc các case PercyPay và nubilum_2 dễ hơn.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <div class="audio-player" id="audio-player">
+        <div class="audio-controls">
+            <button class="audio-toggle" id="audio-toggle">
+                <i class="fas fa-play" id="play-icon"></i>
+            </button>
+            <div class="audio-info">
+                <span class="song-title">MUSIC</span>
+                <span class="song-artist">PIANO</span>
+            </div>
+            <div class="audio-volume">
+                <i class="fas fa-volume-up"></i>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+            </div>
+        </div>
+        <audio id="background-music" loop preload="none">
+            <source src="../../assets/Music/Beethoven1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script src="../../assets/js/load-components.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/script.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/blog.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/global-audio.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/audio-player.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/animations.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/dark-mode.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/i18n.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/comments.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/related-posts.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/blog-animations.js?v=20260523-toc-layout"></script>
+    <script src="../../assets/js/performance-optimizer.js?v=20260523-toc-layout"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+</body>
+</html>
